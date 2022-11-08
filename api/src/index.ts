@@ -6,7 +6,7 @@ export const server = express();
 dotenv.config()
 const PORT = process.env.PORT
 require("./mongo")
-
+server.use(express.json())
 server.use("/", routes)
 
 server.listen(PORT, ()=> {
