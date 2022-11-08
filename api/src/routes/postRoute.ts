@@ -1,28 +1,27 @@
 import {Router} from "express";
 import { Product } from "../models/Product";
-import mongoose from "mongoose";
+import { addNewProduct } from "../controllers/PostController";
+
 require("../mongo")
 const rout = Router();
 
-rout.post("/", (_req, res) => {
-    const newProduct = new Product({
-      name: "Remera Henry",
-      description: "Remera manga corta",
-      price: 1200,
-      image:
-        "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.soyhenry.com%2F&psig=AOvVaw1rrGfsf3XyS4Pn1B7OlSxI&ust=1667998153101000&source=images&cd=vfe&ved=0CA0QjRxqFwoTCICKtL3PnvsCFQAAAAAdAAAAABAD",
-      rating: 5,
-      stock: 10,
-      colors: ["white", "black"],
-      sizes: ["XL", "M"],
-    });
-    newProduct
-      .save()
-      .then((resultado) => {
-        res.status(200).send(resultado);
-        mongoose.connection.close();
-      })
-      .catch((error) => console.log(error));
-  });
+rout.post("/", async (req, res) => {
+    const newProduct = req.body
+    const findProduct = await Product.findOne({name: newProduct.name})
+    if(findProduct){
+      res.status(400).send({error: "Product already exist"})
+    }
+    if(!newProduct){
+      res.status(400).send({error: "Info Missing"})
+    }
+    try {
+      if(newProduct){
+        addNewProduct(newProduct);
+        res.status(200).send(newProduct);
+      }
+    } catch (error) {
+      res.status(400).send({message: error})
+    }
+});
 
 export default rout;
