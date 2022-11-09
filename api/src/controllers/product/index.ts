@@ -1,6 +1,26 @@
 import { product } from "../../Types";
 import { Product } from "../../models/Product";
-import mongoose from "mongoose";
+
+export const getAllProducts = async () => {
+  const result = await Product.find();
+  return result;
+};
+
+export const getAllProductsByCategory = async (category: String) => {
+  const result = await Product.find({ category: category });
+  return result;
+};
+
+export const getProductById = async (id: String) => {
+ const result = await Product.findById(id);
+
+  if(!result){
+    throw new Error("No se encontro el producto con ese id");
+  }
+ 
+ return result;
+};
+
 
 export const addNewProduct = async (prod: product) => {
   if (
@@ -29,7 +49,7 @@ export const addNewProduct = async (prod: product) => {
     newProduct
       .save()
       .then((result) => {
-        mongoose.connection.close();
+        
         return result;
       })
       .catch((error) => new Error(error));
