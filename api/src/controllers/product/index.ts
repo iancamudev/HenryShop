@@ -7,20 +7,12 @@ export const getAllProductsAdmin = async () => {
   return result;
 };
 
-<<<<<<< HEAD
-// export const getAllProductsByName = async (name: string) => {
-//   const result = await Product.find({ name : "name" });
-// };
-
-export const getAllProductsByCategory = async (category: string) => {
-=======
 export const getAllProducts = async () => {
   const result = await Product.find({deleted: false});
   return result;
 };
 
 export const getAllProductsByCategory = async (category: String) => {
->>>>>>> 2ef6a65715748fcaf39f073679af3a6206a0d9ba
   const result = await Product.find({ category: category });
   return result;
 };
