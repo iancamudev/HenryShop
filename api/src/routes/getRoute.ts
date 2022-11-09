@@ -1,6 +1,6 @@
 import { Router, Request, Response } from "express";
 // import mongoose from "mongoose";
-import { getAllProducts } from "../controllers/GetController";
+import { getAllProducts } from "../controllers/product/GetController";
 require("../mongo");
 const routes = Router();
 

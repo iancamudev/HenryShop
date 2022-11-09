@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { addNewProduct } from "../controllers/PostController";
+import { addNewProduct } from "../controllers/product/PostController";
 
 require("../mongo");
 const rout = Router();
