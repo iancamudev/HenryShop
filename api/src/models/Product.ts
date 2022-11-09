@@ -1,4 +1,6 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, PaginateModel, Document } from "mongoose";
+import mongoosePaginate from 'mongoose-paginate-v2';
+import {product} from '../Types';
 
 const productSchema = new Schema({
   name: { type: String, required: true, unique: true },
@@ -12,6 +14,7 @@ const productSchema = new Schema({
   sizes: Array,
   deleted: {type:Boolean, default: false},
 });
+
 // modifica el _id de lo que te devuelve la base de datos por id, ademas remueve el __v
 productSchema.set("toJSON", {
   transform: (_document, returnedObject) => {
@@ -21,4 +24,11 @@ productSchema.set("toJSON", {
   },
 });
 
-export const Product = model("Product", productSchema);
+interface ProductDocument extends Document, product {}
+
+productSchema.plugin(mongoosePaginate);
+
+export const Product = model<
+  ProductDocument,
+  PaginateModel<ProductDocument>
+>('Products', productSchema, 'products');

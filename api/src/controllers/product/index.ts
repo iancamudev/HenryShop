@@ -1,25 +1,34 @@
 import { product } from "../../Types";
 import { Product } from "../../models/Product";
 
+// const paginate = (list: product[], pageSize: number, page:number) => {
+//   const resultList = [];
+//   for(let i = 0; i < list.length; i++){
+//     for(let j = )
+//   }
+// };
+
+const pageSize = 5;
 
 export const getAllProductsAdmin = async () => {
-  const result = await Product.find();
+  const result = await Product.paginate({},{limit: 50});
   return result;
 };
 
 export const getAllProducts = async () => {
-  const result = await Product.find({deleted: false});
+  const result = await Product.paginate({deleted: false},{limit: pageSize});
   return result;
 };
 
 export const getAllProductsByCategory = async (category: string) => {
-  const result = await Product.find({ category: new RegExp(`${category}`, 'i') });
+  const result = await Product.paginate({ category: new RegExp(`${category}`, 'i'), deleted: false}, {limit: pageSize});
+  console.log(result);
   return result;
 };
 
 export const getAllProductsByName = async (name: string) => {
   
-  const result = await Product.find({ name: new RegExp(`${name}`, 'i') });
+  const result = await Product.paginate({ name: new RegExp(`${name}`, 'i') }, {limit: pageSize});
   return result;
 };
 
@@ -64,11 +73,11 @@ export const addNewProduct = async (prod: product) => {
     });
     newProduct
       .save()
-      .then((result) => {
+      .then((result:any) => {
         
         return result;
       })
-      .catch((error) => new Error(error));
+      .catch((error:any) => new Error(error));
   } else {
     throw new Error("Product already exist");
   }
