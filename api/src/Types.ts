@@ -15,5 +15,5 @@ export interface user {
   email: String;
   username: String;
   password: String;
-  age: Number;
+  birthday: Date;
 }
