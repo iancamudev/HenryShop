@@ -9,3 +9,11 @@ export interface product {
   colors: Array<string>;
   sizes: Array<string>;
 }
+
+export interface user {
+  name: String;
+  email: String;
+  username: String;
+  password: String;
+  age: Number;
+}
