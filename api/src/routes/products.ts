@@ -1,37 +1,53 @@
 import { Router, Request, Response } from "express";
-import mongoose from "mongoose";
+
+
 import {
   getAllProducts,
   getAllProductsByCategory,
-} from "../controllers/product/GetController";
-import { addNewProduct } from "../controllers/product/PostController";
+  addNewProduct,
+  getProductById
+} from "../controllers/product/index";
 require("../mongo");
 const routes = Router();
 
 //TODOS LOS GET
-routes.get("/products", async (_req: Request, res: Response) => {
+routes.get("/", async (_req: Request, res: Response) => {
   try {
     const result = await getAllProducts();
     res.status(200).send(result);
-    mongoose.connection.close();
+    
   } catch (error) {
     console.log(error);
   }
 });
 
-routes.get("/products/:category", async (req: Request, res: Response) => {
+
+
+routes.get("/category/:category", async (req: Request, res: Response) => {
   try {
-    const { category } = req.params;
+    const {category }  = req.params;
     const result = await getAllProductsByCategory(category);
     res.status(200).send(result);
-    mongoose.connection.close();
+   
   } catch (error) {
     console.log(error);
   }
+});
+
+routes.get("/:id", async (req: Request, res: Response) => {
+  try {
+    const {id} = req.params;
+  const result = await getProductById(id);
+
+  res.status(200).send(result);
+  } catch (error: any) {
+    console.log(error.message);
+  }
+  
 });
 
 //TODOS LOS POSTS
-routes.post("/products", async (req, res) => {
+routes.post("/", async (req, res) => {
   const newProduct = req.body;
   try {
     if (!newProduct) {
@@ -44,4 +60,7 @@ routes.post("/products", async (req, res) => {
     res.status(400).send({ message: err.message });
   }
 });
+
+//TODOS LOS PUT
+
 export default routes;
