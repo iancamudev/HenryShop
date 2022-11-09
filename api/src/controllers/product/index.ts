@@ -84,8 +84,8 @@ export const deleteProduct = async (id: String) => {
   return result;
  };
 
-export const changeProperty = async (id: String, body: Object) => {
-  const result = await Product.updateOne({id: id, $set: {body}});
+export const changeProperties = async (id: String, body: Object) => {
+  const result = await Product.findOneAndUpdate({_id: id}, body);
   if(!result){
     throw new Error("No existe el producto");
   }
