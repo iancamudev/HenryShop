@@ -7,7 +7,7 @@ import {
   addNewProduct,
   getProductById,
   deleteProduct,
-  changeProperties
+  changeProperties,
 } from "../controllers/product/index";
 require("../mongo");
 
@@ -30,41 +30,36 @@ routes.get("/admin", async (_req: Request, res: Response) => {
 routes.get("/", async (req: Request, res: Response) => {
   try {
     const {category, name} = req.query;
-    const result = await getAllProducts();
-    
-    if(category && typeof category === "string" && !name){
-      const resultCategory = await getAllProductsByCategory(category);
-
-        if(!resultCategory.length){
-          res.status(200).send({message: "No se encontraron productos en esa categoria"})
+      const result = await getAllProducts();
+      
+      if(category && typeof category === "string" && !name){
+        const resultCategory = await getAllProductsByCategory(category);
+          if(!resultCategory){
+            res.status(200).send({message: "No se encontraron productos en esa categoria"})
+          }
+          else {
+            res.status(200).send(resultCategory);
+          }
+          
+      }
+     else if(name && typeof name === "string" && !category){
+        const resultName = await getAllProductsByName(name);
+        if(!resultName){
+          res.status(200).send({message: "No se encontraron productos con ese nombre"})
         }
-
-         else {
-          res.status(200).send(resultCategory);
-         }
-        
-    }
-   else if(name && typeof name === "string" && !category){
-      const resultName = await getAllProductsByName(name);
-      if(!resultName.length){
-        res.status(200).send({message: "No se encontraron productos con ese nombre"})
+        else {
+          res.status(200).send(resultName);
+        }
       }
+  
       else {
-        res.status(200).send(resultName);
+        res.status(200).send(result);
       }
     }
-
-    else {
-      res.status(200).send(result);
-    }
-    
-    
-  } 
   catch (error:any) {
     res.status(500).json({error_message:error.message});
   }
 });
-
 
 routes.get("/:id", async (req: Request, res: Response) => {
   try {
@@ -79,7 +74,6 @@ routes.get("/:id", async (req: Request, res: Response) => {
   }
   
 });
-
 //TODOS LOS POSTS
 routes.post("/", async (req, res) => {
   const newProduct = req.body;
