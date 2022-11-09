@@ -17,6 +17,13 @@ code {
 }
 
 /* NORMALIZE */
+input {
+  outline: none;
+  border: none;
+}
+button {
+  user-select: none;
+}
 h1 {
   font-size: 40px;
   font-weight: 800;
