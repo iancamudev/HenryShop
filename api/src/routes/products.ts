@@ -2,7 +2,7 @@ import { Router, Request, Response } from "express";
 import {
   getAllProductsAdmin,
   getAllProducts,
-  // getAllProductsByCategory,
+  getAllProductsByCategory,
   // getAllProductsByName,
   addNewProduct,
   getProductById,
@@ -28,18 +28,29 @@ routes.get("/admin", async (_req: Request, res: Response) => {
 
 routes.get("/", async (req: Request, res: Response) => {
   try {
-    const category = req.query.category;
-    if(category){
-      console.log(typeof category);
-      // const result = await getAllProductsByCategory(category);
-      // if(result.length)res.status(200).send(result);
-      // else res.status(201).send({message: "No results find with this category"}) 
-    }
-    // const name = req.query.name;
+    const {category} = req.query;
     const result = await getAllProducts();
-    res.status(200).send(result);
     
-  } catch (error:any) {
+    if(category && typeof category === "string"){
+      const resultCategory = await getAllProductsByCategory(category);
+        
+  
+        if(!resultCategory.length){
+          res.status(201).send({message: "No results find with this category"})
+        }
+         else {
+          res.status(200).send(resultCategory);
+         }
+        
+        
+    }
+    else {
+      res.status(200).send(result);
+    }
+    
+    
+  } 
+  catch (error:any) {
     res.status(500).json({error_message:error.message});
   }
 });
@@ -70,8 +81,10 @@ routes.get("/:id", async (req: Request, res: Response) => {
   try {
     const {id} = req.params;
     const result = await getProductById(id);
-
-  res.status(200).send(result);
+    if(!result){
+      res.status(200).json({error_message: "No se encontro el producto con ese id"})
+    }
+    res.status(200).send(result);
   } catch (error: any) {
     res.status(500).json({error_message:error.message});
   }
