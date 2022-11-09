@@ -5,7 +5,7 @@ const userSchema = new Schema({
 	email: {type: String, required: true},
 	username: {type: String, required: true},
 	password: {type: String, required: true},
-	age: {type: Number, required: true},
+	birthday: {type: Date, required: true},
 	deleted: {type: Boolean, default: false},
 });
 // modifica el _id de lo que te devuelve la base de datos por id, ademas remueve el __v
