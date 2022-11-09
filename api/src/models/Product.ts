@@ -10,6 +10,7 @@ const productSchema = new Schema({
   category: { type: String, required: true },
   colors: Array,
   sizes: Array,
+  deleted: Boolean,
 });
 // modifica el _id de lo que te devuelve la base de datos por id, ademas remueve el __v
 productSchema.set("toJSON", {

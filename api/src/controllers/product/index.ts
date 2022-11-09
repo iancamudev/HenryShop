@@ -1,8 +1,14 @@
 import { product } from "../../Types";
 import { Product } from "../../models/Product";
 
-export const getAllProducts = async () => {
+
+export const getAllProductsAdmin = async () => {
   const result = await Product.find();
+  return result;
+};
+
+export const getAllProducts = async () => {
+  const result = await Product.find({deleted: false});
   return result;
 };
 
@@ -45,6 +51,7 @@ export const addNewProduct = async (prod: product) => {
       category: prod.category,
       colors: prod.colors,
       sizes: prod.sizes,
+      deleted: false,
     });
     newProduct
       .save()
@@ -57,3 +64,21 @@ export const addNewProduct = async (prod: product) => {
     throw new Error("Product already exist");
   }
 };
+
+export const deleteProduct = async (id: String) => {
+  const result = await Product.findOneAndUpdate({_id : id}, {deleted : true});
+ 
+   if(!result){
+     throw new Error("No se puede eliminar el producto");
+   }
+  
+  return result;
+ };
+
+export const changeProperty = async (id: String, body: Object) => {
+  const result = await Product.updateOne({id: id, $set: {body}});
+  if(!result){
+    throw new Error("No existe el producto");
+  }
+  return result;
+}
