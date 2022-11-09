@@ -26,6 +26,7 @@ routes.get("/admin", async (_req: Request, res: Response) => {
   }
 });
 
+
 routes.get("/", async (req: Request, res: Response) => {
   try {
     const {category, name} = req.query;
@@ -64,27 +65,6 @@ routes.get("/", async (req: Request, res: Response) => {
   }
 });
 
-// routes.get("/category/:category", async (req: Request, res: Response) => {
-//   try {
-//     const {category } = req.params;
-//     const result = await getAllProductsByCategory(category);\
-//     if(result.length)res.status(200).send(result);
-//   } catch (error:any) {
-//     res.status(500).json({error_message:error.message});
-//   }
-// });
-
-// routes.get('/name/:name', async (req:Request, res:Response)=>{
-//   try{
-//     const {name} = req.params;
-//     const result = await getProductsByName(name);
-//     if(result.length) res.status(200).send(result);
-//     else res.status(201).send({message: "No results find with this name"})
-//   }catch(error:any){
-//     res.status(500).json({error_message:error.message});
-//   }
-
-// });
 
 routes.get("/:id", async (req: Request, res: Response) => {
   try {
