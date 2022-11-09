@@ -3,7 +3,7 @@ import {
   getAllProductsAdmin,
   getAllProducts,
   getAllProductsByCategory,
-  // getAllProductsByName,
+  getAllProductsByName,
   addNewProduct,
   getProductById,
   deleteProduct,
@@ -28,22 +28,31 @@ routes.get("/admin", async (_req: Request, res: Response) => {
 
 routes.get("/", async (req: Request, res: Response) => {
   try {
-    const {category} = req.query;
+    const {category, name} = req.query;
     const result = await getAllProducts();
     
     if(category && typeof category === "string"){
       const resultCategory = await getAllProductsByCategory(category);
-        
-  
+
         if(!resultCategory.length){
-          res.status(201).send({message: "No results find with this category"})
+          res.status(200).send({message: "No se encontraron productos en esa categoria"})
         }
+
          else {
           res.status(200).send(resultCategory);
          }
         
-        
     }
+    if(name && typeof name === "string"){
+      const resultName = await getAllProductsByName(name);
+      if(!resultName.length){
+        res.status(200).send({message: "No se encontraron productos con ese nombre"})
+      }
+      else {
+        res.status(200).send(resultName);
+      }
+    }
+
     else {
       res.status(200).send(result);
     }
