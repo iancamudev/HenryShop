@@ -1,13 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 import logo from "../assets/logoHenryBlack.png";
 import { GiHamburgerMenu } from "react-icons/gi";
+import Searchbar from "./Searchbar";
 
 const Header = () => {
+  const [deploy, setDeploy] = useState(false);
   return (
-    <header className="fixed w-full h-24 bg-yellow flex justify-between items-center">
-      <img src={logo} alt="Logo de Henry" className="h-full" />
-      <GiHamburgerMenu className="h-12 w-auto mr-2 cursor-pointer" />
-    </header>
+    <nav className="flex flex-col sticky w-full">
+      <div className=" h-20 p-2 pl-2 pr-4 bg-yellow flex justify-between items-center">
+        <img src={logo} alt="Logo de Henry" className="h-full select-none" />
+        <GiHamburgerMenu
+          onClick={() => {
+            setDeploy(!deploy);
+          }}
+          className={
+            deploy
+              ? "-rotate-90 h-10 w-auto cursor-pointer duration-300"
+              : "h-10 w-auto cursor-pointer duration-300"
+          }
+        />
+      </div>
+      {deploy && (
+        <div
+          id="divDeployNavbar"
+          className="bg-yellow h-auto w-full origin-top animate-open-menu"
+        >
+          <div className="select-none">
+            <h3 className="">Desplegado</h3>
+          </div>
+          <Searchbar />
+        </div>
+      )}
+    </nav>
   );
 };
 

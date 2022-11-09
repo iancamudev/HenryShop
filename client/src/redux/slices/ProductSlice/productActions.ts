@@ -16,7 +16,7 @@ export const getAllProducts = () => (dispatch: AppDispatch) => {
 };
 export const getProductsByName = (name: string) => (dispatch: AppDispatch) => {
   axios
-    .get(`${BACKEND_URL}/products/${name}}`)
+    .get(`${BACKEND_URL}/products?name=${name}}`)
     .then(({ data }) => dispatch(getProductList(data)))
     .catch((error) => {
       console.error(error);
