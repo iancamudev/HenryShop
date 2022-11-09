@@ -1,13 +1,14 @@
 // here goes the store
-import { configureStore } from '@reduxjs/toolkit'
+import { configureStore } from "@reduxjs/toolkit";
+import ProductSlice from "../redux/slices/ProductSlice/index";
 
 const store = configureStore({
   reducer: {
-    // aca van los slices, de la carpeta ../slices
-  }
+    products: ProductSlice,
+  },
 });
 
 export default store;
 
 export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch; 
+export type AppDispatch = typeof store.dispatch;
