@@ -12,8 +12,14 @@ export const getAllProducts = async () => {
   return result;
 };
 
-export const getAllProductsByCategory = async (category: String) => {
+export const getAllProductsByCategory = async (category: string) => {
   const result = await Product.find({ category: category });
+  return result;
+};
+
+export const getAllProductsByName = async (name: string) => {
+  
+  const result = await Product.find({ name: new RegExp(`${name}`, 'i') });
   return result;
 };
 
