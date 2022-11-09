@@ -6,13 +6,15 @@ const userSchema = new Schema({
 	username: {type: String, required: true},
 	password: {type: String, required: true},
 	age: {type: Number, required: true},
-	deleted: {type: Boolean, default: false}
+	deleted: {type: Boolean, default: false},
 });
 // modifica el _id de lo que te devuelve la base de datos por id, ademas remueve el __v
-productSchema.set("toJSON", {
+userSchema.set("toJSON", {
   transform: (_document, returnedObject) => {
     returnedObject.id = returnedObject._id;
     delete returnedObject._id;
     delete returnedObject.__v;
   },
 });
+
+export const User = model('User', userSchema);
