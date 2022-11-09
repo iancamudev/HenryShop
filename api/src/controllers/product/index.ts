@@ -13,7 +13,7 @@ export const getAllProducts = async () => {
 };
 
 export const getAllProductsByCategory = async (category: string) => {
-  const result = await Product.find({ category: category });
+  const result = await Product.find({ category: new RegExp(`${category}`, 'i') });
   return result;
 };
 
