@@ -5,7 +5,9 @@ import {
   getAllProducts,
   getAllProductsByCategory,
   addNewProduct,
-  getProductById
+  getProductById,
+  deleteProduct,
+  changeProperty
 } from "../controllers/product/index";
 require("../mongo");
 const routes = Router();
@@ -61,6 +63,30 @@ routes.post("/", async (req, res) => {
   }
 });
 
-//TODOS LOS PUT
+//DELETE
+routes.delete("/:id", async (req: Request, res: Response) =>{
+  try {
+    const {id} = req.params;
+    const del = await deleteProduct(id);
+    res.status(200).send(del);
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+//PUT
+
+routes.put("/:id", async (req: Request, res: Response) => {
+  try {
+    const {id} = req.params;
+    const bodyr = req.body;
+    const put = await changeProperty(id, bodyr)
+    res.status(200).send(put)
+  } catch (error) {
+    console.log(error)
+  }
+})
+
+
 
 export default routes;
