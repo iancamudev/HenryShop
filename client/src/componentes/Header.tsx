@@ -21,7 +21,10 @@ const Header = () => {
         />
       </div>
       {deploy && (
-        <div id="divDeployNavbar" className="bg-yellow h-32 w-full">
+        <div
+          id="divDeployNavbar"
+          className="bg-yellow h-auto w-full origin-top animate-open-menu"
+        >
           <div className="select-none">
             <h3 className="">Desplegado</h3>
           </div>
