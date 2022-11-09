@@ -18,6 +18,9 @@ export const getAllProductsByCategory = async (category: String) => {
 };
 
 export const getProductById = async (id: String) => {
+  if(id.length >24 || id.length < 24){
+    throw new Error("Id no valido");
+  }
  const result = await Product.findById(id);
 
   if(!result){
