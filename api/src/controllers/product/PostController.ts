@@ -1,6 +1,6 @@
 import { product } from "../../Types";
 import { Product } from "../../models/Product";
-import mongoose from "mongoose";
+//import mongoose from "mongoose";
 
 export const addNewProduct = async (prod: product) => {
   if (
@@ -29,7 +29,7 @@ export const addNewProduct = async (prod: product) => {
     newProduct
       .save()
       .then((result) => {
-        mongoose.connection.close();
+        // mongoose.connection.close();
         return result;
       })
       .catch((error) => new Error(error));
