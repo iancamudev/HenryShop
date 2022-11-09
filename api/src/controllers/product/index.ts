@@ -6,7 +6,11 @@ export const getAllProducts = async () => {
   return result;
 };
 
-export const getAllProductsByCategory = async (category: String) => {
+// export const getAllProductsByName = async (name: string) => {
+//   const result = await Product.find({ name : "name" });
+// };
+
+export const getAllProductsByCategory = async (category: string) => {
   const result = await Product.find({ category: category });
   return result;
 };
