@@ -16,12 +16,10 @@ routes.get("/", async (_req: Request, res: Response) => {
     const result = await getAllProducts();
     res.status(200).send(result);
     
-  } catch (error) {
-    console.log(error);
+  } catch (error:any) {
+    res.status(500).json({error_message:error.message});
   }
 });
-
-
 
 routes.get("/category/:category", async (req: Request, res: Response) => {
   try {
@@ -29,8 +27,8 @@ routes.get("/category/:category", async (req: Request, res: Response) => {
     const result = await getAllProductsByCategory(category);
     res.status(200).send(result);
    
-  } catch (error) {
-    console.log(error);
+  } catch (error:any) {
+    res.status(500).json({error_message:error.message});
   }
 });
 
@@ -41,7 +39,7 @@ routes.get("/:id", async (req: Request, res: Response) => {
 
   res.status(200).send(result);
   } catch (error: any) {
-    console.log(error.message);
+    res.status(500).json({error_message:error.message});
   }
   
 });
@@ -56,8 +54,8 @@ routes.post("/", async (req, res) => {
       await addNewProduct(newProduct);
       res.status(200).send(newProduct);
     }
-  } catch (err: any) {
-    res.status(400).send({ message: err.message });
+  } catch (error: any) {
+    res.status(500).send({error_message: error.message});
   }
 });
 
