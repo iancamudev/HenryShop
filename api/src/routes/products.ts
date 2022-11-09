@@ -16,7 +16,6 @@ const routes = Router();
 //TODOS LOS GET
 <<<<<<< HEAD
 routes.get("/", async (req: Request, res: Response) => {
-=======
 routes.get("/admin", async (_req: Request, res: Response) => {
   try {
     const result = await getAllProductsAdmin();
@@ -28,7 +27,6 @@ routes.get("/admin", async (_req: Request, res: Response) => {
 });
 
 routes.get("/", async (_req: Request, res: Response) => {
->>>>>>> 2ef6a65715748fcaf39f073679af3a6206a0d9ba
   try {
     const category = req.query.category;
     if(category){
