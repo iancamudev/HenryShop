@@ -7,8 +7,8 @@ import Header from "./componentes/Header";
 function App() {
   return (
     <div className="App">
-        <Header />
-        <Searchbar />
+      <Header />
+
       {/* <header className="App-header">
         <h1 className="">Buenas</h1>
         <h2 className="">Buenas</h2>
