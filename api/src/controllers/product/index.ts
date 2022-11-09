@@ -1,16 +1,26 @@
 import { product } from "../../Types";
 import { Product } from "../../models/Product";
 
-export const getAllProducts = async () => {
+
+export const getAllProductsAdmin = async () => {
   const result = await Product.find();
   return result;
 };
 
+<<<<<<< HEAD
 // export const getAllProductsByName = async (name: string) => {
 //   const result = await Product.find({ name : "name" });
 // };
 
 export const getAllProductsByCategory = async (category: string) => {
+=======
+export const getAllProducts = async () => {
+  const result = await Product.find({deleted: false});
+  return result;
+};
+
+export const getAllProductsByCategory = async (category: String) => {
+>>>>>>> 2ef6a65715748fcaf39f073679af3a6206a0d9ba
   const result = await Product.find({ category: category });
   return result;
 };
@@ -49,6 +59,7 @@ export const addNewProduct = async (prod: product) => {
       category: prod.category,
       colors: prod.colors,
       sizes: prod.sizes,
+      deleted: false,
     });
     newProduct
       .save()
@@ -63,7 +74,7 @@ export const addNewProduct = async (prod: product) => {
 };
 
 export const deleteProduct = async (id: String) => {
-  const result = await Product.deleteOne({_id: id});
+  const result = await Product.findOneAndUpdate({_id : id}, {deleted : true});
  
    if(!result){
      throw new Error("No se puede eliminar el producto");
@@ -73,7 +84,7 @@ export const deleteProduct = async (id: String) => {
  };
 
 export const changeProperty = async (id: String, body: Object) => {
-  const result = await Product.updateOne({id: id, $set: body});
+  const result = await Product.updateOne({id: id, $set: {body}});
   if(!result){
     throw new Error("No existe el producto");
   }

@@ -1,5 +1,6 @@
 import { Router, Request, Response } from "express";
 import {
+  getAllProductsAdmin,
   getAllProducts,
   // getAllProductsByCategory,
   // getAllProductsByName,
@@ -13,7 +14,21 @@ require("../mongo");
 const routes = Router();
 
 //TODOS LOS GET
+<<<<<<< HEAD
 routes.get("/", async (req: Request, res: Response) => {
+=======
+routes.get("/admin", async (_req: Request, res: Response) => {
+  try {
+    const result = await getAllProductsAdmin();
+    res.status(200).send(result);
+    
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+routes.get("/", async (_req: Request, res: Response) => {
+>>>>>>> 2ef6a65715748fcaf39f073679af3a6206a0d9ba
   try {
     const category = req.query.category;
     if(category){
@@ -85,7 +100,8 @@ routes.delete("/:id", async (req: Request, res: Response) =>{
   try {
     const {id} = req.params;
     const del = await deleteProduct(id);
-    res.status(200).send(del);
+    console.log(del)
+    res.status(200).json({message : 'Producto eliminado'});
   } catch (error) {
     console.log(error)
   }
