@@ -61,3 +61,21 @@ export const addNewProduct = async (prod: product) => {
     throw new Error("Product already exist");
   }
 };
+
+export const deleteProduct = async (id: String) => {
+  const result = await Product.deleteOne({_id: id});
+ 
+   if(!result){
+     throw new Error("No se puede eliminar el producto");
+   }
+  
+  return result;
+ };
+
+export const changeProperty = async (id: String, body: Object) => {
+  const result = await Product.updateOne({id: id, $set: body});
+  if(!result){
+    throw new Error("No existe el producto");
+  }
+  return result;
+}
