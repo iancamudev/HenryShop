@@ -14,8 +14,8 @@ require("../mongo");
 const routes = Router();
 
 //TODOS LOS GET
-<<<<<<< HEAD
-routes.get("/", async (req: Request, res: Response) => {
+
+
 routes.get("/admin", async (_req: Request, res: Response) => {
   try {
     const result = await getAllProductsAdmin();
@@ -26,7 +26,7 @@ routes.get("/admin", async (_req: Request, res: Response) => {
   }
 });
 
-routes.get("/", async (_req: Request, res: Response) => {
+routes.get("/", async (req: Request, res: Response) => {
   try {
     const category = req.query.category;
     if(category){
