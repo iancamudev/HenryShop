@@ -7,7 +7,7 @@ import {
   addNewProduct,
   getProductById,
   deleteProduct,
-  changeProperty
+  changeProperties
 } from "../controllers/product/index";
 require("../mongo");
 
@@ -110,9 +110,10 @@ routes.delete("/:id", async (req: Request, res: Response) =>{
 routes.put("/:id", async (req: Request, res: Response) => {
   try {
     const {id} = req.params;
-    const bodyr = req.body;
-    const put = await changeProperty(id, bodyr)
-    res.status(200).send(put)
+    const body = req.body;
+    const put = await changeProperties(id, body)
+    console.log(put)
+    res.status(200).json({message : 'Parámetros cambiados correctamente'})
   } catch (error) {
     console.log(error)
   }
