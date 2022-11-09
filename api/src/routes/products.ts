@@ -32,7 +32,7 @@ routes.get("/", async (req: Request, res: Response) => {
     const {category, name} = req.query;
     const result = await getAllProducts();
     
-    if(category && typeof category === "string"){
+    if(category && typeof category === "string" && !name){
       const resultCategory = await getAllProductsByCategory(category);
 
         if(!resultCategory.length){
@@ -44,7 +44,7 @@ routes.get("/", async (req: Request, res: Response) => {
          }
         
     }
-    if(name && typeof name === "string"){
+   else if(name && typeof name === "string" && !category){
       const resultName = await getAllProductsByName(name);
       if(!resultName.length){
         res.status(200).send({message: "No se encontraron productos con ese nombre"})
