@@ -4,10 +4,6 @@ import {  useParams } from "react-router-dom";
 import { getProductsById } from "../redux/slices/ProductSlice/productActions";
 import { ProductDetails } from "../redux/slices/ProductSlice";
 
-// export interface DetailProps {
-//     product?: ProductDetails ;
-    
-// }
 
 export const DetailProduct:React.FunctionComponent= () => {
 
