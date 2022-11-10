@@ -41,6 +41,8 @@ export const getAllUser = async ()=>{
 }
 
 export const getUser = async(username: string) => {
-  const resultUser = await User.findOne({username: username});
+  console.log(typeof username);
+  const resultUser = await User.findOne({username: username}).exec();
+  console.log(resultUser);
   return resultUser;
 }
