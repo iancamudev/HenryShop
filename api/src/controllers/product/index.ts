@@ -15,8 +15,8 @@ export const getAllProductsAdmin = async () => {
   return result;
 };
 
-export const getAllProducts = async () => {
-  const result = await Product.paginate({deleted: false},{limit: pageSize});
+export const getAllProducts = async (page:number) => {
+  const result = await Product.paginate({deleted: false},{limit: pageSize, page: page});
   return result;
 };
 
@@ -30,7 +30,7 @@ export const getAllProducts = async () => {
 //   return result;
 // };
 
-export const getWithfilters = async (category?: string, name?: string, property?: string, order?: string) => {
+export const getWithfilters = async (page: number, category?: string, name?: string, property?: string, order?: string) => {
 
   if(category === 'undefined' && name!=='undefined' && property!=='undefined' && order!=='undefined'){
     console.log('1');
@@ -40,6 +40,7 @@ export const getWithfilters = async (category?: string, name?: string, property?
         deleted: false 
       }, {
         limit: pageSize, 
+        page: page,
         sort: {[`${property}`]: order}
       }
     );
@@ -52,6 +53,7 @@ export const getWithfilters = async (category?: string, name?: string, property?
         deleted: false
       }, {
         limit: pageSize, 
+        page: page,
         sort: {[`${property}`]: order}
         }
       );
@@ -63,6 +65,7 @@ export const getWithfilters = async (category?: string, name?: string, property?
         deleted: false
       }, {
         limit: pageSize, 
+        page: page,
         sort: {[`${property}`]: order}
         }
       );
@@ -75,13 +78,14 @@ export const getWithfilters = async (category?: string, name?: string, property?
         name: new RegExp(`${name}`, 'i'), 
         deleted: false
       }, {
-        limit: pageSize
+        limit: pageSize,
+        page: page
         }
       );
     return resultCategory;
   }else if(category=== 'undefined' && name=== 'undefined' && (property=== 'undefined' || order=== 'undefined')){
     console.log('5');
-    const resultCategory = getAllProducts();
+    const resultCategory = getAllProducts(page);
     return resultCategory;
   }else if(category=== 'undefined' && name!=='undefined' && (property=== 'undefined' || order=== 'undefined')){
     console.log('6');
@@ -90,7 +94,8 @@ export const getWithfilters = async (category?: string, name?: string, property?
         name: new RegExp(`${name}`, 'i'), 
         deleted: false
       }, {
-        limit: pageSize
+        limit: pageSize,
+        page: page
         }
       );
     return resultCategory;
@@ -101,7 +106,8 @@ export const getWithfilters = async (category?: string, name?: string, property?
         category: new RegExp(`${category}`, 'i'), 
         deleted: false
       }, {
-        limit: pageSize
+        limit: pageSize,
+        page: page
         }
       );
     return resultCategory;
@@ -112,7 +118,8 @@ export const getWithfilters = async (category?: string, name?: string, property?
         name: new RegExp(`${name}`, 'i'), 
         deleted: false
       }, {
-        limit: pageSize
+        limit: pageSize,
+        page: page
         }
       );
     return resultCategory;
@@ -120,7 +127,16 @@ export const getWithfilters = async (category?: string, name?: string, property?
   else {
     console.log('9');
     console.log("entre3");
-    const resultAll = await Product.paginate({ category: new RegExp(`${category}`, 'i'),name: new RegExp(`${name}`, 'i') , deleted: false}, {limit: pageSize, sort: {[`${property}`]: order}});
+    const resultAll = await Product.paginate({ 
+        category: new RegExp(`${category}`, 'i'),
+        name: new RegExp(`${name}`, 'i') , 
+        deleted: false
+      }, {
+        limit: pageSize, 
+        page: page, 
+        sort: {[`${property}`]: order}
+      }
+    );
     return resultAll;
   }
 };
