@@ -1,13 +1,12 @@
-import React, { useEffect } from "react";
-import logo from "./logo.svg";
 import "./App.css";
-import Searchbar from "./componentes/Searchbar";
 import Header from "./componentes/Header";
+import Login from "./componentes/Login";
 
 function App() {
   return (
     <div className="App">
       <Header />
+      <Login />
     </div>
   );
 }
