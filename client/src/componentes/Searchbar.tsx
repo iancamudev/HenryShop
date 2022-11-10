@@ -1,5 +1,5 @@
 import React, { FormEvent, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../hooks";
+import { useAppDispatch } from "../hooks";
 import { getAllProducts } from "../redux/slices/ProductSlice/productActions";
 
 const Searchbar = () => {
@@ -12,9 +12,11 @@ const Searchbar = () => {
     dispatch(getAllProducts());
     setSearch("");
   };
+  
   const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
   };
+
   return (
     <form onSubmit={submitHandler}>
       <input
