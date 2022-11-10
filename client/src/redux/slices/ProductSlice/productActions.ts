@@ -8,7 +8,7 @@ export const getAllProducts = () => (dispatch: AppDispatch) => {
   axios
     .get(`${BACKEND_URL}/products`)
     .then(({ data }) => {
-      dispatch(getProductList(data));
+      dispatch(getProductList(data.docs));
     })
     .catch((error) => {
       console.error(error);
@@ -17,7 +17,7 @@ export const getAllProducts = () => (dispatch: AppDispatch) => {
 export const getProductsByName = (name: string) => (dispatch: AppDispatch) => {
   axios
     .get(`${BACKEND_URL}/products?name=${name}}`)
-    .then(({ data }) => dispatch(getProductList(data)))
+    .then(({ data }) => dispatch(getProductList(data.docs)))
     .catch((error) => {
       console.error(error);
     });
