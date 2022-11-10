@@ -29,3 +29,13 @@ export const addNewUser = async (user: user) => {
     throw new Error("User already exist");
   }
 };
+const pageSize = 10;
+export const getAllUser = async ()=>{
+  const resultUsers = await User.paginate({limit: pageSize});
+  return resultUsers;
+}
+
+export const getUser = async(username: string) => {
+  const resultUser = await User.findOne({username: username});
+  return resultUser;
+}

@@ -9,7 +9,7 @@ routes.post('/', async (req:Request, res:Response) => {
 
 	try{
 		const newUser = req.body;
-		if (req.body){
+		if (newUser){
 			await addNewUser(newUser);
 			res.status(200).json(newUser);
 		}
