@@ -16,14 +16,25 @@ export interface ProductDetails {
 
 interface ProductState {
   productList: Array<ProductDetails>;
-  productDetail: ProductDetails | {};
+  productDetail: ProductDetails  ;
   productPages: Number;
 }
 
 //Definimos el estado
 const initialState: ProductState = {
   productList: [],
-  productDetail: {},
+  productDetail: {
+    id: "",
+    name: "",
+    rating: -1,
+    description: "",
+    price: 0,
+    image: "",
+    stock: 0,
+    category: "",
+    colors: [""],
+    sizes: [""],
+  },
   productPages: 0,
 };
 
@@ -38,8 +49,11 @@ const ProductSlice = createSlice({
     getProductPages(state, action: PayloadAction<Number>) {
       state.productPages = action.payload;
     },
+    getProductDetail(state, action: PayloadAction<ProductDetails>){
+      state.productDetail = action.payload
+    }
   },
 });
 
 export default ProductSlice.reducer;
-export const { getProductList, getProductPages } = ProductSlice.actions;
+export const { getProductList, getProductPages, getProductDetail } = ProductSlice.actions;
