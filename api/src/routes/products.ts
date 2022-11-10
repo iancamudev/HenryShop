@@ -29,11 +29,12 @@ routes.get("/admin", async (_req: Request, res: Response) => {
 
 routes.get('/', async (req: Request, res:Response) => {
   try{
-    const name = String(req.query.name);
-    const category = String(req.query.category);
-    const order = String(req.query.order);
-    const property = String(req.query.property);
-    const result:any = await getWithfilters(category, name, property, order);
+    const page:number = Number(req.query.page);
+    const name:string = String(req.query.name);
+    const category:string = String(req.query.category);
+    const order:string = String(req.query.order);
+    const property:string = String(req.query.property);
+    const result:any = await getWithfilters(page, category, name, property, order);
     if(result)res.status(200).json(result);
     else res.status(400).json({error_message: "not found"});
   }catch(error:any){
