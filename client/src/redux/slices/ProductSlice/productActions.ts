@@ -1,14 +1,17 @@
 import axios from "axios";
 import { AppDispatch } from "../../store";
-import { getProductList } from "./index";
+import { getProductList, getProductPages } from "./index";
 const BACKEND_URL =
   process.env.REACT_APP_BACKEND_URL || "https://localhost:3001";
 
-export const getAllProducts = () => (dispatch: AppDispatch) => {
+export const getAllProducts = (page?: number) => (dispatch: AppDispatch) => {
   axios
-    .get(`${BACKEND_URL}/products`)
+    .get(
+      page ? `${BACKEND_URL}/products?page=${page}` : `${BACKEND_URL}/products`
+    )
     .then(({ data }) => {
       dispatch(getProductList(data.docs));
+      dispatch(getProductPages(data.totalPages));
     })
     .catch((error) => {
       console.error(error);

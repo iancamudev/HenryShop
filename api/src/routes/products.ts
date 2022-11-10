@@ -1,13 +1,14 @@
 import { Router, Request, Response } from "express";
 import {
   getAllProductsAdmin,
-  getAllProducts,
-  getAllProductsByCategory,
-  getAllProductsByName,
+  // getAllProducts,
+  // getAllProductsByCategory,
+  // getAllProductsByName,
   addNewProduct,
   getProductById,
   deleteProduct,
   changeProperties,
+  getWithfilters,
 } from "../controllers/product/index";
 require("../mongo");
 
@@ -26,37 +27,17 @@ routes.get("/admin", async (_req: Request, res: Response) => {
   }
 });
 
-
-routes.get("/", async (req: Request, res: Response) => {
-  try {
-    const {category, name} = req.query;
-      const result = await getAllProducts();
-      
-      if(category && typeof category === "string" && !name){
-        const resultCategory = await getAllProductsByCategory(category);
-          if(!resultCategory){
-            res.status(200).send({message: "No se encontraron productos en esa categoria"})
-          }
-          else {
-            res.status(200).send(resultCategory);
-          }
-          
-      }
-     else if(name && typeof name === "string" && !category){
-        const resultName = await getAllProductsByName(name);
-        if(!resultName){
-          res.status(200).send({message: "No se encontraron productos con ese nombre"})
-        }
-        else {
-          res.status(200).send(resultName);
-        }
-      }
-  
-      else {
-        res.status(200).send(result);
-      }
-    }
-  catch (error:any) {
+routes.get('/', async (req: Request, res:Response) => {
+  try{
+    const page:number = Number(req.query.page);
+    const name:string = String(req.query.name);
+    const category:string = String(req.query.category);
+    const order:string = String(req.query.order);
+    const property:string = String(req.query.property);
+    const result:any = await getWithfilters(page, category, name, property, order);
+    if(result)res.status(200).json(result);
+    else res.status(400).json({error_message: "not found"});
+  }catch(error:any){
     res.status(500).json({error_message:error.message});
   }
 });

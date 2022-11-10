@@ -12,7 +12,7 @@ const Searchbar = () => {
     dispatch(getAllProducts());
     setSearch("");
   };
-  
+
   const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
   };
@@ -24,11 +24,11 @@ const Searchbar = () => {
         onChange={changeHandler}
         value={search}
         placeholder="Buscar producto..."
-        className="text-base text-gray-900 p-2 pl-4 pr-4 rounded-2xl shadow-lg"
+        className="text-base text-gray-900 p-2 pl-4 pr-4 rounded-3xl shadow-lg  border-0 border-b-2 border-black border-solid"
       />
       <button
         type="submit"
-        className="text-base text-gray-900 p-2 pl-4 pr-4 bg-white ml-2 rounded-3xl duration-200 shadow-lg hover:bg-gray-200 hover:duration-300"
+        className="text-base text-gray-900 p-2 pl-4 pr-4 bg-white ml-2 rounded-3xl duration-200 shadow-lg hover:bg-gray-200 hover:duration-300 border-b-2 border-black"
       >
         Buscar
       </button>

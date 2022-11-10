@@ -1,9 +1,11 @@
-import {Schema, model} from 'mongoose';
+import {Schema, model, PaginateModel, Document} from 'mongoose';
+import { user } from '../Types';
+import mongoosePaginate from "mongoose-paginate-v2"
 
 const userSchema = new Schema({
 	name: {type: String, required: true},
-	email: {type: String, required: true},
-	username: {type: String, required: true},
+	email: {type: String, required: true, unique: true},
+	username: {type: String, required: true, unique: true},
 	password: {type: String, required: true},
 	birthday: {type: Date, required: true},
 	deleted: {type: Boolean, default: false},
@@ -17,4 +19,11 @@ userSchema.set("toJSON", {
   },
 });
 
-export const User = model('User', userSchema);
+interface UserDocument extends Document, user {}
+
+userSchema.plugin(mongoosePaginate);
+
+export const User = model<
+  UserDocument,
+  PaginateModel<UserDocument>
+>('Users', userSchema, 'Users');
