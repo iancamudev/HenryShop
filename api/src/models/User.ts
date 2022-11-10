@@ -26,4 +26,4 @@ userSchema.plugin(mongoosePaginate);
 export const User = model<
   UserDocument,
   PaginateModel<UserDocument>
->('Users', userSchema, 'Users');
+>('Users', userSchema, 'users');

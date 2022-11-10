@@ -12,26 +12,31 @@ export const addNewUser = async (user: user) => {
 	){
 		throw new Error("Info Missing");
 	}
-	const userFind = await User.findOne({ name: user.name });
+	const userFind = await User.findOne({ name: user.username });
 	if (!userFind) {
     const newUser = new User({
       name: user.name,
       email: user.email,
       username: user.username, 
       password: user.password,
-      bithday: user.birthday,
+      birthday: user.birthday,
     });
     newUser
       .save()
-      .then((result) => result)
+      .then((result:any) => {
+        
+        return result;
+      })
       .catch((error) => new Error(error));
-  } else {
+    return newUser;
+  }else {
     throw new Error("User already exist");
   }
 };
 const pageSize = 10;
 export const getAllUser = async ()=>{
-  const resultUsers = await User.paginate({limit: pageSize});
+  const resultUsers:object = await User.paginate({deleted: false});
+  console.log(typeof resultUsers);
   return resultUsers;
 }
 
