@@ -27,10 +27,10 @@ const Header = () => {
           className="bg-yellow h-auto pb-4 w-full origin-top animate-open-menu duration-300"
         >
           <div className="select-none flex justify-evenly font-bold text-lg">
-            <button className="bg-white duration-300 hover:bg-gray-200 hover:duration-300">
+            <button className="bg-white duration-300 hover:bg-gray-200 hover:duration-300 p-2 rounded-3xl pl-4 pr-4 border-b-2 border-black">
               Iniciar sesion
             </button>
-            <button className="bg-white duration-300 hover:bg-gray-200 hover:duration-300">
+            <button className="bg-white duration-300 hover:bg-gray-200 hover:duration-300 p-2 rounded-3xl pl-4 pr-4 border-b-2 border-black">
               Registrarse
             </button>
           </div>
