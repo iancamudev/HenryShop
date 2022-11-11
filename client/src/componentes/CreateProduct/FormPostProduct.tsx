@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup"
 import axios from "axios";
+
 
 
 interface formData {
@@ -13,8 +14,8 @@ interface formData {
     image: string;
     stock: number;
     category: string;
-    colors: Array<string>;
-    sizes: Array<string>;
+    colors: string;
+    sizes: string;
 }
 
 
@@ -26,11 +27,14 @@ const schema = yup.object({
     image: yup.string().required("Agrega un enlace de tu imagen"),
     stock: yup.number().typeError("Debes agregar el stock del producto").min(0, 'el valor mínimo debe ser cero').required(),
     category: yup.string().required("Recuerda agregar la categoría"),
-    colors: yup.array().nullable(),
-    sizes: yup.array().nullable(),
+    colors: yup.string().required('Separar por comas'),
+    sizes: yup.string().required('Separar por comas')
 })
     .required();
 console.log(schema)
+
+
+
 const Form = () => {
     const { register, handleSubmit, formState: { errors } } = useForm<formData>({
         resolver: yupResolver(schema)
@@ -47,69 +51,89 @@ const Form = () => {
                 image,
                 stock,
                 category,
-                colors,
-                sizes
+                colors: colors.split(','),
+                sizes: sizes.split(',')
             }).then((res) => {
                 console.log(res);
             })
                 .catch((err) => console.error(err));
     });
 
+    const intialForm: formData = {
+        name: "",
+        rating: -1,
+        description: "",
+        price: -1,
+        image: "",
+        stock: -1,
+        category: "",
+        colors: "",
+        sizes: ""
+    }
+
+
+    const [input, setInput] = useState({ intialForm })
+    const handleChange = (event: React.ChangeEvent<{ value: string }>) => {
+        setInput({ ...input, [`${event.target.value}`]: event.target.value })
+    }
+
+
+
     return (
         <form onSubmit={submitForm}
             className="flex justify-center flex-col items-center w-9/12 m-auto"
         >
             <div className="mb-3.5 w-full">
-                <input {...register('name')} type="text" placeholder="Name..." className="border border-black border-solid w-full rounded-2xl pl-2 py-1" />
+                <input {...register('name')} id="name" onChange={handleChange} type="text" placeholder="Name..." className="border border-black border-solid w-full rounded-2xl pl-2 py-1" />
                 {errors?.name && (
                     <p className="text-red-600 font-bold">{errors.name.message}</p>)}
             </div>
 
             <div className="mb-3.5 w-full">
-                <input {...register('rating')} type="text" placeholder="Rating..." className="border border-black border-solid w-full rounded-2xl pl-2 py-1" />
+                <input {...register('rating')} id="rating " type="text" placeholder="Rating..." className="border border-black border-solid w-full rounded-2xl pl-2 py-1" />
                 {errors?.rating && (
                     <p className="text-red-600 font-bold">{errors.rating.message}</p>)}
 
             </div>
 
             <div className="mb-3.5 w-full">
-                <input {...register('description')} type="text" placeholder="Description..." className="border border-black border-solid w-full rounded-2xl pl-2 py-1" />
+                <input {...register('description')} id="description" type="text" placeholder="Description..." className="border border-black border-solid w-full rounded-2xl pl-2 py-1" />
                 {errors?.description && (
                     <p className="text-red-600 font-bold">{errors.description.message}</p>)}
             </div>
 
             <div className="mb-3.5 w-full">
-                <input {...register('price')} type="text" placeholder="Price..." className="border border-black border-solid w-full rounded-2xl pl-2 py-1" />
+                <input {...register('price')} id="price" type="text" placeholder="Price..." className="border border-black border-solid w-full rounded-2xl pl-2 py-1" />
                 {errors?.price && (
                     <p className="text-red-600 font-bold">{errors.price.message}</p>)}
             </div>
 
             <div className="mb-3.5 w-full">
-                <input {...register('image')} type="text" placeholder="Image..." className="border border-black border-solid w-full rounded-2xl pl-2 py-1" />
+                <input {...register('image')} id="image" type="text" placeholder="Image..." className="border border-black border-solid w-full rounded-2xl pl-2 py-1" />
                 {errors?.image && (
                     <p className="text-red-600 font-bold">{errors.image.message}</p>)}
             </div>
 
             <div className="mb-3.5 w-full">
-                <input {...register('stock')} type="text" placeholder="Stock..." className="border border-black border-solid w-full rounded-2xl pl-2 py-1" />
+                <input {...register('stock')} id="stock" type="text" placeholder="Stock..." className="border border-black border-solid w-full rounded-2xl pl-2 py-1" />
                 {errors?.stock && (
                     <p className="text-red-600 font-bold">{errors.stock.message}</p>)}
             </div>
 
             <div className="mb-3.5 w-full">
-                <input {...register('category')} type="text" placeholder="Category..." className="border border-black border-solid w-full rounded-2xl pl-2 py-1" />
+                <input {...register('category')} id="category" type="text" placeholder="Category..." className="border border-black border-solid w-full rounded-2xl pl-2 py-1" />
                 {errors?.category && (
                     <p className="text-red-600 font-bold">{errors.category.message}</p>)}
             </div>
 
             <div className="mb-3.5 w-full">
-                <input {...register('colors')} type="text" placeholder="Colors..." className="border border-black border-solid w-full rounded-2xl pl-2 py-1" />
+                <input {...register('colors')} id="colors" type="text" placeholder="Colors..." className="border border-black border-solid w-full rounded-2xl pl-2 py-1" />
                 {errors?.colors && (
                     <p className="text-red-600 font-bold">{errors.colors.message}</p>)}
             </div>
 
             <div className="mb-3.5 w-full">
-                <input {...register('sizes')} type="text" placeholder="Sizes..." className="border border-black border-solid w-full rounded-2xl pl-2 py-1" />
+                <input {...register('sizes')} id="sizes" type="text" placeholder="Sizes..." className="border border-black border-solid w-full rounded-2xl pl-2 py-1" />
                 {errors?.sizes && (
                     <p className="text-red-600 font-bold">{errors.sizes.message}</p>)}
             </div>
