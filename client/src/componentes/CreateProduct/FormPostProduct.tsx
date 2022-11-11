@@ -17,9 +17,9 @@ interface formData {
 }
 
 
-const schema = yup.object({
+const schema = yup.object().shape({
     name: yup.string().required('Debes agregar el nombre del producto'),
-    rating: yup.number().min(0).max(5),
+    rating: yup.number().min(0).max(5).required("Ingresar valor entre 1 - 5"),
     description: yup.string().min(1).max(80).required('Debe haber una descripción, máximo 80 caracteres'),
     price: yup.number().required('no olvides agregar el precio del prodcuto'),
     image: yup.string().required('tiene que ser un string'),
