@@ -116,7 +116,7 @@ const RegisterForm = () => {
           className="mb-4"
         />
       </LocalizationProvider>
-      <div className="mb-3.5 w-full">
+      <div className="mb-3.5 mt-4 w-full">
         <input
           type={"password"}
           placeholder="Contraseña"
