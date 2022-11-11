@@ -36,7 +36,7 @@ const Form = () => {
         resolver: yupResolver(schema)
     });
 
-    const submitForm = handleSubmit(({name, rating, description, price, image, stock, category,colors, sizes}) => {
+    const submitForm = handleSubmit(({ name, rating, description, price, image, stock, category, colors, sizes }) => {
         let backData = process.env.REACT_APP_BACKEND_URL;
         if (backData)
             axios.post(`${backData}/products`, {
