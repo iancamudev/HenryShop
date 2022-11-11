@@ -36,10 +36,20 @@ const Form = () => {
         resolver: yupResolver(schema)
     });
 
-    const submitForm = handleSubmit((data) => {
+    const submitForm = handleSubmit(({name, rating, description, price, image, stock, category,colors, sizes}) => {
         let backData = process.env.REACT_APP_BACKEND_URL;
         if (backData)
-            axios.post(`${backData}/products`, {}).then((res) => {
+            axios.post(`${backData}/products`, {
+                name,
+                rating,
+                description,
+                price,
+                image,
+                stock,
+                category,
+                colors,
+                sizes
+            }).then((res) => {
                 console.log(res);
             })
                 .catch((err) => console.error(err));
