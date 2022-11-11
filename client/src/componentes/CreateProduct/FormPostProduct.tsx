@@ -18,13 +18,13 @@ interface formData {
 
 
 const schema = yup.object({
-    name: yup.string().required('Debes agregar el nombre del producto'),
-    rating: yup.number().min(0).max(5).required("Ingresar valor entre 1 - 5"),
-    description: yup.string().min(1).max(80).required('Debe haber una descripción, máximo 80 caracteres'),
-    price: yup.number().required('no olvides agregar el precio del prodcuto'),
-    image: yup.string().required('tiene que ser un string'),
-    stock: yup.number().required('debes agregar cantidad de stock'),
-    category: yup.string().required('recuerda agregar la categoría'),
+    name: yup.string().required('Campo requerido'),
+    rating: yup.number().min(0).max(5).required('Campo requerido'),
+    description: yup.string().min(1).max(80).required('Campo requerido'),
+    price: yup.number().required('Campo requerido'),
+    image: yup.string().required('Campo requerido'),
+    stock: yup.number().required('Campo requerido'),
+    category: yup.string().required('Campo requerido'),
     colors: yup.array(),
     sizes: yup.array(),
 })
