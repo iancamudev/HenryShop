@@ -4,7 +4,6 @@ import Login from "./componentes/Login";
 import Register from "./componentes/Register";
 import CreateProduct from "./componentes/CreateProduct";
 import Home from "./componentes/Home";
-import { ProductDetails } from "./redux/slices/ProductSlice";
 import { DetailProduct } from "./componentes/DetailProduct";
 import  ProductCards  from "./componentes/ProductCards";
 function App() {
