@@ -1,6 +1,6 @@
 import axios from "axios";
 import { AppDispatch } from "../../store";
-import { getProductList, getProductPages, setProductName } from "./index";
+import { getProductList, getProductPages, setProductName, getProductDetail} from "./index";
 const BACKEND_URL =
   process.env.REACT_APP_BACKEND_URL || "https://localhost:3001";
 
@@ -27,3 +27,12 @@ export const getAllProducts =
         console.error(error);
       });
   };
+
+export const getProductsById = (id: string) => (dispatch: AppDispatch) => {
+  axios
+    .get(`${BACKEND_URL}/products/${id}`)
+    .then(({ data }) => dispatch(getProductDetail(data)))
+    .catch((error) => {
+      console.error(error);
+    });
+};

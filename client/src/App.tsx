@@ -4,9 +4,12 @@ import Login from "./componentes/Login";
 import Register from "./componentes/Register";
 import CreateProduct from "./componentes/CreateProduct";
 import Home from "./componentes/Home";
-
+import { ProductDetails } from "./redux/slices/ProductSlice";
+import { DetailProduct } from "./componentes/DetailProduct";
+import  ProductCards  from "./componentes/ProductCards";
 function App() {
   return (
+    
     <div className="App flex flex-col items-center bg-gray-100">
       <Routes>
         <Route path="/" element={<Home/>}/>
@@ -14,8 +17,11 @@ function App() {
         <Route path="/Register" element={<Register/>}/>
         <Route path="/Createproduct" element={<CreateProduct/>}/>
         <Route path="/products/:id"/>
+        <Route path="/products/:id" element={<DetailProduct  />}/>
+        <Route path="/" element={<ProductCards />}/>
       </Routes>
     </div>
+    
   );
 }
 
