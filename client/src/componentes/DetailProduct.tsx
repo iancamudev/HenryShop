@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from "../hooks";
 import {  useParams } from "react-router-dom";
 import { getProductsById } from "../redux/slices/ProductSlice/productActions";
 import { ProductDetails } from "../redux/slices/ProductSlice";
-
+import Header from "./Header";
 
 export const DetailProduct:React.FunctionComponent= () => {
 
@@ -18,7 +18,7 @@ export const DetailProduct:React.FunctionComponent= () => {
 
     return (
         <div>
-            
+            <Header/>
             <h2>{producto.name}</h2> 
             <p>Rating: {producto.rating}</p>
             <p>Description: {producto.description}</p>

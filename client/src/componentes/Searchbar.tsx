@@ -2,17 +2,20 @@ import React, { FormEvent, useState } from "react";
 import { useAppDispatch } from "../hooks";
 import { setProductName } from "../redux/slices/ProductSlice";
 import { getAllProducts } from "../redux/slices/ProductSlice/productActions";
+import { useNavigate } from "react-router-dom";
 
 const Searchbar = () => {
   const [search, setSearch] = useState("");
 
   const dispatch = useAppDispatch();
 
+  const navigate = useNavigate();
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(getAllProducts(null, search));
     dispatch(setProductName(search));
     setSearch("");
+    navigate("/")
   };
 
   const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
