@@ -10,7 +10,7 @@ import  ProductCards  from "./componentes/ProductCards";
 function App() {
   return (
     
-    <div className="App flex flex-col items-center bg-gray-100">
+    <div className="App flex flex-col items-center bg-[#FFFDE7]">
       <Routes>
         <Route path="/" element={<Home/>}/>
         <Route path="/Login" element={<Login/>}/>
