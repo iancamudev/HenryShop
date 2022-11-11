@@ -12,7 +12,11 @@ function App() {
         <Route path="/" element={<Home/>}/>
         <Route path="/Login" element={<Login/>}/>
         <Route path="/Register" element={<Register/>}/>
+<<<<<<< Updated upstream
         <Route path="/Createproduct" element={<CreateProduct/>}/>
+=======
+        <Route path="/CreateProduct" element={<CreateProduct/>}/>
+>>>>>>> Stashed changes
         <Route path="/products/:id"/>
       </Routes>
     </div>
