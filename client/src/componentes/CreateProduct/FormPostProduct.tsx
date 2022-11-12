@@ -4,8 +4,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup"
 import axios from "axios";
 
-    const sizes = {XS: "XS", S: "S", M: "M", L: "L", XL: "XL", XXL: "XXL"};
-    const colors = {Blanco: "Blanco", Negro: "Negro"}
+const sizes = { XS: "XS", S: "S", M: "M", L: "L", XL: "XL", XXL: "XXL" };
+const colors = { Blanco: "Blanco", Negro: "Negro" }
 interface formData {
     name: string;
     rating: number;
@@ -37,7 +37,7 @@ const Form = () => {
     const { register, handleSubmit, formState: { errors } } = useForm<formData>({
         resolver: yupResolver(schema)
     });
-    const initialForm : formData ={
+    const initialForm: formData = {
         name: '',
         rating: -1,
         description: '',
@@ -49,21 +49,21 @@ const Form = () => {
         sizes: ['']
     }
     const [input, setInput] = useState(initialForm);
-    
+
 
 
     const submitForm = handleSubmit(({ name, rating, description, price, image, stock, category, colors, sizes }) => {
         let backData = process.env.REACT_APP_BACKEND_URL;
         console.log({
-                name,
-                rating,
-                description,
-                price,
-                image,
-                stock,
-                category,
-                colors,
-                sizes
+            name,
+            rating,
+            description,
+            price,
+            image,
+            stock,
+            category,
+            colors,
+            sizes
         })
         if (backData)
             axios.post(`${backData}/products`, {
@@ -82,7 +82,7 @@ const Form = () => {
                 .catch((err) => console.error(err));
     });
 
-    
+
 
     return (
         <form onSubmit={submitForm}
@@ -102,70 +102,70 @@ const Form = () => {
             </div>
 
             <div className="mb-3.5 w-full">
-            <div className="flex justify-center"><input {...register('description')} id="description" type="text" placeholder="Description..." className="border border-black border-solid w-full rounded-2xl pl-2 py-1" />*</div>
+                <div className="flex justify-center"><input {...register('description')} id="description" type="text" placeholder="Description..." className="border border-black border-solid w-full rounded-2xl pl-2 py-1" />*</div>
                 {errors?.description && (
                     <p className="text-red-600 font-bold">{errors.description.message}</p>)}
             </div>
 
             <div className="mb-3.5 w-full">
-            <div className="flex justify-center"><input {...register('price')} id="price" type="text" placeholder="Price..." className="border border-black border-solid w-full rounded-2xl pl-2 py-1" />*</div>
+                <div className="flex justify-center"><input {...register('price')} id="price" type="text" placeholder="Price..." className="border border-black border-solid w-full rounded-2xl pl-2 py-1" />*</div>
                 {errors?.price && (
                     <p className="text-red-600 font-bold">{errors.price.message}</p>)}
             </div>
 
             <div className="mb-3.5 w-full">
-            <div className="flex justify-center"><input {...register('image')} id="image" type="text" placeholder="Image..." className="border border-black border-solid w-full rounded-2xl pl-2 py-1" />*</div>
+                <div className="flex justify-center"><input {...register('image')} id="image" type="text" placeholder="Image..." className="border border-black border-solid w-full rounded-2xl pl-2 py-1" />*</div>
                 {errors?.image && (
                     <p className="text-red-600 font-bold">{errors.image.message}</p>)}
             </div>
 
             <div className="mb-3.5 w-full">
-            <div className="flex justify-center"><input {...register('stock')} id="stock" type="text" placeholder="Stock..." className="border border-black border-solid w-full rounded-2xl pl-2 py-1" />*</div>
+                <div className="flex justify-center"><input {...register('stock')} id="stock" type="text" placeholder="Stock..." className="border border-black border-solid w-full rounded-2xl pl-2 py-1" />*</div>
                 {errors?.stock && (
                     <p className="text-red-600 font-bold">{errors.stock.message}</p>)}
             </div>
 
             <div className="mb-3.5 w-full">
-            <div className="flex justify-center"><input {...register('category')} id="category" type="text" placeholder="Category..." className="border border-black border-solid w-full rounded-2xl pl-2 py-1" />*</div>
+                <div className="flex justify-center"><input {...register('category')} id="category" type="text" placeholder="Category..." className="border border-black border-solid w-full rounded-2xl pl-2 py-1" />*</div>
                 {errors?.category && (
                     <p className="text-red-600 font-bold">{errors.category.message}</p>)}
             </div>
 
             <div className="my-5 border border-black border-solid w-full rounded-2xl pl-2 py-1">Selecciona los colores
-            <div className="my-2 flex justify-center" >
-                            {Object.values(colors).map((color)=>{
-                    return(
-                        
-                        <label
-                        key = {color}
-                        htmlFor = {color}
-                        > 
-                        <div className="mx-5 "><input value={color} {...register('colors')} id="colors" type="checkbox" className="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-blue-200 checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"/>
-                        <label className="w-5/12">{color}</label></div>
-                    
-                        </label>
-                    )
-                })}{errors?.colors && (
-                    <p className="text-red-600 font-bold">{errors.colors.message}</p>)}
-            </div></div>
+                <div className="my-2 flex justify-center" >
+                    {Object.values(colors).map((color) => {
+                        return (
+
+                            <label
+                                key={color}
+                                htmlFor={color}
+                            >
+                                <div className="mx-5 "><input value={color} {...register('colors')} id="colors" type="checkbox" className="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-blue-200 checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" />
+                                    <label className="w-5/12">{color}</label></div>
+
+                            </label>
+                        )
+                    })}{errors?.colors && (
+                        <p className="text-red-600 font-bold">{errors.colors.message}</p>)}
+                </div></div>
             <div className="my-5 border border-black border-solid w-full rounded-2xl pl-2 py-1">Selecciona los colores
-            <div className="my-2 flex justify-center" >
-                            {Object.values(sizes).map((size)=>{
-                    return(
-                        
-                        <label
-                        key = {size}
-                        htmlFor = {size}
-                        > 
-                        <div className="mx-5 "><input value={size} {...register('sizes')} id="sizes" type="checkbox" className="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-blue-200 checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"/>
-                        <label className="w-5/12">{size}</label></div>
-                    
-                        </label>
-                    )
-                })}{errors?.sizes && (
-                    <p className="text-red-600 font-bold">{errors.sizes.message}</p>)}
-                
-            </div></div>
+                <div className="my-2 flex justify-center" >
+                    {Object.values(sizes).map((size) => {
+                        return (
+
+                            <label
+                                key={size}
+                                htmlFor={size}
+                            >
+                                <div className="mx-5 "><input value={size} {...register('sizes')} id="sizes" type="checkbox" className="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-blue-200 checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer" />
+                                    <label className="w-5/12">{size}</label></div>
+
+                            </label>
+                        )
+                    })}{errors?.sizes && (
+                        <p className="text-red-600 font-bold">{errors.sizes.message}</p>)}
+
+                </div></div>
             <span>* Campos obligatorios</span>
             <button className="my-5 bg-[#d9d9d9] w-full py-2 rounded-2xl font-bold my-1.5">Agregar producto</button>
 
