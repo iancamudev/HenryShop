@@ -3,6 +3,7 @@ import logo from "../assets/logoHenryBlack.png";
 import { GiHamburgerMenu } from "react-icons/gi";
 import Searchbar from "./Searchbar";
 import { Link } from "react-router-dom";
+import Filters from "./Filters";
 
 const Header = () => {
   const [deploy, setDeploy] = useState(false);
@@ -29,14 +30,14 @@ const Header = () => {
         >
           <div className="select-none flex justify-evenly font-bold text-lg">
             <Link to="/Login">
-            <button className="bg-white duration-300 hover:bg-gray-200 hover:duration-300 p-2 rounded-3xl pl-4 pr-4 border-b-2 border-black">
-              Iniciar sesion
-            </button>
+              <button className="bg-white duration-300 hover:bg-gray-200 hover:duration-300 p-2 rounded-3xl pl-4 pr-4 border-b-2 border-black">
+                Iniciar sesion
+              </button>
             </Link>
             <Link to="/Register">
-            <button className="bg-white duration-300 hover:bg-gray-200 hover:duration-300 p-2 rounded-3xl pl-4 pr-4 border-b-2 border-black">
-              Registrarse
-            </button>
+              <button className="bg-white duration-300 hover:bg-gray-200 hover:duration-300 p-2 rounded-3xl pl-4 pr-4 border-b-2 border-black">
+                Registrarse
+              </button>
             </Link>
           </div>
           <div className="p-4 flex flex-col text-left justify-start select-none">
@@ -67,6 +68,7 @@ const Header = () => {
             </h5>
           </div>
           <Searchbar />
+          <Filters />
         </div>
       )}
     </nav>

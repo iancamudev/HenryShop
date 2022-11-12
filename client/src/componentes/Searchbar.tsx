@@ -1,17 +1,17 @@
 import React, { FormEvent, useState } from "react";
-import { useAppDispatch } from "../hooks";
-import { setProductName } from "../redux/slices/ProductSlice";
+import { useAppDispatch, useAppSelector } from "../hooks";
+import { setFiltersAction } from "../redux/slices/FiltersSlice/filtersActions";
 import { getAllProducts } from "../redux/slices/ProductSlice/productActions";
 
 const Searchbar = () => {
   const [search, setSearch] = useState("");
 
   const dispatch = useAppDispatch();
+  const filters = useAppSelector((state) => state.filterState.filters);
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(getAllProducts(null, search));
-    dispatch(setProductName(search));
+    dispatch(setFiltersAction({ ...filters, name: search }));
     setSearch("");
   };
 

@@ -5,9 +5,10 @@ import ProductCard from "./ProductCard";
 
 const ProductCards = () => {
   const Products = useAppSelector((state) => state.products.productList);
+  const filters = useAppSelector((state) => state.filterState.filters);
   const dispatch = useAppDispatch();
   useEffect(() => {
-    dispatch(getAllProducts());
+    dispatch(getAllProducts(null, filters));
   }, []);
   return (
     <div className="flex flex-col  items-center mt-4">
