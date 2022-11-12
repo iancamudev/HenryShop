@@ -3,6 +3,7 @@ import logo from "../assets/logoHenryBlack.png";
 import { GiHamburgerMenu } from "react-icons/gi";
 import Searchbar from "./Searchbar";
 import { Link } from "react-router-dom";
+import Filters from "./Filters";
 
 const Header = () => {
   const [deploy, setDeploy] = useState(false);
@@ -56,6 +57,7 @@ const Header = () => {
                 </Link>
               </>
             )}
+
           </div>
           <div className="p-4 flex flex-col text-left justify-start select-none">
             <h5 className="pl-2 hover:pl-4 hover:delay-300 duration-300 font-bold hover:cursor-pointer">
@@ -85,6 +87,7 @@ const Header = () => {
             </h5>
           </div>
           <Searchbar />
+          <Filters />
         </div>
       )}
     </nav>
