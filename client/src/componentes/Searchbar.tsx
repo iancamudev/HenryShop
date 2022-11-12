@@ -12,10 +12,10 @@ const Searchbar = () => {
   const navigate = useNavigate();
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(getAllProducts(null, search));
-    dispatch(setProductName(search));
-    setSearch("");
     navigate("/")
+    dispatch(getAllProducts(null, search));
+    // dispatch(setProductName(search));
+    setSearch("");
   };
 
   const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
