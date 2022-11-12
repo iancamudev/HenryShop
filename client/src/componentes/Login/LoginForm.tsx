@@ -5,6 +5,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
 
+const errorStyle = 'mt-1 text-red-600 font-bold bg-red-100 p-1 border-2 border-red-700 border-solid rounded-2xl'
+const inputStyle = 'border border-black border-solid w-full rounded-2xl pl-2 py-1'
+
 interface IFormData {
   user: string;
   pass: string;
@@ -12,7 +15,7 @@ interface IFormData {
 
 const schema = yup
   .object({
-    user: yup.string().required("Este campo es obligatorio"),
+    user: yup.string().default('a').required("Este campo es obligatorio"),
     // .email("Debe ser un mail valido"),
     pass: yup.string().required("Este campo es obligatorio"),
   })
@@ -21,6 +24,7 @@ const schema = yup
 const LoginForm = () => {
   const navigate = useNavigate();
   const [remember, setRemember] = useState(false);
+  const [result, setResult] = useState("");
 
   const {
     register,
@@ -31,14 +35,15 @@ const LoginForm = () => {
   });
 
   const handlerSubmit = handleSubmit((values) => {
+    setResult("");
     let back_url = process.env.REACT_APP_BACKEND_URL;
     if (back_url)
       axios(`${back_url}/users/admin/${values.user}`)
-        .then(({data}) => {
+        .then(({ data }) => {
           localStorage.setItem("userName", data.username);
           navigate("/");
         })
-        .catch((e) => console.error(e));
+        .catch((e) => setResult(e.message));
   });
 
   return (
@@ -51,10 +56,10 @@ const LoginForm = () => {
           type={"text"}
           placeholder="Nombre de Usuario"
           {...register("user")}
-          className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
+          className={inputStyle}
         />
         {errors?.user && (
-          <p className="text-red-600 font-bold">{errors.user.message}</p>
+          <p className={errorStyle}>{errors.user.message}</p>
         )}
       </div>
 
@@ -63,10 +68,10 @@ const LoginForm = () => {
           type={"password"}
           placeholder="Contraseña"
           {...register("pass")}
-          className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
+          className={inputStyle}
         />
         {errors?.pass && (
-          <p className="text-red-600 font-bold">{errors.pass.message}</p>
+          <p className={errorStyle}>{errors.pass.message}</p>
         )}
       </div>
 
@@ -79,6 +84,7 @@ const LoginForm = () => {
         />{" "}
         Recordar mi sesión
       </div>
+      {result.length ? <p className={errorStyle}>{result}</p> : null}
       <button className="bg-[#d9d9d9] w-full py-2 rounded-2xl font-bold my-1.5">
         Ingresar
       </button>
@@ -111,16 +117,16 @@ export default LoginForm;
 //         placeholder={placeholder}
 //         className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
 //       />
-//       <ErrorText errorText="error" />
+//       <ErrorText errorStyle="error" />
 //     </div>
 //   );
 // };
 
 // // -------------------- Text Error del form --------------------
 // interface errorProps {
-//   errorText: string;
+//   errorStyle: string;
 // }
 
-// const ErrorText: React.FC<errorProps> = ({ errorText }: errorProps) => {
-//   return <p className="text-red-600 font-bold text-end">*{errorText}</p>;
+// const ErrorText: React.FC<errorProps> = ({ errorStyle }: errorProps) => {
+//   return <p className="text-red-600 font-bold text-end">*{errorStyle}</p>;
 // };
