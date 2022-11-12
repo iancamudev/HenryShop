@@ -16,14 +16,15 @@ const Pagination = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const { productPages } = useAppSelector((state) => state.products);
-  const { currentName } = useAppSelector((state) => state.products);
+  const filters = useAppSelector((state) => state.filterState.filters);
+
   const dispatch = useAppDispatch();
 
   useEffect(() => window.scrollTo(0, 0), [currentPage]);
 
   const previous = () => {
     if (currentPage > 1) {
-      dispatch(getAllProducts(currentPage - 1, currentName));
+      dispatch(getAllProducts(currentPage - 1, filters));
       setCurrentPage(currentPage - 1);
     } else {
       setCurrentPage(currentPage);
@@ -32,7 +33,7 @@ const Pagination = () => {
 
   const next = () => {
     if (currentPage < productPages) {
-      dispatch(getAllProducts(currentPage + 1, currentName));
+      dispatch(getAllProducts(currentPage + 1, filters));
       setCurrentPage(currentPage + 1);
     } else {
       setCurrentPage(currentPage);
@@ -54,8 +55,9 @@ const Pagination = () => {
             <div
               key={page}
               onClick={() => {
+                console.log(filters);
                 setCurrentPage(page);
-                dispatch(getAllProducts(page, currentName));
+                dispatch(getAllProducts(page, filters));
               }}
               className={
                 currentPage === page
