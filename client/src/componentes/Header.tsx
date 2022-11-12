@@ -11,6 +11,7 @@ const Header = () => {
     <nav className="flex flex-col sticky w-full">
       <div className=" h-20 p-2 pl-2 pr-4 bg-yellow flex justify-between items-center">
         <img src={logo} alt="Logo de Henry" className="h-full select-none" />
+
         <GiHamburgerMenu
           onClick={() => {
             setDeploy(!deploy);
@@ -28,16 +29,33 @@ const Header = () => {
           className="bg-yellow h-auto pb-4 w-full origin-top animate-open-menu duration-300"
         >
           <div className="select-none flex justify-evenly font-bold text-lg">
-            <Link to="/Login">
-            <button className="bg-white duration-300 hover:bg-gray-200 hover:duration-300 p-2 rounded-3xl pl-4 pr-4 border-b-2 border-black">
-              Iniciar sesion
-            </button>
-            </Link>
-            <Link to="/Register">
-            <button className="bg-white duration-300 hover:bg-gray-200 hover:duration-300 p-2 rounded-3xl pl-4 pr-4 border-b-2 border-black">
-              Registrarse
-            </button>
-            </Link>
+            {localStorage.getItem("userName") ? (
+              <>
+                <h2>{localStorage.getItem("userName")}</h2>
+                <button
+                  className="bg-white duration-300 hover:bg-gray-200 hover:duration-300 p-2 rounded-3xl pl-4 pr-4 border-b-2 border-black"
+                  onClick={() => {
+                    localStorage.removeItem("userName");
+                    setDeploy(false);
+                  }}
+                >
+                  Cerrar Sesión
+                </button>
+              </>
+            ) : (
+              <>
+                <Link to="/Login">
+                  <button className="bg-white duration-300 hover:bg-gray-200 hover:duration-300 p-2 rounded-3xl pl-4 pr-4 border-b-2 border-black">
+                    Iniciar sesion
+                  </button>
+                </Link>
+                <Link to="/Register">
+                  <button className="bg-white duration-300 hover:bg-gray-200 hover:duration-300 p-2 rounded-3xl pl-4 pr-4 border-b-2 border-black">
+                    Registrarse
+                  </button>
+                </Link>
+              </>
+            )}
           </div>
           <div className="p-4 flex flex-col text-left justify-start select-none">
             <h5 className="pl-2 hover:pl-4 hover:delay-300 duration-300 font-bold hover:cursor-pointer">

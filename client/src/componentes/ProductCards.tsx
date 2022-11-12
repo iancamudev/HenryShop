@@ -11,9 +11,13 @@ const ProductCards = () => {
   }, []);
   return (
     <div className="flex flex-col  items-center mt-4">
+      <div>
+        <h3 className="p-4">Nuestros Productos🚀</h3>
+        <div className="bg-yellow h-3 negative"></div>
+      </div>
       {Products &&
-        Products.map((producto) => {
-          return <ProductCard product={producto} />;
+        Products.map((producto, index) => {
+          return <ProductCard key={index} product={producto} />;
         })}
     </div>
   );
