@@ -13,7 +13,7 @@ server.use(express.json());
 server.use(morgan("dev"));
 server.use(fileUpload({
   useTempFiles : true,
-  tempFileDir : '/tmp/'
+  tempFileDir : './uploads'
 }));
 
 //Admitir llamados del front

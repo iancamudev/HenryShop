@@ -10,12 +10,13 @@ export const getAllProductsAdmin = async () => {
   return result;
 };
 
+// ##########################################################
 export const getAllProducts = async (page:number) => {
   const result = await Product.paginate({deleted: false},{limit: pageSize, page: page});
   return result;
 };
 
-
+// ##########################################################
 
 export const getWithfilters = async (page: number, category?: string, name?: string, property?: string, order?: string) => {
 
@@ -128,6 +129,9 @@ export const getWithfilters = async (page: number, category?: string, name?: str
   }
 };
 
+// ##########################################################
+
+
 export const getProductById = async (id: String) => {
   console.log(id);
   if(id.length >24 || id.length < 24){
@@ -141,6 +145,9 @@ export const getProductById = async (id: String) => {
  
  return result;
 };
+
+
+// ##########################################################
 
 
 export const addNewProduct = async (prod: product) => {
@@ -168,6 +175,9 @@ export const addNewProduct = async (prod: product) => {
       sizes: prod.sizes,
       deleted: false,
     });
+
+    
+
     newProduct
       .save()
       .then((result:any) => {

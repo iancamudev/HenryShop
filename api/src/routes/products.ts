@@ -56,10 +56,14 @@ routes.get("/:id", async (req: Request, res: Response) => {
 //TODOS LOS POSTS
 routes.post("/", async (req, res) => {
   const newProduct = req.body;
+  
   try {
     if (!newProduct) {
       res.status(400).send({ error: "Info Missing" });
     } else {
+      // if(req.files?.image){
+
+      // }
       await addNewProduct(newProduct);
       res.status(200).send(newProduct);
     }
