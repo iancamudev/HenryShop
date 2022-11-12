@@ -13,7 +13,7 @@ const ProductCard: React.FC<CardProps> = ({ product }: CardProps) => {
 
       <img className="w-64" src={product.image} />
       <h6 className="flex items-start font-bold mt-4">
-        Talles: {product.sizes && product.sizes.join(", ")}
+        Talles: {product.sizes? product.sizes.join(", "):product.sizes}
       </h6>
       <h6 className="flex items-start">${product.price}</h6>
     </div>

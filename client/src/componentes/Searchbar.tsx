@@ -2,6 +2,7 @@ import React, { FormEvent, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { setFiltersAction } from "../redux/slices/FiltersSlice/filtersActions";
 import { getAllProducts } from "../redux/slices/ProductSlice/productActions";
+import { useNavigate } from "react-router-dom";
 
 const Searchbar = () => {
   const [search, setSearch] = useState("");
@@ -9,9 +10,12 @@ const Searchbar = () => {
   const dispatch = useAppDispatch();
   const filters = useAppSelector((state) => state.filterState.filters);
 
+  const navigate = useNavigate();
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     dispatch(setFiltersAction({ ...filters, name: search }));
+
     setSearch("");
   };
 

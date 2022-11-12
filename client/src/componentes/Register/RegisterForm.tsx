@@ -8,7 +8,7 @@ import { TextField } from "@mui/material";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 interface IFormData {
   username: string;
@@ -24,11 +24,12 @@ const schema = yup
     username: yup.string().required("Este campo es necesario"),
     password: yup.string().required("Este campo es necesario"),
     email: yup.string().required("Este campo es necesario"),
-    // birthday: yup.date(),
   })
   .required();
 
 const RegisterForm = () => {
+  const navigate = useNavigate();
+
   const [value, setValue] = React.useState<Dayjs | null>(dayjs(Date.now()));
   const {
     register,
@@ -39,23 +40,13 @@ const RegisterForm = () => {
   });
 
   const handleChange = (newValue: Dayjs | null) => {
-
-    console.log(value?.format("YYYY-MM-DD"));
-
+    navigate("/");
     setValue(newValue);
   };
 
   const handlerSubmit = handleSubmit(({ username, name, email, password }) => {
     const back_url = process.env.REACT_APP_BACKEND_URL;
     const birthday = value?.format("YYYY-MM-DD");
-    console.log({
-      username,
-      name,
-      email,
-      password,
-      birthday,
-    });
-    
     axios
       .post(`${back_url}/users`, {
         username,
@@ -64,7 +55,10 @@ const RegisterForm = () => {
         password,
         birthday,
       })
-      .then((r) => console.log(r))
+      .then(({ data }) => {
+        localStorage.setItem("userName", data.username);
+        navigate("/");
+      })
       .catch((e) => console.error(e.message));
   });
 
@@ -116,7 +110,7 @@ const RegisterForm = () => {
           className="mb-4"
         />
       </LocalizationProvider>
-      <div className="mb-3.5 w-full">
+      <div className="mb-3.5 mt-4 w-full">
         <input
           type={"password"}
           placeholder="Contraseña"

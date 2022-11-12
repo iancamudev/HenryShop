@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
@@ -12,15 +12,14 @@ interface IFormData {
 
 const schema = yup
   .object({
-    user: yup
-      .string()
-      .required("Este campo es obligatorio")
-      .email("Debe ser un mail valido"),
+    user: yup.string().required("Este campo es obligatorio"),
+    // .email("Debe ser un mail valido"),
     pass: yup.string().required("Este campo es obligatorio"),
   })
   .required();
 
 const LoginForm = () => {
+  const navigate = useNavigate();
   const [remember, setRemember] = useState(false);
 
   const {
@@ -34,11 +33,10 @@ const LoginForm = () => {
   const handlerSubmit = handleSubmit((values) => {
     let back_url = process.env.REACT_APP_BACKEND_URL;
     if (back_url)
-      axios(`${back_url}/users/`, {
-        
-      })
-        .then((r) => {
-          console.log(r);
+      axios(`${back_url}/users/admin/${values.user}`)
+        .then(({data}) => {
+          localStorage.setItem("userName", data.username);
+          navigate("/");
         })
         .catch((e) => console.error(e));
   });
@@ -51,7 +49,7 @@ const LoginForm = () => {
       <div className="mb-3.5 w-full">
         <input
           type={"text"}
-          placeholder="Mail: example@gmail.com"
+          placeholder="Nombre de Usuario"
           {...register("user")}
           className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
         />
