@@ -2,7 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import routes from "./routes/index";
 import morgan from "morgan";
-import fileUpload from "express-fileupload";
+
 export const server = express();
 const FRONT_URL = process.env.FRONT_URL || "http://localhost:3000";
 
@@ -11,10 +11,7 @@ const PORT = process.env.PORT;
 require("./mongo");
 server.use(express.json());
 server.use(morgan("dev"));
-server.use(fileUpload({
-  useTempFiles : true,
-  tempFileDir : './uploads'
-}));
+
 
 //Admitir llamados del front
 server.use((_req, res, next) => {
