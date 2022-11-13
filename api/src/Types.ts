@@ -3,7 +3,7 @@ export interface product {
   rating: Number;
   description: String;
   price: Number;
-  image: String;
+  image: any;
   stock: Number;
   category: String;
   colors: Array<string>;

@@ -6,7 +6,11 @@ import {
   deleteProduct,
   changeProperties,
   getWithfilters,
+  findByName,
+  changeProperties2,
 } from "../controllers/product/index";
+const cloudinary = require('cloudinary').v2
+import {uploadImage} from "../../utils/cloudinary"
 require("../mongo");
 
 const routes = Router();
@@ -14,10 +18,17 @@ const routes = Router();
 //TODOS LOS GET
 
 
-routes.get("/admin", async (_req: Request, res: Response) => {
+routes.get("/admin", async (req: Request, res: Response) => {
   try {
-    const result = await getAllProductsAdmin();
-    res.status(200).send(result);
+    const { name } = req.query;
+    if (name && typeof name === "string"){
+      const findName = await findByName(name);
+      res.status(200).send(findName);
+    }else {
+      const result = await getAllProductsAdmin();
+      res.status(200).send(result);
+    }
+    
     
   } catch (error) {
     console.log(error);
@@ -54,13 +65,17 @@ routes.get("/:id", async (req: Request, res: Response) => {
   
 });
 //TODOS LOS POSTS
-routes.post("/", async (req, res) => {
-  const newProduct = req.body;
+routes.post("/", async (req: Request, res: Response) => {
+  
   try {
-    if (!newProduct) {
+    const newProduct = req.body;
+    const img= Object(req.files?.image);
+    
+    if (!newProduct && !img) {
       res.status(400).send({ error: "Info Missing" });
-    } else {
-      await addNewProduct(newProduct);
+    } else{ 
+      
+      await addNewProduct(newProduct, img); 
       res.status(200).send(newProduct);
     }
   } catch (error: any) {
@@ -86,9 +101,16 @@ routes.put("/:id", async (req: Request, res: Response) => {
   try {
     const {id} = req.params;
     const body = req.body;
-    const put = await changeProperties(id, body)
-    console.log(put)
-    res.status(200).json({message : 'Parámetros cambiados correctamente'})
+    const img = Object(req.files?.image);
+    console.log(img)
+    if(!img.tempFilePath){
+      await changeProperties2(id, body);
+       res.status(200).json({message : 'Parámetros cambiados correctamente'})
+    }
+    else if (img.tempFilePath) {
+      await changeProperties(id, body, img);
+      res.status(200).json({message : 'Parámetros cambiados correctamente'})
+    }
   } catch (error) {
     console.log(error)
   }
