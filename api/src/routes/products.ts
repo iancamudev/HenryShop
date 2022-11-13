@@ -65,13 +65,12 @@ routes.get("/:id", async (req: Request, res: Response) => {
 });
 //TODOS LOS POSTS
 routes.post("/", async (req: Request, res: Response) => {
-  const newProduct = req.body;
-  // const img = req.files?.image;
-  // let img = req.files?.image
-  const img= Object(req.files?.image);
+  
   try {
-   
-    if (!newProduct) {
+    const newProduct = req.body;
+    const img= Object(req.files?.image);
+    
+    if (!newProduct && !img) {
       res.status(400).send({ error: "Info Missing" });
     } else{ 
       
