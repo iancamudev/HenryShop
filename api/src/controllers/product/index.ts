@@ -158,7 +158,9 @@ export const getProductById = async (id: String) => {
 // ##########################################################
 
 
-export const addNewProduct = async (prod: product, ) => {
+export const addNewProduct = async (prod: product, img: any) => {
+  const productFind = await Product.findOne({ name: prod.name });
+  
   if (
     !prod ||
     !prod.name ||
@@ -170,28 +172,30 @@ export const addNewProduct = async (prod: product, ) => {
   ) {
     throw new Error("Info Missing");
   }
+  if(productFind){
+      throw new Error("Product already exist");
+  }
+
   
-    // const result = await uploadImage(img.tempFilePath)
-    // console.log(result);
+  const imgDb = await uploadImage(img.tempFilePath.secure_url);
   
-  
-  const productFind = await Product.findOne({ name: prod.name });
-  if (!productFind) {
+   if (!productFind && imgDb) {
     const newProduct = new Product({
       name: prod.name,
       description: prod.description,
       price: prod.price,
       rating: prod.rating,
-      image: prod.image,
+      image: imgDb.public_id?{
+              public_id: imgDb.public_id,
+              secure_url: imgDb.secure_url
+            }: prod.image,
+      
       stock: prod.stock,
       category: prod.category,
       colors: prod.colors,
       sizes: prod.sizes,
       deleted: false,
     });
-
-    
-
     newProduct
       .save()
       .then((result:any) => {
@@ -199,9 +203,32 @@ export const addNewProduct = async (prod: product, ) => {
         return result;
       })
       .catch((error:any) => new Error(error));
-  } else {
-    throw new Error("Product already exist");
-  }
+  // } else if  (imgDb && !productFind){
+  //    console.log(imgDb);
+  //    const newProduct = new Product({
+  //     name: prod.name,
+  //     description: prod.description,
+  //     price: prod.price,
+  //     rating: prod.rating,
+  //     image: {
+  //       public_id: imgDb.public_id,
+  //       secure_url: imgDb.secure_url
+  //     },
+  //     stock: prod.stock,
+  //     category: prod.category,
+  //     colors: prod.colors,
+  //     sizes: prod.sizes,
+  //     deleted: false,
+  //   });   
+  //   newProduct
+  //     .save()
+  //     .then((result:any) => {
+        
+  //       return result;
+  //     })
+  //     .catch((error:any) => new Error(error));
+    
+     } 
 };
 
 export const deleteProduct = async (id: String) => {
