@@ -1,5 +1,6 @@
 import { product } from "../../Types";
 import { Product } from "../../models/Product";
+import { uploadImage } from "../../../utils/cloudinary";
 
 
 
@@ -9,6 +10,13 @@ export const getAllProductsAdmin = async () => {
   const result = await Product.paginate({},{limit: 50});
   return result;
 };
+
+export const findByName = async (name:string) => {
+  const result = await Product.paginate({ 
+    name: new RegExp(`${name}`, 'i') 
+  });
+  return result;
+}
 
 // ##########################################################
 export const getAllProducts = async (page:number) => {
@@ -150,17 +158,23 @@ export const getProductById = async (id: String) => {
 // ##########################################################
 
 
-export const addNewProduct = async (prod: product) => {
+export const addNewProduct = async (prod: product, ) => {
   if (
     !prod ||
     !prod.name ||
     !prod.description ||
     !prod.stock ||
     !prod.price ||
-    !prod.category
+    !prod.category 
+    
   ) {
     throw new Error("Info Missing");
   }
+  
+    // const result = await uploadImage(img.tempFilePath)
+    // console.log(result);
+  
+  
   const productFind = await Product.findOne({ name: prod.name });
   if (!productFind) {
     const newProduct = new Product({
