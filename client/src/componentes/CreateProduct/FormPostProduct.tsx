@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -148,7 +149,7 @@ const Form = () => {
                     })}{errors?.colors && (
                         <p className="text-red-600 font-bold">{errors.colors.message}</p>)}
                 </div></div>
-            <div className="my-5 border border-black border-solid w-full rounded-2xl pl-2 py-1">Selecciona los colores
+            <div className="my-5 border border-black border-solid w-full rounded-2xl pl-2 py-1">Selecciona la talla
                 <div className="my-2 flex justify-center" >
                     {Object.values(sizes).map((size) => {
                         return (

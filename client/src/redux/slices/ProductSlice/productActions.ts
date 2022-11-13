@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { AppDispatch } from "../../store";
 import { Filters } from "../FiltersSlice";
 import { getProductList, getProductPages, getProductDetail } from "./index";
-const BACKEND_URL =
+export const BACKEND_URL =
   process.env.REACT_APP_BACKEND_URL || "https://localhost:3001";
 
 export const getAllProducts =
@@ -27,11 +27,12 @@ export const getAllProducts =
       });
   };
 
-export const getProductsById = (id: string) => (dispatch: AppDispatch) => {
-  axios
-    .get(`${BACKEND_URL}/products/${id}`)
-    .then(({ data }) => dispatch(getProductDetail(data)))
-    .catch((error) => {
-      console.error(error);
-    });
-};
+export const getProductsById =
+  (id: string | undefined) => (dispatch: AppDispatch) => {
+    axios
+      .get(`${BACKEND_URL}/products/${id}`)
+      .then(({ data }) => dispatch(getProductDetail(data)))
+      .catch((error) => {
+        console.error(error);
+      });
+  };
