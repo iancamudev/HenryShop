@@ -6,7 +6,10 @@ import {
   deleteProduct,
   changeProperties,
   getWithfilters,
+  findByName,
 } from "../controllers/product/index";
+const cloudinary = require('cloudinary').v2
+import {uploadImage} from "../../utils/cloudinary"
 require("../mongo");
 
 const routes = Router();
@@ -14,10 +17,17 @@ const routes = Router();
 //TODOS LOS GET
 
 
-routes.get("/admin", async (_req: Request, res: Response) => {
+routes.get("/admin", async (req: Request, res: Response) => {
   try {
-    const result = await getAllProductsAdmin();
-    res.status(200).send(result);
+    const { name } = req.query;
+    if (name && typeof name === "string"){
+      const findName = await findByName(name);
+      res.status(200).send(findName);
+    }else {
+      const result = await getAllProductsAdmin();
+      res.status(200).send(result);
+    }
+    
     
   } catch (error) {
     console.log(error);
@@ -54,16 +64,20 @@ routes.get("/:id", async (req: Request, res: Response) => {
   
 });
 //TODOS LOS POSTS
-routes.post("/", async (req, res) => {
+routes.post("/", async (req: Request, res: Response) => {
   const newProduct = req.body;
-  
+  // const img = req.files?.image;
+  // let img = req.files?.image
+  const img= Object(req.files?.image)
   try {
+    
     if (!newProduct) {
       res.status(400).send({ error: "Info Missing" });
-    } else {
-      // if(req.files?.image){
-
-      // }
+    } else { 
+      if (img){
+        await uploadImage(img.tempFilePath);
+        console.log(img.tempFilePath);
+      }
       await addNewProduct(newProduct);
       res.status(200).send(newProduct);
     }
