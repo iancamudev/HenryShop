@@ -158,28 +158,27 @@ export const getProductById = async (id: String) => {
 // ##########################################################
 
 
-export const addNewProduct = async (prod: product, img: any) => {
+export const addNewProduct = async (prod: product, img?: any) => {
   const productFind = await Product.findOne({ name: prod.name });
-  
+   const imgDb = await uploadImage(img.tempFilePath);
+   console.log(img.tempFilePath)
   if (
     !prod ||
     !prod.name ||
     !prod.description ||
     !prod.stock ||
     !prod.price ||
-    !prod.category 
-    
+    !prod.category ||
+    !img
   ) {
     throw new Error("Info Missing");
   }
-  if(productFind){
+  else if(productFind){
       throw new Error("Product already exist");
   }
 
   
-  const imgDb = await uploadImage(img.tempFilePath.secure_url);
-  
-   if (!productFind && imgDb) {
+   else if (!productFind && imgDb ) {
     const newProduct = new Product({
       name: prod.name,
       description: prod.description,
@@ -189,7 +188,6 @@ export const addNewProduct = async (prod: product, img: any) => {
               public_id: imgDb.public_id,
               secure_url: imgDb.secure_url
             }: prod.image,
-      
       stock: prod.stock,
       category: prod.category,
       colors: prod.colors,
@@ -203,32 +201,7 @@ export const addNewProduct = async (prod: product, img: any) => {
         return result;
       })
       .catch((error:any) => new Error(error));
-  // } else if  (imgDb && !productFind){
-  //    console.log(imgDb);
-  //    const newProduct = new Product({
-  //     name: prod.name,
-  //     description: prod.description,
-  //     price: prod.price,
-  //     rating: prod.rating,
-  //     image: {
-  //       public_id: imgDb.public_id,
-  //       secure_url: imgDb.secure_url
-  //     },
-  //     stock: prod.stock,
-  //     category: prod.category,
-  //     colors: prod.colors,
-  //     sizes: prod.sizes,
-  //     deleted: false,
-  //   });   
-  //   newProduct
-  //     .save()
-  //     .then((result:any) => {
-        
-  //       return result;
-  //     })
-  //     .catch((error:any) => new Error(error));
-    
-     } 
+  } 
 };
 
 export const deleteProduct = async (id: String) => {
