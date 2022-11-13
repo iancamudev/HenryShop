@@ -4,7 +4,7 @@ import { AppDispatch } from "../../store";
 import { Filters } from "../FiltersSlice";
 import { getProductList, getProductPages, getProductDetail } from "./index";
 export const BACKEND_URL =
-  process.env.REACT_APP_BACKEND_URL || "https://localhost:3001";
+  process.env.REACT_APP_BACKEND_URL || "http://localhost:3001";
 
 export const getAllProducts =
   (page?: number | null, filters?: Filters) => (dispatch: AppDispatch) => {
