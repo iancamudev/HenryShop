@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { MobileDatePicker } from "@mui/x-date-pickers";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import React from "react";
+import React, { useState } from "react";
 import dayjs, { Dayjs } from "dayjs";
 import { TextField } from "@mui/material";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -10,6 +10,10 @@ import * as yup from "yup";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 
+const errorStyle =
+  "mt-1 text-red-600 font-bold bg-red-100 p-1 border-2 border-red-700 border-solid rounded-2xl";
+const inputStyle =
+  "border border-black border-solid w-full rounded-2xl pl-2 py-1";
 interface IFormData {
   username: string;
   name: string;
@@ -29,6 +33,7 @@ const schema = yup
 
 const RegisterForm = () => {
   const navigate = useNavigate();
+  const [result, setResult] = useState("");
 
   const [value, setValue] = React.useState<Dayjs | null>(dayjs(Date.now()));
   const {
@@ -45,6 +50,7 @@ const RegisterForm = () => {
   };
 
   const handlerSubmit = handleSubmit(({ username, name, email, password }) => {
+    setResult("");
     const back_url = process.env.REACT_APP_BACKEND_URL;
     const birthday = value?.format("YYYY-MM-DD");
     axios
@@ -59,7 +65,7 @@ const RegisterForm = () => {
         localStorage.setItem("userName", data.username);
         navigate("/");
       })
-      .catch((e) => console.error(e.message));
+      .catch((e) => setResult(e.message));
   });
 
   return (
@@ -72,21 +78,19 @@ const RegisterForm = () => {
           type={"text"}
           placeholder="Nombre"
           {...register("name")}
-          className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
+          className={inputStyle}
         />
-        {errors?.name && (
-          <p className="text-red-600 font-bold">{errors.name.message}</p>
-        )}
+        {errors?.name && <p className={errorStyle}>{errors.name.message}</p>}
       </div>
       <div className="mb-3.5 w-full">
         <input
           type={"text"}
           placeholder="Nombre de Usuario"
           {...register("username")}
-          className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
+          className={inputStyle}
         />
         {errors?.username && (
-          <p className="text-red-600 font-bold">{errors.username.message}</p>
+          <p className={errorStyle}>{errors.username.message}</p>
         )}
       </div>
       <div className="mb-3.5 w-full">
@@ -94,11 +98,9 @@ const RegisterForm = () => {
           type={"text"}
           placeholder="eMail: example@gemail.com"
           {...register("email")}
-          className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
+          className={inputStyle}
         />
-        {errors?.email && (
-          <p className="text-red-600 font-bold">{errors.email.message}</p>
-        )}
+        {errors?.email && <p className={errorStyle}>{errors.email.message}</p>}
       </div>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <MobileDatePicker
@@ -115,13 +117,13 @@ const RegisterForm = () => {
           type={"password"}
           placeholder="Contraseña"
           {...register("password")}
-          className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
+          className={inputStyle}
         />
         {errors?.password && (
-          <p className="text-red-600 font-bold">{errors.password.message}</p>
+          <p className={errorStyle}>{errors.password.message}</p>
         )}
       </div>
-
+      {result.length ? <p className={errorStyle}>{result}</p> : null}
       <button className="bg-[#d9d9d9] w-full py-2 rounded-2xl font-bold my-1.5">
         Resgistrarse
       </button>
