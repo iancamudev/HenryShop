@@ -68,17 +68,14 @@ routes.post("/", async (req: Request, res: Response) => {
   const newProduct = req.body;
   // const img = req.files?.image;
   // let img = req.files?.image
-  const img= Object(req.files?.image)
+  const img= Object(req.files?.image);
   try {
-    
+   
     if (!newProduct) {
       res.status(400).send({ error: "Info Missing" });
-    } else { 
-      if (img){
-        await uploadImage(img.tempFilePath);
-        console.log(img.tempFilePath);
-      }
-      await addNewProduct(newProduct);
+    } else{ 
+      
+      await addNewProduct(newProduct, img); 
       res.status(200).send(newProduct);
     }
   } catch (error: any) {
