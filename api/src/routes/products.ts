@@ -7,6 +7,7 @@ import {
   changeProperties,
   getWithfilters,
   findByName,
+  changeProperties2,
 } from "../controllers/product/index";
 const cloudinary = require('cloudinary').v2
 import {uploadImage} from "../../utils/cloudinary"
@@ -100,9 +101,16 @@ routes.put("/:id", async (req: Request, res: Response) => {
   try {
     const {id} = req.params;
     const body = req.body;
-    const put = await changeProperties(id, body)
-    console.log(put)
-    res.status(200).json({message : 'Parámetros cambiados correctamente'})
+    const img = Object(req.files?.image);
+    console.log(img)
+    if(!img.tempFilePath){
+      await changeProperties2(id, body);
+       res.status(200).json({message : 'Parámetros cambiados correctamente'})
+    }
+    else if (img.tempFilePath) {
+      await changeProperties(id, body, img);
+      res.status(200).json({message : 'Parámetros cambiados correctamente'})
+    }
   } catch (error) {
     console.log(error)
   }
