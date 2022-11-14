@@ -3,8 +3,9 @@ import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { AppDispatch } from "../../store";
 import { Filters } from "../FiltersSlice";
 import { getProductList, getProductPages, getProductDetail } from "./index";
-export const BACKEND_URL =
-  process.env.REACT_APP_BACKEND_URL || "http://localhost:3001";
+
+export const BACKEND_URL = "https://henryshop-production.up.railway.app";
+export const URL_BACK_DEV = "http://localhost:3001"
 
 export const getAllProducts =
   (page?: number | null, filters?: Filters) => (dispatch: AppDispatch) => {

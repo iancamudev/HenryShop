@@ -3,10 +3,9 @@ import dotenv from "dotenv";
 import routes from "./routes/index";
 import morgan from "morgan";
 
+dotenv.config();
 export const server = express();
 const FRONT_URL = process.env.FRONT_URL || "http://localhost:3000";
-
-dotenv.config();
 const PORT = process.env.PORT;
 require("./mongo");
 server.use(express.json());

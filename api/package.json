@@ -1,9 +1,10 @@
 {
   "scripts": {
     "dev": "nodemon",
-    "start": "node build/index.js",
+    "start": "node build/src/index.js",
     "tsc": "tsc"
   },
+  
   "dependencies": {
     "@types/express-fileupload": "^1.4.1",
     "@types/fs-extra": "^9.0.13",
