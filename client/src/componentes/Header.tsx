@@ -4,10 +4,14 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import Searchbar from "./Searchbar";
 import { Link } from "react-router-dom";
 import Filters from "./Filters";
+import { useAppDispatch, useAppSelector } from "../hooks";
+import { setFiltersAction } from "../redux/slices/FiltersSlice/filtersActions";
 
 const Header = () => {
   const [deploy, setDeploy] = useState(false);
   const [categoryDeploy, setCategoryDeploy] = useState(false);
+  const dispatch = useAppDispatch();
+  const filters = useAppSelector((state) => state.filterState.filters);
   return (
     <nav className="flex flex-col sticky w-full">
       <div className=" h-20 p-2 pl-2 pr-4 bg-yellow flex justify-between items-center">
@@ -29,7 +33,7 @@ const Header = () => {
       {deploy && (
         <div
           id="divDeployNavbar"
-          className="bg-yellow h-auto pb-4 w-full origin-top animate-open-menu duration-300"
+          className="bg-yellow h-auto pb-4 w-full origin-top animate-open-menu duration-300 flex flex-col"
         >
           <div className="select-none flex justify-evenly font-bold text-lg">
             {localStorage.getItem("userName") ? (
@@ -72,13 +76,34 @@ const Header = () => {
             </h5>
             {categoryDeploy && (
               <div className="animate-open-menu origin-top">
-                <h6 className="pl-4 hover:pl-6 duration-300 hover:duration-300 hover:cursor-pointer">
-                  Tazas
+                <h6
+                  className="pl-4 hover:pl-6 duration-300 hover:duration-300 hover:cursor-pointer"
+                  onClick={() => {
+                    dispatch(
+                      setFiltersAction({ ...filters, category: "Gorra" })
+                    );
+                  }}
+                >
+                  Gorras
                 </h6>
-                <h6 className="pl-4 hover:pl-6 duration-300 hover:duration-300 hover:cursor-pointer">
+                <h6
+                  onClick={() => {
+                    dispatch(
+                      setFiltersAction({ ...filters, category: "Mate" })
+                    );
+                  }}
+                  className="pl-4 hover:pl-6 duration-300 hover:duration-300 hover:cursor-pointer"
+                >
                   Mates
                 </h6>
-                <h6 className="pl-4 hover:pl-6 duration-300 hover:duration-300 hover:cursor-pointer">
+                <h6
+                  onClick={() => {
+                    dispatch(
+                      setFiltersAction({ ...filters, category: "Remera" })
+                    );
+                  }}
+                  className="pl-4 hover:pl-6 duration-300 hover:duration-300 hover:cursor-pointer"
+                >
                   Remeras
                 </h6>
               </div>

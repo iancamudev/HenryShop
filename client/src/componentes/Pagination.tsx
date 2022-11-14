@@ -62,7 +62,7 @@ const Pagination = () => {
               className={
                 currentPage === page
                   ? "w-12 h-12 bg-yellow flex flex-col justify-center rounded-lg"
-                  : "w-12 h-12 flex flex-col items-center justify-center rounded-lg text-gray-400 hover:bg-gray-300 hover:duration-300 duration-300 cursor-pointer"
+                  : "w-12 h-12 flex flex-col items-center justify-center rounded-lg text-gray-400 hover:text-white hover:bg-gray-300 hover:duration-300 duration-300 cursor-pointer"
               }
             >
               {page}
