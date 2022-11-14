@@ -208,12 +208,12 @@ export const getProductById = async (id: String) => {
 export const addNewProduct = async (prod: product, img?: any) => {
   const productFind = await Product.findOne({ name: prod.name });
   
-   
+  const imgDb = await uploadImage(img.tempFilePath);
     fs.unlink(img.tempFilePath, (err) => {
       if (err) throw err;
       console.log(`${img.tempFilePath} was deleted`);
     }) 
-    const imgDb = await uploadImage(img.tempFilePath);
+    
   if (
     !prod ||
     !prod.name ||
