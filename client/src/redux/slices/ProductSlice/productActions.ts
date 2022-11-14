@@ -12,9 +12,15 @@ export const getAllProducts =
       filters?.name.length ? `&name=${filters.name}` : "&name="
     }${
       filters?.category.length ? `&category=${filters.category}` : "&category="
+    }${
+      filters?.property.length && !filters?.order.length
+        ? `&property=${filters.property}&order=desc`
+        : ""
+    }${
+      filters?.property.length && filters?.order.length
+        ? `&property=${filters.property}&order=${filters.order}`
+        : ""
     }`;
-
-    console.log(url);
 
     axios
       .get(url)

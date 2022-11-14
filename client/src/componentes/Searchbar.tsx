@@ -11,10 +11,10 @@ const Searchbar = () => {
   const filters = useAppSelector((state) => state.filterState.filters);
 
   const navigate = useNavigate();
-  const submitHandler = (e: FormEvent<HTMLFormElement>) => {
+  const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    dispatch(setFiltersAction({ ...filters, name: search }));
+    await dispatch(setFiltersAction({ ...filters, name: search }));
 
     setSearch("");
   };

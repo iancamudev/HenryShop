@@ -27,7 +27,7 @@ const Header = () => {
       {deploy && (
         <div
           id="divDeployNavbar"
-          className="bg-yellow h-auto pb-4 w-full origin-top animate-open-menu duration-300"
+          className="bg-yellow h-auto pb-4 w-full origin-top animate-open-menu duration-300 flex flex-col"
         >
           <div className="select-none flex justify-evenly font-bold text-lg">
             {localStorage.getItem("userName") ? (
@@ -57,7 +57,6 @@ const Header = () => {
                 </Link>
               </>
             )}
-
           </div>
           <div className="p-4 flex flex-col text-left justify-start select-none">
             <h5 className="pl-2 hover:pl-4 hover:delay-300 duration-300 font-bold hover:cursor-pointer">
