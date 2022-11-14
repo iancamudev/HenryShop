@@ -11,7 +11,9 @@ const Header = () => {
   return (
     <nav className="flex flex-col sticky w-full">
       <div className=" h-20 p-2 pl-2 pr-4 bg-yellow flex justify-between items-center">
-        <img src={logo} alt="Logo de Henry" className="h-full select-none" />
+        <Link to="/" className="h-full">
+          <img src={logo} alt="Logo de Henry" className="h-full select-none" />
+        </Link>
 
         <GiHamburgerMenu
           onClick={() => {

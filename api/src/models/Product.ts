@@ -7,7 +7,7 @@ const productSchema = new Schema({
   rating: Number,
   description: { type: String, required: true },
   price: { type: Number, required: true },
-  image: { type: String, required: true },
+  image: { type: Object || String || File,  public_id: String, secure_url: String },
   stock: { type: Number, required: true },
   category: { type: String, required: true },
   colors: Array,
