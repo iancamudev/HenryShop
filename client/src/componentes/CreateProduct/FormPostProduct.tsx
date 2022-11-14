@@ -32,7 +32,7 @@ const schema = yup.object({
     sizes: yup.array().of(yup.string().oneOf(Object.values(sizes))).nullable(),
 })
     .required();
-console.log(schema)
+
 
 const Form = () => {
     const { register, handleSubmit, formState: { errors } } = useForm<formData>({
