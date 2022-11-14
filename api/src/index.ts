@@ -4,7 +4,7 @@ import routes from "./routes/index";
 import morgan from "morgan";
 
 export const server = express();
-const FRONT_URL = process.env.FRONT_URL || "https://henry-shop.vercel.app";
+const FRONT_URL = process.env.FRONT_URL || "https://henry-shop.vercel.app/";
 
 dotenv.config();
 const PORT = process.env.PORT;
