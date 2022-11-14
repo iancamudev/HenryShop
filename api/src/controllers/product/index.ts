@@ -1,7 +1,7 @@
 import { product } from "../../Types";
 import { Product } from "../../models/Product";
 import { uploadImage, deleteImage } from "../../../utils/cloudinary";
-import fs from "fs-extra";
+import fs from "fs";
 
 const pageSize = 5;
 
@@ -207,12 +207,13 @@ export const getProductById = async (id: String) => {
 
 export const addNewProduct = async (prod: product, img?: any) => {
   const productFind = await Product.findOne({ name: prod.name });
+  
   const imgDb = await uploadImage(img.tempFilePath);
-  fs.unlink(img.tempFilePath, (err) => {
-    if (err) throw err;
-    console.log(`${img.tempFilePath} was deleted`);
-  });
-
+    fs.unlink(img.tempFilePath, (err) => {
+      if (err) throw err;
+      console.log(`${img.tempFilePath} was deleted`);
+    }) 
+    
   if (
     !prod ||
     !prod.name ||
@@ -253,6 +254,44 @@ export const addNewProduct = async (prod: product, img?: any) => {
   }
 };
 
+export const addNewProduct2 = async (prod: product) => {
+  const productFind = await Product.findOne({ name: prod.name });
+  
+  if (
+    !prod ||
+    !prod.name ||
+    !prod.description ||
+    !prod.stock ||
+    !prod.price ||
+    !prod.category 
+  ) {
+    throw new Error("Info Missing");
+  } else if (productFind) {
+    throw new Error("Product already exist");
+  } else if (!productFind) {
+    const newProduct = new Product({
+      name: prod.name,
+      description: prod.description,
+      price: prod.price,
+      rating: prod.rating,
+      image: prod.image,
+      stock: prod.stock,
+      category: prod.category,
+      colors: prod.colors,
+      sizes: prod.sizes,
+      deleted: false,
+    });
+
+    newProduct
+      .save()
+      .then((result: any) => {
+        return result;
+      })
+      .catch((error: any) => new Error(error));
+  }
+};
+
+
 export const deleteProduct = async (id: string) => {
   const result = await Product.findOneAndUpdate({ _id: id }, { deleted: true });
 
@@ -268,7 +307,10 @@ export const changeProperties = async (id: string, body: any, img?: any) => {
     const imgDb = await uploadImage(img.tempFilePath);
     
 
-    await fs.unlink(img.tempFilePath);
+    fs.unlink(img.tempFilePath, (err) => {
+      if (err) throw err;
+      console.log(`${img.tempFilePath} was deleted`);
+    });
 
     if (imgId?.image.public_id) {
       await deleteImage(imgId?.image.public_id);

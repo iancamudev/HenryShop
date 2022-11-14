@@ -8,9 +8,10 @@ import {
   getWithfilters,
   findByName,
   changeProperties2,
+  addNewProduct2,
 } from "../controllers/product/index";
 const cloudinary = require('cloudinary').v2
-import {uploadImage} from "../../utils/cloudinary"
+
 require("../mongo");
 
 const routes = Router();
@@ -69,15 +70,24 @@ routes.post("/", async (req: Request, res: Response) => {
   
   try {
     const newProduct = req.body;
-    const img= Object(req.files?.image);
-    
-    if (!newProduct && !img) {
+    console.log(req.body)
+    const img = Object(req.files?.image);
+    console.log(img)
+
+    // if (!newProduct && !img) 
+    if (!newProduct ) {
       res.status(400).send({ error: "Info Missing" });
-    } else{ 
+    } 
+    if(!img.length){
+      await addNewProduct2(newProduct); 
+      res.status(200).send(newProduct);
+    }
+    else{ 
       
       await addNewProduct(newProduct, img); 
       res.status(200).send(newProduct);
     }
+    
   } catch (error: any) {
     res.status(500).send({error_message: error.message});
   }
