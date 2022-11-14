@@ -35,7 +35,7 @@ const Filters = () => {
           {filters &&
             filtersClean().map((el) => (
               <button
-                className="p-1 pl-2 pr-2 rounded-2xl border-b-2 border-solid border-black text-sm bg-gray-200 duration-300 hover:duration-300 hover:bg-white "
+                className="p-1 pl-2 pr-2 rounded-2xl border-b-2 border-solid border-black text-sm bg-yellow duration-300 hover:duration-300 hover:bg-white "
                 name={el.name}
                 key={el.name}
                 onClick={clickHandlerDelete}
@@ -44,6 +44,9 @@ const Filters = () => {
                 {el.value === "rating" && "Rating"}
                 {el.value === "asc" && "Ascendente"}
                 {el.value === "desc" && "Descendente"}
+                {el.value === "Mate" && "Mates"}
+                {el.value === "Gorra" && "Gorras"}
+                {el.value === "Remera" && "Remeras"}
               </button>
             ))}
         </div>
