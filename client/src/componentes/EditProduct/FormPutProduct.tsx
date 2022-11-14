@@ -1,13 +1,15 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
-import { useParams } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../hooks";
 import { getProductsById } from "../../redux/slices/ProductSlice/productActions";
-import { valueToPercent } from "@mui/base";
+import { useAppDispatch, useAppSelector } from "../../hooks";
+import { useParams } from "react-router-dom";
 
+const sizes = { XS: "XS", S: "S", M: "M", L: "L", XL: "XL", XXL: "XXL" };
+const colors = { Blanco: "Blanco", Negro: "Negro" };
 interface formData {
   name: string;
   rating: number;
@@ -25,10 +27,11 @@ const schema = yup
     name: yup.string().required("Debes agregar el nombre del producto"),
     rating: yup
       .number()
-      .nullable()
-      .typeError("Agrega un número entre 0 y 5")
+      .typeError("El rating debe ser un número")
       .min(0, "el número debe ser mayor o igual a 0")
-      .max(5, "el número debe ser menor o igual a 5"),
+      .max(5, "el número debe ser menor o igual a 5")
+      .nullable()
+      .transform((v, o) => (o === "" ? null : v)),
     description: yup
       .string()
       .min(1, "Se requiere por lo menos un caracter")
@@ -36,9 +39,9 @@ const schema = yup
       .required(),
     price: yup
       .number()
-      .typeError("No olvides agregar el precio del prodcuto")
+      .typeError("El precio debe ser un número")
       .min(0, "requiere un precio igual o superior a 0")
-      .required(),
+      .required("No olvides agregar el precio del prodcuto"),
     image: yup.string().required("Agrega un enlace de tu imagen"),
     stock: yup
       .number()
@@ -46,8 +49,14 @@ const schema = yup
       .min(0, "el valor mínimo debe ser cero")
       .required(),
     category: yup.string().required("Recuerda agregar la categoría"),
-    colors: yup.array().nullable(),
-    sizes: yup.array().nullable(),
+    colors: yup
+      .array()
+      .of(yup.string().oneOf(Object.values(colors)))
+      .nullable(),
+    sizes: yup
+      .array()
+      .of(yup.string().oneOf(Object.values(sizes)))
+      .nullable(),
   })
   .required();
 
@@ -68,6 +77,18 @@ const FormPutProduct = () => {
   } = useForm<formData>({
     resolver: yupResolver(schema),
   });
+  const initialForm: formData = {
+    name: "",
+    rating: -1,
+    description: "",
+    price: -1,
+    image: "",
+    stock: -1,
+    category: "",
+    colors: [""],
+    sizes: [""],
+  };
+  const [input, setInput] = useState(initialForm);
 
   const submitForm = handleSubmit(
     ({
@@ -82,6 +103,17 @@ const FormPutProduct = () => {
       sizes,
     }) => {
       let backData = process.env.REACT_APP_BACKEND_URL;
+      console.log({
+        name,
+        rating,
+        description,
+        price,
+        image,
+        stock,
+        category,
+        colors,
+        sizes,
+      });
       if (backData)
         axios
           .put(`${backData}/products/${id}`, {
@@ -108,12 +140,16 @@ const FormPutProduct = () => {
       className="flex justify-center flex-col items-center w-9/12 m-auto"
     >
       <div className="mb-3.5 w-full">
-        <input
-          {...register("name")}
-          type="text"
-          placeholder="Name..."
-          className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
-        />
+        <div className="flex justify-center">
+          <input
+            {...register("name")}
+            id="name"
+            type="text"
+            placeholder="Name..."
+            className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
+          />
+          *
+        </div>
         {errors?.name && (
           <p className="text-red-600 font-bold">{errors.name.message}</p>
         )}
@@ -122,6 +158,7 @@ const FormPutProduct = () => {
       <div className="mb-3.5 w-full">
         <input
           {...register("rating")}
+          id="rating"
           type="text"
           placeholder="Rating..."
           className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
@@ -132,91 +169,136 @@ const FormPutProduct = () => {
       </div>
 
       <div className="mb-3.5 w-full">
-        <input
-          {...register("description")}
-          type="text"
-          placeholder="Description..."
-          className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
-        />
+        <div className="flex justify-center">
+          <input
+            {...register("description")}
+            id="description"
+            type="text"
+            placeholder="Description..."
+            className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
+          />
+          *
+        </div>
         {errors?.description && (
           <p className="text-red-600 font-bold">{errors.description.message}</p>
         )}
       </div>
 
       <div className="mb-3.5 w-full">
-        <input
-          {...register("price")}
-          type="text"
-          placeholder="Price..."
-          className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
-        />
+        <div className="flex justify-center">
+          <input
+            {...register("price")}
+            id="price"
+            type="text"
+            placeholder="Price..."
+            className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
+          />
+          *
+        </div>
         {errors?.price && (
           <p className="text-red-600 font-bold">{errors.price.message}</p>
         )}
       </div>
 
       <div className="mb-3.5 w-full">
-        <input
-          {...register("image")}
-          type="text"
-          placeholder="Image..."
-          className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
-        />
+        <div className="flex justify-center">
+          <input
+            {...register("image")}
+            id="image"
+            type="text"
+            placeholder="Image..."
+            className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
+          />
+          *
+        </div>
         {errors?.image && (
           <p className="text-red-600 font-bold">{errors.image.message}</p>
         )}
       </div>
 
       <div className="mb-3.5 w-full">
-        <input
-          {...register("stock")}
-          type="text"
-          placeholder="Stock..."
-          className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
-        />
+        <div className="flex justify-center">
+          <input
+            {...register("stock")}
+            id="stock"
+            type="text"
+            placeholder="Stock..."
+            className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
+          />
+          *
+        </div>
         {errors?.stock && (
           <p className="text-red-600 font-bold">{errors.stock.message}</p>
         )}
       </div>
 
       <div className="mb-3.5 w-full">
-        <input
-          {...register("category")}
-          type="text"
-          placeholder="Category..."
-          className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
-        />
+        <div className="flex justify-center">
+          <input
+            {...register("category")}
+            id="category"
+            type="text"
+            placeholder="Category..."
+            className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
+          />
+          *
+        </div>
         {errors?.category && (
           <p className="text-red-600 font-bold">{errors.category.message}</p>
         )}
       </div>
 
-      <div className="mb-3.5 w-full">
-        <input
-          {...register("colors")}
-          type="text"
-          placeholder="Colors..."
-          className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
-        />
-        {errors?.colors && (
-          <p className="text-red-600 font-bold">{errors.colors.message}</p>
-        )}
+      <div className="my-5 border border-black border-solid w-full rounded-2xl pl-2 py-1">
+        Selecciona los colores
+        <div className="my-2 flex justify-center">
+          {Object.values(colors).map((color) => {
+            return (
+              <label key={color} htmlFor={color}>
+                <div className="mx-5 ">
+                  <input
+                    value={color}
+                    {...register("colors")}
+                    id="colors"
+                    type="checkbox"
+                    className="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-blue-200 checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+                  />
+                  <label className="w-5/12">{color}</label>
+                </div>
+              </label>
+            );
+          })}
+          {errors?.colors && (
+            <p className="text-red-600 font-bold">{errors.colors.message}</p>
+          )}
+        </div>
       </div>
-
-      <div className="mb-3.5 w-full">
-        <input
-          {...register("sizes")}
-          type="text"
-          placeholder="Sizes..."
-          className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
-        />
-        {errors?.sizes && (
-          <p className="text-red-600 font-bold">{errors.sizes.message}</p>
-        )}
+      <div className="my-5 border border-black border-solid w-full rounded-2xl pl-2 py-1">
+        Selecciona la talla
+        <div className="my-2 flex justify-center">
+          {Object.values(sizes).map((size) => {
+            return (
+              <label key={size} htmlFor={size}>
+                <div className="mx-5 ">
+                  <input
+                    value={size}
+                    {...register("sizes")}
+                    id="sizes"
+                    type="checkbox"
+                    className="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-blue-200 checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+                  />
+                  <label className="w-5/12">{size}</label>
+                </div>
+              </label>
+            );
+          })}
+          {errors?.sizes && (
+            <p className="text-red-600 font-bold">{errors.sizes.message}</p>
+          )}
+        </div>
       </div>
-
-      <button className="bg-[#d9d9d9] w-full py-2 rounded-2xl font-bold my-1.5">
-        Agregar producto
+      <span>* Campos obligatorios</span>
+      <button className="my-5 bg-[#d9d9d9] w-full py-2 rounded-2xl font-bold my-1.5">
+        Editar producto
       </button>
     </form>
   );
