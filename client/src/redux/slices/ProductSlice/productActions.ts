@@ -4,7 +4,7 @@ import { AppDispatch } from "../../store";
 import { Filters } from "../FiltersSlice";
 import { getProductList, getProductPages, getProductDetail } from "./index";
 
-export const BACKEND_URL = "https://henryshop-production.up.railway.app/";
+export const BACKEND_URL = "https://henryshop-production.up.railway.app";
 
 export const getAllProducts =
   (page?: number | null, filters?: Filters) => (dispatch: AppDispatch) => {
