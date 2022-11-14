@@ -3,10 +3,9 @@ import dotenv from "dotenv";
 import routes from "./routes/index";
 import morgan from "morgan";
 
-export const server = express();
-const FRONT_URL = "https://henry-shop.vercel.app";
-
 dotenv.config();
+export const server = express();
+const FRONT_URL = process.env.FRONT_URL || "http://localhost:3000";
 const PORT = process.env.PORT;
 require("./mongo");
 server.use(express.json());
