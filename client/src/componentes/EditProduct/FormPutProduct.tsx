@@ -67,9 +67,10 @@ const FormPutProduct = () => {
   const { id } = useParams();
   useEffect(() => {
     dispatch(getProductsById(id));
-  }, []);
+  }, [dispatch, id]);
   const Product = useAppSelector((state) => state.products.productDetail);
-
+  console.log(Product);
+  
   const {
     register,
     handleSubmit,
@@ -147,6 +148,7 @@ const FormPutProduct = () => {
             type="text"
             placeholder="Name..."
             className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
+            defaultValue={`${Product.name}`}
           />
           *
         </div>
@@ -162,6 +164,7 @@ const FormPutProduct = () => {
           type="text"
           placeholder="Rating..."
           className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
+          defaultValue={`${Product.rating}`}
         />
         {errors?.rating && (
           <p className="text-red-600 font-bold">{errors.rating.message}</p>
@@ -176,6 +179,7 @@ const FormPutProduct = () => {
             type="text"
             placeholder="Description..."
             className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
+            defaultValue={`${Product.description}`}
           />
           *
         </div>
@@ -192,6 +196,7 @@ const FormPutProduct = () => {
             type="text"
             placeholder="Price..."
             className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
+            defaultValue={`${Product.price}`}
           />
           *
         </div>
@@ -224,6 +229,7 @@ const FormPutProduct = () => {
             type="text"
             placeholder="Stock..."
             className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
+            defaultValue={`${Product.stock}`}
           />
           *
         </div>
@@ -240,6 +246,7 @@ const FormPutProduct = () => {
             type="text"
             placeholder="Category..."
             className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
+            defaultValue={`${Product.category}`}
           />
           *
         </div>
@@ -261,6 +268,7 @@ const FormPutProduct = () => {
                     id="colors"
                     type="checkbox"
                     className="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-blue-200 checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+                    defaultValue={`${Product.colors}`}
                   />
                   <label className="w-5/12">{color}</label>
                 </div>
@@ -285,6 +293,7 @@ const FormPutProduct = () => {
                     id="sizes"
                     type="checkbox"
                     className="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-blue-200 checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+                    defaultValue={`${Product.sizes}`}
                   />
                   <label className="w-5/12">{size}</label>
                 </div>

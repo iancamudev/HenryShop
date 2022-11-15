@@ -11,7 +11,8 @@ const productSchema = new Schema({
   stock: { type: Number, required: true },
   category: { type: String, required: true },
   colors: Array,
-  sizes: Array,
+  optionsName:String,
+  options: Array,
   deleted: {type:Boolean, default: false},
 });
 

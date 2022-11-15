@@ -12,7 +12,8 @@ interface formData {
   rating: number;
   description: string;
   price: number;
-  image: string;
+  // image: string;
+  image: string[];
   stock: number;
   category: string;
   colors: Array<string>;
@@ -20,7 +21,8 @@ interface formData {
 }
 
 const schema = yup
-  .object({
+  .object()
+  .shape({
     name: yup.string().required("Debes agregar el nombre del producto"),
     rating: yup
       .number()
@@ -39,7 +41,9 @@ const schema = yup
       .typeError("El precio debe ser un número")
       .min(0, "requiere un precio igual o superior a 0")
       .required("No olvides agregar el precio del prodcuto"),
-    image: yup.string().required("Agrega un enlace de tu imagen"),
+    image: yup.mixed().test("required", "Debe subir una imagen", (value) => {
+      return value && value.length;
+    }),
     stock: yup
       .number()
       .typeError("Debes agregar el stock del producto")
@@ -65,12 +69,14 @@ const Form = () => {
   } = useForm<formData>({
     resolver: yupResolver(schema),
   });
+
   const initialForm: formData = {
     name: "",
     rating: -1,
     description: "",
     price: -1,
-    image: "",
+    // image: "",
+    image: [],
     stock: -1,
     category: "",
     colors: [""],
@@ -121,6 +127,18 @@ const Form = () => {
           .catch((err) => console.error(err));
     }
   );
+
+  const onChangeFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let files = e.target.files;
+    let arr: string[] = [];
+    if (files)
+      Array.from(files).forEach((file) => {
+        arr.push(URL.createObjectURL(file));
+      });
+
+    console.log(arr);
+    setInput((prev) => ({ ...prev, image: arr }));
+  };
 
   return (
     <form
@@ -193,13 +211,26 @@ const Form = () => {
           <input
             {...register("image")}
             id="image"
-            type="text"
-            placeholder="Image..."
+            type="file"
+            multiple
             className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
+            onChange={onChangeFiles}
           />
           *
         </div>
-        {errors?.image && (
+        {input.image.length ? (
+          <div className="flex flex-wrap justify-start h-28 mt-4">
+            {input.image.map((i, index) => (
+              <img
+                className="h-full mr-4 border border-black border-solid rounded"
+                src={i}
+                alt={`upload_image_${index}`}
+                key={index}
+              />
+            ))}
+          </div>
+        ) : null}
+        {errors.image && (
           <p className="text-red-600 font-bold">{errors.image.message}</p>
         )}
       </div>
@@ -285,7 +316,7 @@ const Form = () => {
         </div>
       </div>
       <span>* Campos obligatorios</span>
-      <button className="my-5 bg-[#d9d9d9] w-full py-2 rounded-2xl font-bold my-1.5">
+      <button className="bg-[#d9d9d9] w-full py-2 rounded-2xl font-bold my-1.5 mb-8">
         Agregar producto
       </button>
     </form>
