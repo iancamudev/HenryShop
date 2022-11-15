@@ -8,10 +8,10 @@ const FRONT_URL = process.env.FRONT_URL || "http://localhost:3000";
 
 dotenv.config();
 const PORT = process.env.PORT;
+
 require("./mongo");
 server.use(express.json());
 server.use(morgan("dev"));
-
 
 //Admitir llamados del front
 server.use((_req, res, next) => {
