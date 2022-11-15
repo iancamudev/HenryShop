@@ -4,6 +4,8 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
+import { uploadImageToFirebaseStorage } from "../../firebase/uploadImageToFirebaseStorage";
+import { arch } from "os";
 
 const sizes = { XS: "XS", S: "S", M: "M", L: "L", XL: "XL", XXL: "XXL" };
 const colors = { Blanco: "Blanco", Negro: "Negro" };
@@ -78,30 +80,27 @@ const Form = () => {
   };
   const [input, setInput] = useState(initialForm);
 
+   let imgUrl: any;
+  async function imagePreview(e: any){
+       const target = e.target as HTMLInputElement;
+      const archivo= target.files?.[0];
+      imgUrl = await uploadImageToFirebaseStorage(archivo);
+      
+  }
+
+
   const submitForm = handleSubmit(
     ({
       name,
       rating,
       description,
       price,
-      image,
       stock,
       category,
       colors,
       sizes,
     }) => {
       let backData = process.env.REACT_APP_BACKEND_URL;
-      console.log({
-        name,
-        rating,
-        description,
-        price,
-        image,
-        stock,
-        category,
-        colors,
-        sizes,
-      });
       if (backData)
         axios
           .post(`${backData}/products`, {
@@ -109,7 +108,7 @@ const Form = () => {
             rating,
             description,
             price,
-            image,
+            image: imgUrl,
             stock,
             category,
             colors,
@@ -127,6 +126,25 @@ const Form = () => {
       onSubmit={submitForm}
       className="flex justify-center flex-col items-center w-9/12 m-auto"
     >
+
+      
+<div className="mb-3.5 w-full">
+        <div className="flex justify-center">
+          <input
+            {...register("image")}
+            id="image"
+            type="file"
+            placeholder="Image..."
+            onChange={ e => imagePreview(e)}
+            className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
+          />
+          *
+        </div>
+        {errors?.image && (
+          <p className="text-red-600 font-bold">{errors.image.message}</p>
+        )}
+      </div>
+
       <div className="mb-3.5 w-full">
         <div className="flex justify-center">
           <input
@@ -188,21 +206,6 @@ const Form = () => {
         )}
       </div>
 
-      <div className="mb-3.5 w-full">
-        <div className="flex justify-center">
-          <input
-            {...register("image")}
-            id="image"
-            type="text"
-            placeholder="Image..."
-            className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
-          />
-          *
-        </div>
-        {errors?.image && (
-          <p className="text-red-600 font-bold">{errors.image.message}</p>
-        )}
-      </div>
 
       <div className="mb-3.5 w-full">
         <div className="flex justify-center">
