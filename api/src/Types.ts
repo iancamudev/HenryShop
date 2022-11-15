@@ -16,6 +16,8 @@ export interface user {
   username: String;
   password: String;
   birthday: Date;
+
+  isAdmin: Boolean;
 }
 
 export interface category{
