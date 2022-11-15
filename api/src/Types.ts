@@ -17,3 +17,7 @@ export interface user {
   password: String;
   birthday: Date;
 }
+
+export interface category{
+  name: String;
+}
