@@ -17,3 +17,8 @@ export interface user {
   password: String;
   birthday: Date;
 }
+
+export interface shopping {
+  userId: string,
+  products: Array<string>
+}
