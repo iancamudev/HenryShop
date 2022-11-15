@@ -4,6 +4,8 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 export interface Filters {
   name: string;
   category: string;
+  property: string;
+  order: string;
 }
 
 export interface FiltersState {
@@ -15,6 +17,8 @@ const initialState: FiltersState = {
   filters: {
     name: "",
     category: "",
+    property: "",
+    order: "",
   },
 };
 
