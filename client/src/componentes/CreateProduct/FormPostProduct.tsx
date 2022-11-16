@@ -119,7 +119,7 @@ const Form = () => {
   }:formData) => {
     let backData = process.env.REACT_APP_BACKEND_URL;
     
-   console.log(file)
+   
     imgUrl =  await uploadImageToFirebaseStorage(file);
 
 
