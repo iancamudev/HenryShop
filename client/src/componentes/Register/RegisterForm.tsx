@@ -45,7 +45,6 @@ const RegisterForm = () => {
   });
 
   const handleChange = (newValue: Dayjs | null) => {
-    navigate("/");
     setValue(newValue);
   };
 

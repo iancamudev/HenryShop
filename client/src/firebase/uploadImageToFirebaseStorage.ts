@@ -19,7 +19,7 @@ const app = initializeApp(firebaseConfig);
 
 const storage = getStorage(app);
 
-export const uploadImageToFirebaseStorage = async (file: File | undefined): Promise<string | null> => {
+export const uploadImageToFirebaseStorage = async (file: any): Promise<string | null> => {
 	if (!file) {
 		return null;
 	}
