@@ -36,8 +36,9 @@ interface UserDocument extends Document, user {}
 
 userSchema.plugin(mongoosePaginate);
 
-export const User = model<UserDocument, PaginateModel<UserDocument>>(
-  "Users",
-  userSchema,
-  "users"
-);
+export const User = model<
+  UserDocument,
+  PaginateModel<UserDocument>
+>('Users', userSchema, 'users');
+
+export default User;

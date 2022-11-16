@@ -1,23 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
 
-const errorStyle = 'mt-1 text-red-600 font-bold bg-red-100 p-1 border-2 border-red-700 border-solid rounded-2xl'
-const inputStyle = 'border border-black border-solid w-full rounded-2xl pl-2 py-1'
+const errorStyle =
+  "mt-1 text-red-600 font-bold bg-red-100 p-1 border-2 border-red-700 border-solid rounded-2xl";
+const inputStyle =
+  "border border-black border-solid w-full rounded-2xl pl-2 py-1";
 
 interface IFormData {
-  user: string;
-  pass: string;
+  username: string;
+  password: string;
 }
 
 const schema = yup
   .object({
-    user: yup.string().default('a').required("Este campo es obligatorio"),
+    username: yup.string().default("a").required("Este campo es obligatorio"),
     // .email("Debe ser un mail valido"),
-    pass: yup.string().required("Este campo es obligatorio"),
+    password: yup.string().required("Este campo es obligatorio"),
   })
   .required();
 
@@ -34,13 +36,15 @@ const LoginForm = () => {
     resolver: yupResolver(schema),
   });
 
-  const handlerSubmit = handleSubmit((values) => {
+  const handlerSubmit = handleSubmit((value) => {
     setResult("");
+
     let back_url = process.env.REACT_APP_BACKEND_URL;
     if (back_url)
-      axios(`${back_url}/users/admin/${values.user}`)
+      axios
+        .post<IFormData>(`${back_url}/users/login`, value)
         .then(({ data }) => {
-          localStorage.setItem("userName", data.username);
+          localStorage.setItem("userSession", JSON.stringify(data));
           navigate("/");
         })
         .catch((e) => setResult(e.message));
@@ -55,11 +59,11 @@ const LoginForm = () => {
         <input
           type={"text"}
           placeholder="Nombre de Usuario"
-          {...register("user")}
+          {...register("username")}
           className={inputStyle}
         />
-        {errors?.user && (
-          <p className={errorStyle}>{errors.user.message}</p>
+        {errors?.username && (
+          <p className={errorStyle}>{errors.username.message}</p>
         )}
       </div>
 
@@ -67,11 +71,11 @@ const LoginForm = () => {
         <input
           type={"password"}
           placeholder="Contraseña"
-          {...register("pass")}
+          {...register("password")}
           className={inputStyle}
         />
-        {errors?.pass && (
-          <p className={errorStyle}>{errors.pass.message}</p>
+        {errors?.password && (
+          <p className={errorStyle}>{errors.password.message}</p>
         )}
       </div>
 
