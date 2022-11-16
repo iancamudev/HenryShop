@@ -8,7 +8,7 @@ const AdminPanel = () => {
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getAllProducts());
-  }, []);
+  }, [dispatch]);
   return (
     <div className="flex flex-col items-center">
       <Header />

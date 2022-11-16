@@ -13,6 +13,7 @@ import { useAppSelector, useAppDispatch } from "./hooks";
 import getObjectSession from "./funciones/getObjectSession";
 import { useEffect } from "react";
 import { setData } from "./redux/slices/UserSlice";
+import Protected from "./componentes/auth/Protected";
 
 function App() {
   const { username } = useAppSelector((state) => state.user);
@@ -37,11 +38,32 @@ function App() {
           path="/Register"
           element={username ? <Navigate to="/" replace={true} /> : <Register />}
         />
-        <Route path="/createproduct" element={<CreateProduct />} />
+        <Route
+          path="/createproduct"
+          element={
+            <Protected>
+              <CreateProduct />
+            </Protected>
+          }
+        />
         <Route path="/products/:id" element={<DetailProduct />} />
         <Route path="/" element={<ProductCards />} />
-        <Route path="/admin" element={<AdminPanel />} />
-        <Route path="/admin/:id" element={<EditProduct />} />
+        <Route
+          path="/admin"
+          element={
+            <Protected>
+              <AdminPanel />
+            </Protected>
+          }
+        />
+        <Route
+          path="/admin/:id"
+          element={
+            <Protected>
+              <EditProduct />
+            </Protected>
+          }
+        />
       </Routes>
     </div>
   );

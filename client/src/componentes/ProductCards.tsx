@@ -9,7 +9,7 @@ const ProductCards = () => {
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getAllProducts(null, filters));
-  }, []);
+  }, [dispatch, filters]);
   return (
     <div className="flex flex-col  items-center mt-4">
       <div>
