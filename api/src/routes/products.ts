@@ -6,11 +6,9 @@ import {
   deleteProduct,
   changeProperties,
   getWithfilters,
-  findByName,
-  changeProperties2,
-  addNewProduct2,
+  findByName
 } from "../controllers/product/index";
-const cloudinary = require('cloudinary').v2
+
 
 require("../mongo");
 
@@ -70,23 +68,11 @@ routes.post("/", async (req: Request, res: Response) => {
   
   try {
     const newProduct = req.body;
-    console.log(req.body)
-    const img = Object(req.files?.image);
-    console.log(img)
-
-    // if (!newProduct && !img) 
     if (!newProduct ) {
       res.status(400).send({ error: "Info Missing" });
     } 
-    if(!img.length){
-      await addNewProduct2(newProduct); 
+      await addNewProduct(newProduct); 
       res.status(200).send(newProduct);
-    }
-    else{ 
-      
-      await addNewProduct(newProduct, img); 
-      res.status(200).send(newProduct);
-    }
     
   } catch (error: any) {
     res.status(500).send({error_message: error.message});
@@ -111,16 +97,9 @@ routes.put("/:id", async (req: Request, res: Response) => {
   try {
     const {id} = req.params;
     const body = req.body;
-    const img = Object(req.files?.image);
-    console.log(img)
-    if(!img.tempFilePath){
-      await changeProperties2(id, body);
+      await changeProperties(id, body);
        res.status(200).json({message : 'Parámetros cambiados correctamente'})
-    }
-    else if (img.tempFilePath) {
-      await changeProperties(id, body, img);
-      res.status(200).json({message : 'Parámetros cambiados correctamente'})
-    }
+    
   } catch (error) {
     console.log(error)
   }

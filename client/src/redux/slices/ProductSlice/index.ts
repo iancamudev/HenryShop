@@ -7,7 +7,7 @@ export interface ProductDetails {
   rating: number;
   description: string;
   price: number;
-  image: {public_id: string, secure_url: string} | string;
+  image: string;
   stock: number;
   category: string;
   colors: Array<string>;
