@@ -18,6 +18,12 @@ export interface user {
   birthday: Date;
 }
 
+export interface googleUser {
+  name: String;
+  email: String;
+  birthday: Date;
+}
+
 export interface category{
   name: String;
 }
