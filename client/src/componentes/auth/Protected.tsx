@@ -1,31 +1,42 @@
-import React from 'react'
-import { Navigate, Route } from "react-router-dom";
-import { useAppSelector } from '../../hooks';
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { redirect, useNavigate } from "react-router-dom";
+import { useAppSelector } from "../../hooks";
+import { back_url } from "../../variables";
 
-interface IProtectedProps{
+interface IProtectedProps {
   children: JSX.Element;
-  path: string;
 }
 
-const Protected = ({ children, path }: IProtectedProps) => {
+const Protected = ({ children }: IProtectedProps) => {
+  const [display, setDisplay] = useState(false);
+  const navigate = useNavigate()
 
-  const { username } = useAppSelector((state) => state.user);
+  useEffect(() => {
+    const session = window.localStorage.getItem("userSession");
+    setDisplay(false)
+    if (session) {
+      console.log('checking admin...')
+      const { token } = JSON.parse(session);
+      axios
+        .get(`${back_url}/users/isAdmin`, {
+          headers: {
+            authorization: `bearer ${token}`,
+          },
+        })
+        .then(() => {
+          console.log('yes admin')
+          setDisplay(true);
+        })
+        .catch(() => {
+          navigate("/");
+        });
+    }else{
+      navigate('/')
+    }
+  }, [setDisplay, navigate, children]);
 
-  // if (!username) {
-  //   return <Navigate to="/" replace />;
-  // }
-  // return children;
-
-  return (
-    <Route
-      path={path}
-      element={
-        username
-          ? children
-          : <Navigate to="/" replace={true} />
-      } 
-    />
-  )
+  return <>{display ? children : <>Checking if admin</>}</>;
 };
 
 export default Protected;
