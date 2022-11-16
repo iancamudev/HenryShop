@@ -7,6 +7,7 @@ import jwt_decode from "jwt-decode";
 const Login = () => {
 
   const handleGoogleSucces = (credentialResponse: any) => {
+    console.log(credentialResponse)
     console.log(jwt_decode(`${credentialResponse.credential}`));
   }
 

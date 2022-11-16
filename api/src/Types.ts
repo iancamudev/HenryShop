@@ -13,6 +13,7 @@ export interface product {
 export interface user {
   name: String;
   email: String;
+  confirmed: Boolean;
   username: String;
   password: String;
   birthday: Date;

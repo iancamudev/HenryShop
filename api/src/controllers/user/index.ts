@@ -35,3 +35,11 @@ export const getUser = async (username: string) => {
   console.log("result: ", resultUser);
   return resultUser;
 }
+export const updateEmail = async (id: string) => {
+  const result = await User.findOneAndUpdate({ _id: id }, { confirmed: true });
+
+  if (!result) {
+    throw new Error("No se puede cambiar la propiedad confirmed");
+  }
+  return result;
+};
