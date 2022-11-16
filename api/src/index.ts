@@ -7,14 +7,14 @@ dotenv.config();
 export const server = express();
 const FRONT_URL = process.env.FRONT_URL || "http://localhost:3000";
 const PORT = process.env.PORT;
+
 require("./mongo");
 server.use(express.json());
 server.use(morgan("dev"));
 
-
 //Admitir llamados del front
 server.use((_req, res, next) => {
-  res.header("Access-Control-Allow-Origin", FRONT_URL); // update to match the domain you will make the request from
+  res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // update to match the domain you will make the request from
   res.header("Access-Control-Allow-Credentials", "true");
   res.header(
     "Access-Control-Allow-Headers",

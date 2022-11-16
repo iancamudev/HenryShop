@@ -9,7 +9,7 @@ export const URL_BACK_DEV = "http://localhost:3001"
 
 export const getAllProducts =
   (page?: number | null, filters?: Filters) => (dispatch: AppDispatch) => {
-    let url = `${BACKEND_URL}/products${page ? `?page=${page}` : "?page="}${
+    let url = `${URL_BACK_DEV}/products${page ? `?page=${page}` : "?page="}${
       filters?.name.length ? `&name=${filters.name}` : "&name="
     }${
       filters?.category.length ? `&category=${filters.category}` : "&category="
