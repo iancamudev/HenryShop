@@ -12,13 +12,8 @@ const adminValidation = require("../middlewares/adminValidation");
 router.post("/", async (req: Request, res: Response) => {
   let newUser = req.body;
   try {
-
-
-
-    // --------------
-    let {username, _id} = await addNewUser(newUser);
-    
-    const id = _id.toString()
+    let { username, _id } = await addNewUser(newUser);
+    const id = _id.toString();
     const userForToken = { id, username };
     const token = jwt.sign(userForToken, process.env.SECRETKEY, {
       expiresIn: 60 * 60,
@@ -45,7 +40,7 @@ router.post("/", async (req: Request, res: Response) => {
     });
     res.status(200).send({ username, token });
   } catch (error: any) {
-    console.log(error)
+    console.log(error);
     res.status(500).json({ error_message: error.message });
   }
 });
@@ -101,10 +96,18 @@ router.get("/admin/:username", async (req: Request, res: Response) => {
     result !== null
       ? res.status(200).json(result)
       : res.status(404).json({
-        error_message: "Ningún usuario encontrado con ese username",
-      });
+          error_message: "Ningún usuario encontrado con ese username",
+        });
   } catch (error: any) {
     res.status(500).json({ error_message: error.message });
+  }
+});
+
+router.get("/isAdmin", adminValidation, async (req: Request, res: Response) => {
+  try {
+    res.status(200).send("ok");
+  } catch (error: any) {
+    res.status(401).send("No admin");
   }
 });
 

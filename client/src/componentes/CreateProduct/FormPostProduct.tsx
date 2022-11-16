@@ -5,7 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
 import { uploadImageToFirebaseStorage } from "../../firebase/uploadImageToFirebaseStorage";
-import { arch } from "os";
+
 
 const sizes = { XS: "XS", S: "S", M: "M", L: "L", XL: "XL", XXL: "XXL" };
 const colors = { Blanco: "Blanco", Negro: "Negro" };
@@ -119,7 +119,7 @@ const Form = () => {
   }:formData) => {
     let backData = process.env.REACT_APP_BACKEND_URL;
     
-   console.log(file)
+   
     imgUrl =  await uploadImageToFirebaseStorage(file);
 
 
