@@ -5,7 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
 import { uploadImageToFirebaseStorage } from "../../firebase/uploadImageToFirebaseStorage";
-import { arch } from "os";
+
 
 const sizes = { XS: "XS", S: "S", M: "M", L: "L", XL: "XL", XXL: "XXL" };
 const colors = { Blanco: "Blanco", Negro: "Negro" };
