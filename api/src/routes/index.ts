@@ -1,7 +1,6 @@
 import { Router } from "express";
 import productsRouter from "./products";
 import userRouter from "./users";
-import fileUpload from "express-fileupload";
 import categoryRouter from "./categories";
 
 const route = Router();
