@@ -8,13 +8,17 @@ const router = Router();
 const adminValidation = require("../middlewares/adminValidation");
 
 router.post("/", async (req: Request, res: Response) => {
+  let newUser = req.body;
   try {
-    let newUser = req.body;
-    if (newUser) {
-      await addNewUser(newUser);
-      res.status(200).json(newUser);
-    }
+    let {username, _id} = await addNewUser(newUser);
+    const id = _id.toString()
+    const userForToken = { id, username };
+    const token = jwt.sign(userForToken, process.env.SECRETKEY, {
+      expiresIn: 60 * 60,
+    });
+    res.status(200).send({ username, token });
   } catch (error: any) {
+    console.log(error)
     res.status(500).json({ error_message: error.message });
   }
 });
@@ -22,15 +26,13 @@ router.post("/", async (req: Request, res: Response) => {
 router.post("/login", async (req: Request, res: Response) => {
   const username = req.body.username;
   const password = req.body.password;
-  console.log(req.body);
-  console.log(username, password);
   const user = await getUser(username);
 
   const passwordCorrect =
     user === null ? false : await bcrypt.compare(password, user.password); // Comparamos el password de la base de datos hasheado, con el que nos viene por body
 
   if (!(passwordCorrect && user)) {
-    res.status(401).json({ error: "Usuario o contraseña incorrecto." });
+    res.status(401).json({ message: "Usuario o contraseña incorrecto." });
   } else {
     const userForToken = { id: user.id, username: user.username };
     const token = jwt.sign(userForToken, process.env.SECRETKEY, {
@@ -40,7 +42,7 @@ router.post("/login", async (req: Request, res: Response) => {
   }
 });
 
-router.get("/admin", adminValidation, async (req: Request, res: Response) => {
+router.get("/admin", async (req: Request, res: Response) => {
   try {
     const result = await getAllUser();
     result !== null
@@ -58,8 +60,8 @@ router.get("/admin/:username", async (req: Request, res: Response) => {
     result !== null
       ? res.status(200).json(result)
       : res.status(404).json({
-          error_message: "Ningún usuario encontrado con ese username",
-        });
+        error_message: "Ningún usuario encontrado con ese username",
+      });
   } catch (error: any) {
     res.status(500).json({ error_message: error.message });
   }
