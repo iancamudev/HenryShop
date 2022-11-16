@@ -5,10 +5,14 @@ import { GoogleLogin } from '@react-oauth/google';
 import jwt_decode from "jwt-decode";
 
 const Login = () => {
-
-  const handleGoogleSucces = (credentialResponse: any) => {
-    console.log(jwt_decode(`${credentialResponse.credential}`));
+  const REACT_APP_BACKEND_URL:string = (process.env.REACT_APP_BACKEND_URL as string);
+  const googleAuth = () => {
+    window.open(
+      `${REACT_APP_BACKEND_URL}/googleusers/google/callback`,
+      '_self'
+    );
   }
+
 
   return (
     <>
@@ -18,13 +22,9 @@ const Login = () => {
         <h3>Inicia Sesión</h3>
         <LoginForm />
       </div>
-      <GoogleLogin
-        onSuccess={handleGoogleSucces}
-        onError={() => {
-          console.log('Login Failed');
-        }}
-        useOneTap
-      />
+      <button onClick={googleAuth}>
+        Inicia sesion con Google
+      </button>
     </>
   );
 };

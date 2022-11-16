@@ -16,6 +16,14 @@ const Header = () => {
   const dispatch = useAppDispatch();
   const filters = useAppSelector((state) => state.filterState.filters);
   const { username } = useAppSelector((state) => state.user);
+  const REACT_APP_BACKEND_URL:string = (process.env.REACT_APP_BACKEND_URL as string)
+
+  const logout = () => {
+    window.open(
+      `${REACT_APP_BACKEND_URL}/googleusers/logout`,
+      '_self'
+    );
+  };
 
   useEffect(() => {
     const session = getObjectSession();
@@ -53,11 +61,7 @@ const Header = () => {
                 <h2>{username}</h2>
                 <button
                   className="bg-white duration-300 hover:bg-gray-200 hover:duration-300 p-2 rounded-3xl pl-4 pr-4 border-b-2 border-black"
-                  onClick={() => {
-                    localStorage.removeItem("userSession");
-                    dispatch(clearData());
-                    setDeploy(false);
-                  }}
+                  onClick={logout}
                 >
                   Cerrar Sesión
                 </button>

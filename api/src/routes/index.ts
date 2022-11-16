@@ -9,7 +9,6 @@ import googleUserRouter from "./googleUsers";
 
 const route = Router();
 
-
 route.use("/products", productsRouter);
 route.use("/users", userRouter);
 route.use("/shop", userShop)
