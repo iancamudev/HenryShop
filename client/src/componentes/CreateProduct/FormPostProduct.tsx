@@ -96,7 +96,6 @@ const Form = () => {
     const target =  e.target as HTMLInputElement;
     imgSrc = target.files?.[0];
     setFile(imgSrc)
-    console.log("hola", file)
     let arr: any = "";
     
     
