@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Pagination from "./Pagination";
 import ProductCards from "./ProductCards";
 import Header from "./Header";
@@ -10,6 +10,7 @@ const Home = () => {
       console.log(JSON.parse(logged));
     }
   }, []);
+  
   return (
     <>
       <Header />

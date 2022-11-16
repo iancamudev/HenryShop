@@ -3,7 +3,7 @@ import React, { SetStateAction, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { getAllProducts } from "../../redux/slices/ProductSlice/productActions";
-import { BACKEND_URL } from "../../redux/slices/ProductSlice/productActions";
+import { URL_BACK_DEV } from "../../redux/slices/ProductSlice/productActions";
 import { BiEdit, BiX } from "react-icons/bi";
 const Panel = () => {
   let navigate = useNavigate();
@@ -41,7 +41,7 @@ const Panel = () => {
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     event.preventDefault();
-    await axios.delete(`${BACKEND_URL}/products/${event.currentTarget.value}`);
+    await axios.delete(`${URL_BACK_DEV}/products/${event.currentTarget.value}`);
     dispatch(getAllProducts(currentPage));
   };
   const handleEdit = async (
