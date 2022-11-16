@@ -16,9 +16,15 @@ export interface user {
   username: String;
   password: String;
   birthday: Date;
+  isAdmin: Boolean;
 }
 
 export interface shopping {
   userId: string,
-  products: Array<string>
+  products: Array<object>
 }
+
+export interface category{
+  name: String;
+}
+
