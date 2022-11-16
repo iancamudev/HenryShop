@@ -15,7 +15,7 @@ const ProductCard: React.FC<CardProps> = ({ product }: CardProps) => {
         <h5 className="w-64 font-bold mb-4">{product.name}</h5>
       </Link>
 
-      <img className="w-64" src={ typeof product.image === "string" ? product.image : product.image?.secure_url} />
+      <img className="w-64" src={product.image} />
       <h6 className="flex items-start font-bold mt-4">
         Talles: {product.sizes? product.sizes.join(", "):product.sizes}
       </h6>

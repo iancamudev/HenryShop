@@ -7,6 +7,7 @@ import axios from "axios";
 import { getProductsById } from "../../redux/slices/ProductSlice/productActions";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { useParams } from "react-router-dom";
+import { uploadImageToFirebaseStorage } from "../../firebase/uploadImageToFirebaseStorage";
 
 const sizes = { XS: "XS", S: "S", M: "M", L: "L", XL: "XL", XXL: "XXL" };
 const colors = { Blanco: "Blanco", Negro: "Negro" };
@@ -90,7 +91,13 @@ const FormPutProduct = () => {
     sizes: [""],
   };
   const [input, setInput] = useState(initialForm);
-
+  let imgUrl: any;
+  async function imagePreview(e: any){
+       const target = e.target as HTMLInputElement;
+      const archivo= target.files?.[0];
+      imgUrl = await uploadImageToFirebaseStorage(archivo);
+      
+  }
   const submitForm = handleSubmit(
     ({
       name,
@@ -104,36 +111,45 @@ const FormPutProduct = () => {
       sizes,
     }) => {
       let backData = process.env.REACT_APP_BACKEND_URL;
-      console.log({
-        name,
-        rating,
-        description,
-        price,
-        image,
-        stock,
-        category,
-        colors,
-        sizes,
-      });
-      if (backData)
+      
+      if(imgUrl && backData){
         axios
-          .put(`${backData}/products/${id}`, {
-            name,
-            rating,
-            description,
-            price,
-            image,
-            stock,
-            category,
-            colors,
-            sizes,
-          })
-          .then((res) => {
-            console.log(res);
-          })
-          .catch((err) => console.error(err));
-    }
-  );
+        .put(`${backData}/products/${id}`, {
+          name,
+          rating,
+          description,
+          price,
+          image: imgUrl,
+          stock,
+          category,
+          colors,
+          sizes,
+        })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => console.error(err));
+       }
+       else if (!imgUrl && backData) {
+        axios
+        .put(`${backData}/products/${id}`, {
+          name,
+          rating,
+          description,
+          price,
+          image,
+          stock,
+          category,
+          colors,
+          sizes,
+        })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => console.error(err));
+       }
+
+      });
 
   return (
     <form
@@ -210,7 +226,8 @@ const FormPutProduct = () => {
           <input
             {...register("image")}
             id="image"
-            type="text"
+            type="file"
+            onChange={(e) => imagePreview(e)}
             placeholder="Image..."
             className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
           />

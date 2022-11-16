@@ -4,6 +4,8 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
+import { uploadImageToFirebaseStorage } from "../../firebase/uploadImageToFirebaseStorage";
+import { arch } from "os";
 
 const sizes = { XS: "XS", S: "S", M: "M", L: "L", XL: "XL", XXL: "XXL" };
 const colors = { Blanco: "Blanco", Negro: "Negro" };
@@ -13,7 +15,7 @@ interface formData {
   description: string;
   price: number;
   // image: string;
-  image: string[];
+  image: string;
   stock: number;
   category: string;
   colors: Array<string>;
@@ -76,75 +78,76 @@ const Form = () => {
     description: "",
     price: -1,
     // image: "",
-    image: [],
+    image: "",
     stock: -1,
     category: "",
     colors: [""],
     sizes: [""],
   };
   const [input, setInput] = useState(initialForm);
+  const [file, setFile] = useState(null);
+  
+  let imgSrc: any;
+  let imgFile: any;
+  let imgUrl: any;
+  
+  const onChangeFiles = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    
+    const target =  e.target as HTMLInputElement;
+    imgSrc = target.files?.[0];
+    setFile(imgSrc)
+    let arr: any = "";
+    
+    
+      imgFile =  URL.createObjectURL(imgSrc);
+      arr = imgFile;
+      setInput((prev) => ({ ...prev, image: arr }));
+    
 
-  const submitForm = handleSubmit(
-    ({
-      name,
-      rating,
-      description,
-      price,
-      image,
-      stock,
-      category,
-      colors,
-      sizes,
-    }) => {
-      let backData = process.env.REACT_APP_BACKEND_URL;
-      console.log({
-        name,
-        rating,
-        description,
-        price,
-        image,
-        stock,
-        category,
-        colors,
-        sizes,
-      });
-      if (backData)
-        axios
-          .post(`${backData}/products`, {
-            name,
-            rating,
-            description,
-            price,
-            image,
-            stock,
-            category,
-            colors,
-            sizes,
-          })
-          .then((res) => {
-            console.log(res);
-          })
-          .catch((err) => console.error(err));
-    }
-  );
-
-  const onChangeFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let files = e.target.files;
-    let arr: string[] = [];
-    if (files)
-      Array.from(files).forEach((file) => {
-        arr.push(URL.createObjectURL(file));
-      });
-
-    console.log(arr);
-    setInput((prev) => ({ ...prev, image: arr }));
   };
+  
+
+  const submitCall = async ({
+    name,
+    rating,
+    description,
+    price,
+    stock,
+    category,
+    colors,
+    sizes,
+  }:formData) => {
+    let backData = process.env.REACT_APP_BACKEND_URL;
+    
+   console.log(file)
+    imgUrl =  await uploadImageToFirebaseStorage(file);
+
+
+    if (backData )
+      axios
+        .post(`${backData}/products`, {
+          name,
+          rating,
+          description,
+          price,
+          image: imgUrl,
+          stock,
+          category,
+          colors,
+          sizes,
+        })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => console.error(err));
+  }
 
   return (
     <form
-      onSubmit={submitForm}
+      onSubmit={handleSubmit(submitCall)}
       className="flex justify-center flex-col items-center w-9/12 m-auto"
     >
+
       <div className="mb-3.5 w-full">
         <div className="flex justify-center">
           <input
@@ -212,24 +215,26 @@ const Form = () => {
             {...register("image")}
             id="image"
             type="file"
-            multiple
             className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
             onChange={onChangeFiles}
           />
           *
         </div>
-        {input.image.length ? (
+        { input.image.length?
           <div className="flex flex-wrap justify-start h-28 mt-4">
-            {input.image.map((i, index) => (
+            
+            {
               <img
                 className="h-full mr-4 border border-black border-solid rounded"
-                src={i}
-                alt={`upload_image_${index}`}
-                key={index}
+                src={input.image}
+                alt={`upload_image_${input.image}`}
+                key={input.image}
+
               />
-            ))}
-          </div>
-        ) : null}
+            }
+          </div>: null
+        
+        } 
         {errors.image && (
           <p className="text-red-600 font-bold">{errors.image.message}</p>
         )}
