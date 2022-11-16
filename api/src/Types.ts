@@ -24,6 +24,12 @@ export interface shopping {
   products: Array<object>
 }
 
+export interface googleUser {
+  name: String;
+  email: String;
+  birthday: Date;
+}
+
 export interface category{
   name: String;
 }
