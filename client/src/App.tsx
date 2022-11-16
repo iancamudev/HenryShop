@@ -13,7 +13,9 @@ import { useAppSelector, useAppDispatch } from "./hooks";
 import getObjectSession from "./funciones/getObjectSession";
 import { useEffect } from "react";
 import { setData } from "./redux/slices/UserSlice";
+import Confirmation from "./componentes/Confirmation";
 import Protected from "./componentes/auth/Protected";
+
 
 function App() {
   const { username } = useAppSelector((state) => state.user);
@@ -48,6 +50,7 @@ function App() {
         />
         <Route path="/products/:id" element={<DetailProduct />} />
         <Route path="/" element={<ProductCards />} />
+        <Route path="/users/confirmation/:token" element={<Confirmation />} />
         <Route
           path="/admin"
           element={
