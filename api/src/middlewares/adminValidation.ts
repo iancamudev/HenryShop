@@ -23,10 +23,7 @@ module.exports = async (req: any, res: any, next: any) => {
   if (!token || !decodedToken.id || !user?.isAdmin) {
     return res.status(401).json({ error: "token missing or invalid admin" });
   }
-
   const { id } = decodedToken;
-
   req.id = id;
-
   next();
 };
