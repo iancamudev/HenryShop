@@ -4,6 +4,13 @@ import ProductCards from "./ProductCards";
 import Header from "./Header";
 
 const Home = () => {
+  useEffect(() => {
+    const logged = window.localStorage.getItem("userSession");
+    if (logged) {
+      console.log(JSON.parse(logged));
+    }
+  }, []);
+  
   return (
     <>
       <Header />
