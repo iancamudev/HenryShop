@@ -14,7 +14,6 @@ router.post("/:id", async (req: Request, res: Response)=>{
     const prodId = await Product.find({_id: products})
     try {
             if(usId && prodId){
-                console.log("entre");
                 const newRela = await addNewShop(usId.id, prodId);
                 console.log(newRela); 
                 res.status(200).send(newRela);
