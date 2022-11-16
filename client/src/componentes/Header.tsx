@@ -12,6 +12,10 @@ const Header = () => {
   const [categoryDeploy, setCategoryDeploy] = useState(false);
   const dispatch = useAppDispatch();
   const filters = useAppSelector((state) => state.filterState.filters);
+
+  const json: string | null = localStorage.getItem("userSession");
+  const userSessionObj = json ? JSON.parse(json) : null;
+
   return (
     <nav className="flex flex-col sticky w-full">
       <div className=" h-20 p-2 pl-2 pr-4 bg-yellow flex justify-between items-center">
@@ -36,13 +40,13 @@ const Header = () => {
           className="bg-yellow h-auto pb-4 w-full origin-top animate-open-menu duration-300 flex flex-col"
         >
           <div className="select-none flex justify-evenly font-bold text-lg">
-            {localStorage.getItem("userName") ? (
+            {userSessionObj ? (
               <>
-                <h2>{localStorage.getItem("userName")}</h2>
+                <h2>{userSessionObj.username}</h2>
                 <button
                   className="bg-white duration-300 hover:bg-gray-200 hover:duration-300 p-2 rounded-3xl pl-4 pr-4 border-b-2 border-black"
                   onClick={() => {
-                    localStorage.removeItem("userName");
+                    localStorage.removeItem("userSession");
                     setDeploy(false);
                   }}
                 >
