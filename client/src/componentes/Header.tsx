@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import logo from "../assets/logoHenryBlack.png";
 import { GiHamburgerMenu } from "react-icons/gi";
 import Searchbar from "./Searchbar";
@@ -9,7 +9,8 @@ import { setFiltersAction } from "../redux/slices/FiltersSlice/filtersActions";
 import { useShoppingCart } from "./ShoppingCart/ContextShoppingCart";
 import { Button } from "react-bootstrap";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-
+import getObjectSession from "../funciones/getObjectSession";
+import { setData, clearData } from "../redux/slices/UserSlice";
 const Header = () => {
   const { openCart, cartQuantity} = useShoppingCart()
 
@@ -17,9 +18,14 @@ const Header = () => {
   const [categoryDeploy, setCategoryDeploy] = useState(false);
   const dispatch = useAppDispatch();
   const filters = useAppSelector((state) => state.filterState.filters);
+  const { username } = useAppSelector((state) => state.user);
 
-  const json: string | null = localStorage.getItem("userSession");
-  const userSessionObj = json ? JSON.parse(json) : null;
+  useEffect(() => {
+    const session = getObjectSession();
+    if (session) {
+      dispatch(setData(session));
+    }
+  }, [dispatch]);
 
   return (
     <nav className="flex flex-col sticky w-full">
@@ -45,13 +51,14 @@ const Header = () => {
           className="bg-yellow h-auto pb-4 w-full origin-top animate-open-menu duration-300 flex flex-col"
         >
           <div className="select-none flex justify-evenly font-bold text-lg">
-            {userSessionObj ? (
+            {username ? (
               <>
-                <h2>{userSessionObj.username}</h2>
+                <h2>{username}</h2>
                 <button
                   className="bg-white duration-300 hover:bg-gray-200 hover:duration-300 p-2 rounded-3xl pl-4 pr-4 border-b-2 border-black"
                   onClick={() => {
                     localStorage.removeItem("userSession");
+                    dispatch(clearData());
                     setDeploy(false);
                   }}
                 >

@@ -10,6 +10,7 @@ const Home = () => {
       console.log(JSON.parse(logged));
     }
   }, []);
+  
   return (
     <>
       <Header />
