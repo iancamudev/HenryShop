@@ -1,5 +1,6 @@
 import { user } from '../../Types';
 import { User } from '../../models/User'
+const jwt = require("jsonwebtoken");
 
 export const addNewUser = async (user: user) => {
   if (
@@ -35,6 +36,7 @@ export const getUser = async (username: string) => {
   console.log("result: ", resultUser);
   return resultUser;
 }
+
 export const updateEmail = async (id: string) => {
   const result = await User.findOneAndUpdate({ _id: id }, { confirmed: true });
 
@@ -43,3 +45,9 @@ export const updateEmail = async (id: string) => {
   }
   return result;
 };
+
+export const compareUsernames = async (username: string, token: string) => {
+  const decodedToken = jwt.verify(token, process.env.SECRETKEY);
+  if(username !== decodedToken.username)
+    throw new Error("No autorizado");
+}
