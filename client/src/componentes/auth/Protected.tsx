@@ -1,7 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { redirect, useNavigate } from "react-router-dom";
-import { useAppSelector } from "../../hooks";
+import {  useNavigate } from "react-router-dom";
 import { back_url } from "../../variables";
 
 interface IProtectedProps {
