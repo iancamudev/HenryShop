@@ -8,8 +8,10 @@ import { DetailProduct } from "./componentes/DetailProduct";
 import ProductCards from "./componentes/ProductCards";
 import EditProduct from "./componentes/EditProduct";
 import AdminPanel from "./componentes/Admin/AdminPanel";
+import { ShoppingCartProvider } from "./componentes/ShoppingCart/ContextShoppingCart";
 function App() {
   return (
+    <ShoppingCartProvider>
     <div className="App flex flex-col items-center bg-[#FFFDE7]">
       <Routes>
         <Route path="/" element={<Home />} />
@@ -22,6 +24,7 @@ function App() {
         <Route path="/admin/:id" element={<EditProduct />} />
       </Routes>
     </div>
+    </ShoppingCartProvider>
   );
 }
 

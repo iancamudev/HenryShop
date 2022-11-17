@@ -6,8 +6,13 @@ import { Link } from "react-router-dom";
 import Filters from "./Filters";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { setFiltersAction } from "../redux/slices/FiltersSlice/filtersActions";
+import { useShoppingCart } from "./ShoppingCart/ContextShoppingCart";
+import { Button } from "react-bootstrap";
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 const Header = () => {
+  const { openCart, cartQuantity} = useShoppingCart()
+
   const [deploy, setDeploy] = useState(false);
   const [categoryDeploy, setCategoryDeploy] = useState(false);
   const dispatch = useAppDispatch();
@@ -115,6 +120,28 @@ const Header = () => {
             <h5 className=" hover:delay-300 pl-2 hover:pl-4 duration-300 font-bold mt-4  hover:cursor-pointer">
               Sobre nosotros
             </h5>
+          </div>
+          <div className="flex px-10">
+          {cartQuantity > 0 && (
+          <Button 
+          onClick={openCart}
+          className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded-full" 
+          style={{width: "4rem", position: "absolute"}}
+          >
+          <ShoppingCartIcon />
+          <div className="rounded-circle bg-red-500 d-flex justify-content-center align-items-center rounded-full"
+          style={{
+            color: "black",
+            width: "1.5rem",
+            height: "1.5 rem",
+            position: "absolute",
+            bottom: 0,
+            right: 0,
+            transform: "translate(25%, 25%",
+          }}
+          >{cartQuantity}
+          </div>
+          </Button>)}
           </div>
           <Searchbar />
           <Filters />

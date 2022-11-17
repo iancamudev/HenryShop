@@ -12,6 +12,7 @@ export interface ProductDetails {
   category: string;
   colors: Array<string>;
   sizes: Array<string>;
+  quantity: number;
 }
 
 interface ProductState {
@@ -34,6 +35,7 @@ const initialState: ProductState = {
     category: "",
     colors: [""],
     sizes: [""],
+    quantity: 0,
   },
   productPages: 0,
 };
