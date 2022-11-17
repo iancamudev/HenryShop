@@ -8,11 +8,11 @@ import { useAppDispatch, useAppSelector } from "../hooks";
 import { setFiltersAction } from "../redux/slices/FiltersSlice/filtersActions";
 import { useShoppingCart } from "./ShoppingCart/ContextShoppingCart";
 import { Button } from "react-bootstrap";
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import getObjectSession from "../funciones/getObjectSession";
 import { setData, clearData } from "../redux/slices/UserSlice";
 const Header = () => {
-  const { openCart, cartQuantity} = useShoppingCart()
+  const { openCart, cartQuantity } = useShoppingCart();
 
   const [deploy, setDeploy] = useState(false);
   const [categoryDeploy, setCategoryDeploy] = useState(false);
@@ -81,6 +81,11 @@ const Header = () => {
             )}
           </div>
           <div className="p-4 flex flex-col text-left justify-start select-none">
+            {username ? (
+              <Link to="/User">
+                <h5>Ir al Perfil</h5>
+              </Link>
+            ) : null}
             <h5 className="pl-2 hover:pl-4 hover:delay-300 duration-300 font-bold hover:cursor-pointer">
               Productos
             </h5>
@@ -129,26 +134,29 @@ const Header = () => {
             </h5>
           </div>
           <div className="flex px-10">
-          {cartQuantity > 0 && (
-          <Button 
-          onClick={openCart}
-          className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded-full" 
-          style={{width: "4rem", position: "absolute"}}
-          >
-          <ShoppingCartIcon />
-          <div className="rounded-circle bg-red-500 d-flex justify-content-center align-items-center rounded-full"
-          style={{
-            color: "black",
-            width: "1.5rem",
-            height: "1.5 rem",
-            position: "absolute",
-            bottom: 0,
-            right: 0,
-            transform: "translate(25%, 25%",
-          }}
-          >{cartQuantity}
-          </div>
-          </Button>)}
+            {cartQuantity > 0 && (
+              <Button
+                onClick={openCart}
+                className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded-full"
+                style={{ width: "4rem", position: "absolute" }}
+              >
+                <ShoppingCartIcon />
+                <div
+                  className="rounded-circle bg-red-500 d-flex justify-content-center align-items-center rounded-full"
+                  style={{
+                    color: "black",
+                    width: "1.5rem",
+                    height: "1.5 rem",
+                    position: "absolute",
+                    bottom: 0,
+                    right: 0,
+                    transform: "translate(25%, 25%",
+                  }}
+                >
+                  {cartQuantity}
+                </div>
+              </Button>
+            )}
           </div>
           <Searchbar />
           <Filters />
