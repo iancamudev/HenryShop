@@ -7,11 +7,12 @@ export interface ProductDetails {
   rating: number;
   description: string;
   price: number;
-  image: {public_id: string, secure_url: string} | string;
+  image: string;
   stock: number;
   category: string;
   colors: Array<string>;
   sizes: Array<string>;
+  quantity: number;
 }
 
 interface ProductState {
@@ -34,6 +35,7 @@ const initialState: ProductState = {
     category: "",
     colors: [""],
     sizes: [""],
+    quantity: 0,
   },
   productPages: 0,
 };

@@ -7,6 +7,7 @@ import axios from "axios";
 import { getProductsById } from "../../redux/slices/ProductSlice/productActions";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { useParams } from "react-router-dom";
+import { uploadImageToFirebaseStorage } from "../../firebase/uploadImageToFirebaseStorage";
 
 const sizes = { XS: "XS", S: "S", M: "M", L: "L", XL: "XL", XXL: "XXL" };
 const colors = { Blanco: "Blanco", Negro: "Negro" };
@@ -67,9 +68,10 @@ const FormPutProduct = () => {
   const { id } = useParams();
   useEffect(() => {
     dispatch(getProductsById(id));
-  }, []);
+  }, [dispatch, id]);
   const Product = useAppSelector((state) => state.products.productDetail);
-
+  console.log(Product);
+  
   const {
     register,
     handleSubmit,
@@ -89,7 +91,13 @@ const FormPutProduct = () => {
     sizes: [""],
   };
   const [input, setInput] = useState(initialForm);
-
+  let imgUrl: any;
+  async function imagePreview(e: any){
+       const target = e.target as HTMLInputElement;
+      const archivo= target.files?.[0];
+      imgUrl = await uploadImageToFirebaseStorage(archivo);
+      
+  }
   const submitForm = handleSubmit(
     ({
       name,
@@ -103,36 +111,45 @@ const FormPutProduct = () => {
       sizes,
     }) => {
       let backData = process.env.REACT_APP_BACKEND_URL;
-      console.log({
-        name,
-        rating,
-        description,
-        price,
-        image,
-        stock,
-        category,
-        colors,
-        sizes,
-      });
-      if (backData)
+      
+      if(imgUrl && backData){
         axios
-          .put(`${backData}/products/${id}`, {
-            name,
-            rating,
-            description,
-            price,
-            image,
-            stock,
-            category,
-            colors,
-            sizes,
-          })
-          .then((res) => {
-            console.log(res);
-          })
-          .catch((err) => console.error(err));
-    }
-  );
+        .put(`${backData}/products/${id}`, {
+          name,
+          rating,
+          description,
+          price,
+          image: imgUrl,
+          stock,
+          category,
+          colors,
+          sizes,
+        })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => console.error(err));
+       }
+       else if (!imgUrl && backData) {
+        axios
+        .put(`${backData}/products/${id}`, {
+          name,
+          rating,
+          description,
+          price,
+          image,
+          stock,
+          category,
+          colors,
+          sizes,
+        })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => console.error(err));
+       }
+
+      });
 
   return (
     <form
@@ -147,6 +164,7 @@ const FormPutProduct = () => {
             type="text"
             placeholder="Name..."
             className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
+            defaultValue={`${Product.name}`}
           />
           *
         </div>
@@ -162,6 +180,7 @@ const FormPutProduct = () => {
           type="text"
           placeholder="Rating..."
           className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
+          defaultValue={`${Product.rating}`}
         />
         {errors?.rating && (
           <p className="text-red-600 font-bold">{errors.rating.message}</p>
@@ -176,6 +195,7 @@ const FormPutProduct = () => {
             type="text"
             placeholder="Description..."
             className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
+            defaultValue={`${Product.description}`}
           />
           *
         </div>
@@ -192,6 +212,7 @@ const FormPutProduct = () => {
             type="text"
             placeholder="Price..."
             className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
+            defaultValue={`${Product.price}`}
           />
           *
         </div>
@@ -205,7 +226,8 @@ const FormPutProduct = () => {
           <input
             {...register("image")}
             id="image"
-            type="text"
+            type="file"
+            onChange={(e) => imagePreview(e)}
             placeholder="Image..."
             className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
           />
@@ -224,6 +246,7 @@ const FormPutProduct = () => {
             type="text"
             placeholder="Stock..."
             className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
+            defaultValue={`${Product.stock}`}
           />
           *
         </div>
@@ -240,6 +263,7 @@ const FormPutProduct = () => {
             type="text"
             placeholder="Category..."
             className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
+            defaultValue={`${Product.category}`}
           />
           *
         </div>
@@ -261,6 +285,7 @@ const FormPutProduct = () => {
                     id="colors"
                     type="checkbox"
                     className="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-blue-200 checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+                    defaultValue={`${Product.colors}`}
                   />
                   <label className="w-5/12">{color}</label>
                 </div>
@@ -285,6 +310,7 @@ const FormPutProduct = () => {
                     id="sizes"
                     type="checkbox"
                     className="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-blue-200 checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+                    defaultValue={`${Product.sizes}`}
                   />
                   <label className="w-5/12">{size}</label>
                 </div>

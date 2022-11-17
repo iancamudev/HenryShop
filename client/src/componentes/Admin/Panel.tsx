@@ -1,10 +1,9 @@
 import axios from "axios";
 import React, { SetStateAction, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { number } from "yup";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { getAllProducts } from "../../redux/slices/ProductSlice/productActions";
-import { BACKEND_URL } from "../../redux/slices/ProductSlice/productActions";
+import { URL_BACK_DEV } from "../../redux/slices/ProductSlice/productActions";
 import { BiEdit, BiX } from "react-icons/bi";
 const Panel = () => {
   let navigate = useNavigate();
@@ -42,7 +41,7 @@ const Panel = () => {
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     event.preventDefault();
-    await axios.delete(`${BACKEND_URL}/products/${event.currentTarget.value}`);
+    await axios.delete(`${URL_BACK_DEV}/products/${event.currentTarget.value}`);
     dispatch(getAllProducts(currentPage));
   };
   const handleEdit = async (
@@ -91,27 +90,27 @@ const Panel = () => {
               <tr className="border border-slate-300">
                 <td
                   className={
-                    id % 2 != 0
-                      ? "bg-gray-200 p-2 border-black"
-                      : "bg-gray-300 p-2 border-black"
+                    id % 2 !== 0
+                      ? "bg-gray-200 border-black"
+                      : "bg-gray-300 border-black"
                   }
                 >
                   {id++}
                 </td>
                 <td
                   className={
-                    id % 2 != 0
-                      ? "max-w-1/3 bg-gray-300 p-2  border-black"
-                      : "max-w-1/3 bg-gray-200 p-2 border-black"
+                    id % 2 !== 0
+                      ? "max-w-1/3 bg-gray-300  border-black"
+                      : "max-w-1/3 bg-gray-200  border-black"
                   }
                 >
-                  {producto.name.slice(0, 20)}
+                  {<p className="text-xs font-bold">{producto.name}</p>}
                 </td>{" "}
                 <td
                   className={
-                    id % 2 != 0
-                      ? "flex gap-1 items-center justify-center bg-gray-300 p-2 border-black"
-                      : "flex gap-1 items-center justify-center bg-gray-200 p-2 border-black"
+                    id % 2 !== 0
+                      ? "flex items-center justify-center bg-gray-300 p-2 border-black"
+                      : "flex items-center justify-center bg-gray-200 p-2 border-black"
                   }
                 >
                   <button
@@ -124,7 +123,7 @@ const Panel = () => {
                   <button
                     onClick={(e) => routeChangeToEdit(e)}
                     value={producto.id}
-                    className="w-12 h-12 p-3   bg-amber-500 hover:bg-amber-700 text-white font-bold  border border-amber-700 rounded hover:duration-500 duration-300"
+                    className="w-12 h-12 p-3 bg-amber-500 hover:bg-amber-700 text-white font-bold  border border-amber-700 rounded hover:duration-500 duration-300"
                   >
                     <BiEdit className="w-6 h-6" />
                   </button>

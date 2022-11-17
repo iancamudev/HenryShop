@@ -45,7 +45,6 @@ const RegisterForm = () => {
   });
 
   const handleChange = (newValue: Dayjs | null) => {
-    navigate("/");
     setValue(newValue);
   };
 
@@ -62,7 +61,7 @@ const RegisterForm = () => {
         birthday,
       })
       .then(({ data }) => {
-        localStorage.setItem("userName", data.username);
+        localStorage.setItem("userSession", JSON.stringify(data));
         navigate("/");
       })
       .catch((e) => setResult(e.message));

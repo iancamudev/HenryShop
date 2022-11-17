@@ -4,11 +4,12 @@ import { AppDispatch } from "../../store";
 import { Filters } from "../FiltersSlice";
 import { getProductList, getProductPages, getProductDetail } from "./index";
 
-export const BACKEND_URL = "https://henryshop-production.up.railway.app";
+
+export const URL_BACK_DEV: string = (process.env.REACT_APP_BACKEND_URL as string)
 
 export const getAllProducts =
   (page?: number | null, filters?: Filters) => (dispatch: AppDispatch) => {
-    let url = `${BACKEND_URL}/products${page ? `?page=${page}` : "?page="}${
+    let url = `${URL_BACK_DEV}/products${page ? `?page=${page}` : "?page="}${
       filters?.name.length ? `&name=${filters.name}` : "&name="
     }${
       filters?.category.length ? `&category=${filters.category}` : "&category="
@@ -36,7 +37,7 @@ export const getAllProducts =
 export const getProductsById =
   (id: string | undefined) => (dispatch: AppDispatch) => {
     axios
-      .get(`${BACKEND_URL}/products/${id}`)
+      .get(`${URL_BACK_DEV}/products/${id}`)
       .then(({ data }) => dispatch(getProductDetail(data)))
       .catch((error) => {
         console.error(error);

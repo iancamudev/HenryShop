@@ -3,7 +3,7 @@ export interface product {
   rating: Number;
   description: String;
   price: Number;
-  image: any;
+  image: string;
   stock: Number;
   category: String;
   colors: Array<string>;
@@ -13,7 +13,25 @@ export interface product {
 export interface user {
   name: String;
   email: String;
+  confirmed: Boolean;
   username: String;
   password: String;
   birthday: Date;
+  isAdmin: Boolean;
 }
+
+export interface shopping {
+  userId: string,
+  products: Array<object>
+}
+
+export interface googleUser {
+  name: String;
+  email: String;
+  birthday: Date;
+}
+
+export interface category{
+  name: String;
+}
+

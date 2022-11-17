@@ -34,7 +34,7 @@ export const DetailProduct:React.FunctionComponent= () => {
         <>
             <Header/>
             <div className="mt-4">
-                <img className="mt-4" src={typeof producto.image === "string" ? producto.image : producto.image.secure_url} alt="Detalle_Producto"/>
+                <img className="mt-4 mx-auto w-9/12" src={producto.image  && producto.image } alt="Detalle_Producto"/>
                 <div>
                     <h2 className="mt-4">{producto.name}🚀</h2>
                 </div>

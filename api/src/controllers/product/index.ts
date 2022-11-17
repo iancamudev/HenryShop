@@ -1,7 +1,5 @@
 import { product } from "../../Types";
 import { Product } from "../../models/Product";
-import { uploadImage, deleteImage } from "../../../utils/cloudinary";
-import fs from "fs";
 
 const pageSize = 5;
 
@@ -205,56 +203,7 @@ export const getProductById = async (id: String) => {
 
 // ##########################################################
 
-export const addNewProduct = async (prod: product, img?: any) => {
-  const productFind = await Product.findOne({ name: prod.name });
-  
-  const imgDb = await uploadImage(img.tempFilePath);
-    fs.unlink(img.tempFilePath, (err) => {
-      if (err) throw err;
-      console.log(`${img.tempFilePath} was deleted`);
-    }) 
-    
-  if (
-    !prod ||
-    !prod.name ||
-    !prod.description ||
-    !prod.stock ||
-    !prod.price ||
-    !prod.category ||
-    !img
-  ) {
-    throw new Error("Info Missing");
-  } else if (productFind) {
-    throw new Error("Product already exist");
-  } else if (!productFind && imgDb) {
-    const newProduct = new Product({
-      name: prod.name,
-      description: prod.description,
-      price: prod.price,
-      rating: prod.rating,
-      image: imgDb.public_id
-        ? {
-            public_id: imgDb.public_id,
-            secure_url: imgDb.secure_url,
-          }
-        : prod.image,
-      stock: prod.stock,
-      category: prod.category,
-      colors: prod.colors,
-      sizes: prod.sizes,
-      deleted: false,
-    });
-
-    newProduct
-      .save()
-      .then((result: any) => {
-        return result;
-      })
-      .catch((error: any) => new Error(error));
-  }
-};
-
-export const addNewProduct2 = async (prod: product) => {
+export const addNewProduct = async (prod: product) => {
   const productFind = await Product.findOne({ name: prod.name });
   
   if (
@@ -301,49 +250,8 @@ export const deleteProduct = async (id: string) => {
   return result;
 };
 
-export const changeProperties = async (id: string, body: any, img?: any) => {
-    const imgId = await Product.findById(id);
 
-    const imgDb = await uploadImage(img.tempFilePath);
-    
-
-    fs.unlink(img.tempFilePath, (err) => {
-      if (err) throw err;
-      console.log(`${img.tempFilePath} was deleted`);
-    });
-
-    if (imgId?.image.public_id) {
-      await deleteImage(imgId?.image.public_id);
-    }
-
-    const objeto = {
-      name: body.name,
-      rating: body.rating,
-      description: body.description,
-      price: body.price,
-      image: imgDb.public_id
-        ? {
-            public_id: imgDb.public_id,
-            secure_url: imgDb.secure_url,
-          }
-        : body.image,
-      stock: body.stock,
-      category: body.category,
-      colors: body.colors,
-      sizes: body.sizes,
-    };
-
-    const result = await Product.findOneAndUpdate({ _id: id }, objeto);
-
-    if (!result) {
-      throw new Error("No existe el producto");
-    }
-
-    return result;
-};
-
-//esta funcion te hace la peticion del put sin pasarle img.file
-export const changeProperties2 = async (id: string, body: any) => {
+export const changeProperties = async (id: string, body: any) => {
 
   const result = await Product.findOneAndUpdate({ _id: id }, body);
   if (!result) {
