@@ -8,13 +8,14 @@ import { DetailProduct } from "./componentes/DetailProduct";
 import ProductCards from "./componentes/ProductCards";
 import EditProduct from "./componentes/EditProduct";
 import AdminPanel from "./componentes/Admin/AdminPanel";
-
+import { ShoppingCartProvider } from "./componentes/ShoppingCart/ContextShoppingCart";
 import { useAppSelector, useAppDispatch } from "./hooks";
 import getObjectSession from "./funciones/getObjectSession";
 import { useEffect } from "react";
 import { setData } from "./redux/slices/UserSlice";
 import Confirmation from "./componentes/Confirmation";
 import Protected from "./componentes/auth/Protected";
+
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
   }, [dispatch]);
 
   return (
+    <ShoppingCartProvider>
     <div className="App flex flex-col items-center bg-[#FFFDE7]">
       <Routes>
         <Route path="/" element={<Home />} />
@@ -69,6 +71,7 @@ function App() {
         />
       </Routes>
     </div>
+    </ShoppingCartProvider>
   );
 }
 
