@@ -3,6 +3,7 @@ import { useAppDispatch, useAppSelector } from "../hooks";
 import { setFiltersAction } from "../redux/slices/FiltersSlice/filtersActions";
 import { getAllProducts } from "../redux/slices/ProductSlice/productActions";
 import { useNavigate } from "react-router-dom";
+import { BiSearchAlt } from "react-icons/bi";
 
 const Searchbar = () => {
   const [search, setSearch] = useState("");
@@ -24,19 +25,22 @@ const Searchbar = () => {
   };
 
   return (
-    <form onSubmit={submitHandler}>
+    <form
+      onSubmit={submitHandler}
+      className="flex flex-row rounded-md shadow-lg  bg-white border-0 border-b-2 border-black border-solid"
+    >
       <input
         type="text"
         onChange={changeHandler}
         value={search}
         placeholder="Buscar producto..."
-        className="text-base text-gray-900 p-2 pl-4 pr-4 rounded-3xl shadow-lg  border-0 border-b-2 border-black border-solid"
+        className="text-base text-gray-900 m-2 ml-4 mr-0 w-36"
       />
       <button
         type="submit"
-        className="text-base text-gray-900 p-2 pl-4 pr-4 bg-white ml-2 rounded-3xl duration-200 shadow-lg hover:bg-gray-200 hover:duration-300 border-b-2 border-black"
+        className="text-base text-gray-900 pl-3 pr-4 hover:bg-gray-200 rounded-br-md rounded-tr-md"
       >
-        Buscar
+        <BiSearchAlt className="h-6 w-6 text-gray-600" />
       </button>
     </form>
   );
