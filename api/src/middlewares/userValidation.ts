@@ -3,9 +3,8 @@ const { request } = require("http");
 const jwt = require("jsonwebtoken");
 
 module.exports = (req: Request, res: any, next: any) => {
-  console.log("User middleware");
   const authorization = req.get("authorization");
-  console.log(authorization)
+
   let token = null;
   if (authorization && authorization.toLocaleLowerCase().startsWith("bearer")) {
     token = authorization.split(" ")[1]; // obtenemos el token del authorization 'bearer token'
