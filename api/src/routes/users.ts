@@ -2,7 +2,7 @@ import { AnyMxRecord } from "dns";
 import { Router, Request, Response, response } from "express";
 import { sanitizeFilter } from "mongoose";
 import { isPlusToken } from "typescript";
-import { addNewUser, compareUsernames, getAllUser, getUser, updateEmail } from "../controllers/user/index";
+import { addNewUser, compareUsernames, getAllUser, getUser, updateEmail, updateUser } from "../controllers/user/index";
 import { User } from '../models/User'
 import { mailOptionsRegister, transporter } from "../transport";
 const nodemailer = require("nodemailer");
@@ -108,5 +108,15 @@ router.get("/isUser", userValidation, async (req: Request, res: Response) => {
     res.status(401).send("No admin");
   }
 });
+
+router.put("/:username", userValidation, async (req: Request, res: Response) => {
+  try {
+    const { username, name, email, birthday } = req.body;
+    updateUser(username, { username, name, email, birthday });
+    res.status(200).send('Ok')
+  } catch (error: any) {
+    res.status(500).send({ message: error.message })
+  }
+})
 
 export default router;

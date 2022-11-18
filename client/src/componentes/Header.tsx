@@ -5,7 +5,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 
 import { FaUserAlt } from "react-icons/fa";
 import Searchbar from "./Searchbar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Filters from "./Filters";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { setFiltersAction } from "../redux/slices/FiltersSlice/filtersActions";
@@ -23,6 +23,7 @@ const Header = () => {
   const dispatch = useAppDispatch();
   const filters = useAppSelector((state) => state.filterState.filters);
   const { username } = useAppSelector((state) => state.user);
+  const navigate = useNavigate()
 
   useEffect(() => {
     const session = getObjectSession();
@@ -72,6 +73,7 @@ const Header = () => {
                     localStorage.removeItem("userSession");
                     dispatch(clearData());
                     setDeploy(false);
+                    navigate('/')
                   }}
                 >
                   Cerrar Sesión

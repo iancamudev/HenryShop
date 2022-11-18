@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import ConfirmMailButton from "./ConfirmMailButton";
 
 export interface IUserShowProps {
@@ -16,7 +17,7 @@ interface IProps {
 const UserInfoShow = ({ user }: IProps) => {
   const { name, username, email, birthday, confirmed } = user;
   return (
-    <div className="w-9/12 max-w-sm p-4 m-auto mt-8 border border-black border-solid shadow-2xl rounded-lg bg-zinc-300">
+    <div className="w-9/12 max-w-sm p-4 m-auto my-8 border border-black border-solid shadow-2xl rounded-lg bg-zinc-300">
       <h1 className="flex items-center justify-center text-2xl">
         Perfíl de {name}
       </h1>
@@ -24,12 +25,14 @@ const UserInfoShow = ({ user }: IProps) => {
       <UserFields name="Nombre de usuario" value={username} />
       <UserFields name="E-Mail" value={email} />
       <UserFields name="Cumpleaños" value={birthday} />
-      <button
-        disabled={confirmed}
-        className="p-2 bg-yellow rounded-lg font-bold"
-      >
-        Editar Información
-      </button>
+      <Link to="/UserEdit">
+        <button
+          disabled={confirmed}
+          className="p-2 bg-yellow rounded-lg font-bold"
+        >
+          Editar Información
+        </button>
+      </Link>
       {confirmed ? null : <ConfirmMailButton />}
     </div>
   );
