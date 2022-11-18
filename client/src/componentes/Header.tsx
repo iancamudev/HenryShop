@@ -5,7 +5,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 
 import { FaUserAlt } from "react-icons/fa";
 import Searchbar from "./Searchbar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Filters from "./Filters";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { setFiltersAction } from "../redux/slices/FiltersSlice/filtersActions";
@@ -102,10 +102,12 @@ const Header = () => {
           <div className="p-4 flex flex-col text-left justify-start select-none">
             {username ? (
               <Link to="/User">
-                <h5>Ir al Perfil</h5>
+                <h5 className="pl-2 hover:pl-4 hover:delay-300 duration-300 font-bold hover:cursor-pointer">
+                  Ir al Perfil
+                </h5>
               </Link>
             ) : null}
-            <h5 className="pl-2 hover:pl-4 hover:delay-300 duration-300 font-bold hover:cursor-pointer">
+            <h5 className="pl-2 mt-4 hover:pl-4 hover:delay-300 duration-300 font-bold hover:cursor-pointer">
               Productos
             </h5>
             <h5

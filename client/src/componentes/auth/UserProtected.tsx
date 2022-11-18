@@ -16,10 +16,8 @@ const UserProtected = ({ children }: IProtectedProps) => {
     const session = window.localStorage.getItem("userSession");
     setDisplay(false);
     if (session) {
-      console.log("checking user...");
       axiosGetCall("/users/isUser")
         .then(() => {
-          console.log("yes user");
           setDisplay(true);
         })
         .catch(() => {
