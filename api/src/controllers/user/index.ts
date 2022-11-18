@@ -46,5 +46,22 @@ export const updateEmail = async (id: string) => {
 
 export const compareUsernames = async (username: string, token: string) => {
   const decodedToken = jwt.verify(token, process.env.SECRETKEY);
-  if (username !== decodedToken.username) throw new Error("No autorizado");
-};
+
+  if (username !== decodedToken.username)
+    throw new Error("No autorizado");
+}
+
+interface IUserChanges {
+  username: string;
+  name: string;
+  email: string;
+  birthday: string;
+}
+
+export const updateUser = async (oldUsername: string, { name, username, email, birthday }: IUserChanges) => {
+  const user = await User.findOneAndUpdate({ username: oldUsername }, {
+    name, username, email, birthday
+  })
+  return user;
+}
+

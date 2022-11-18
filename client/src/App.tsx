@@ -17,6 +17,8 @@ import Confirmation from "./componentes/Confirmation";
 import Protected from "./componentes/auth/Protected";
 import UserInfo from "./componentes/User/UserInfo";
 import UserProtected from "./componentes/auth/UserProtected";
+import Header from "./componentes/Header";
+import UserEdit from "./componentes/User/UserEdit";
 
 function App() {
   const { username } = useAppSelector((state) => state.user);
@@ -59,7 +61,21 @@ function App() {
             path="/User"
             element={
               <UserProtected>
-                <UserInfo />
+                <>
+                  <Header />
+                  <UserInfo />
+                </>
+              </UserProtected>
+            }
+          />
+          <Route
+            path="/UserEdit"
+            element={
+              <UserProtected>
+                <>
+                  <Header />
+                  <UserEdit />
+                </>
               </UserProtected>
             }
           />

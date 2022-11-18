@@ -5,7 +5,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 
 import { FaUserAlt } from "react-icons/fa";
 import Searchbar from "./Searchbar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Filters from "./Filters";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { setFiltersAction } from "../redux/slices/FiltersSlice/filtersActions";
@@ -23,13 +23,24 @@ const Header = () => {
   const dispatch = useAppDispatch();
   const filters = useAppSelector((state) => state.filterState.filters);
   const { username } = useAppSelector((state) => state.user);
+  const REACT_APP_BACKEND_URL:string = (process.env.REACT_APP_BACKEND_URL as string)
+
+  const logout = () => {
+    localStorage.removeItem("userSession");
+    dispatch(clearData());
+    setDeploy(false);
+    window.open(
+      `${REACT_APP_BACKEND_URL}/googleusers/google/logout`,
+      '_self'
+    );
+  };
 
   useEffect(() => {
     const session = getObjectSession();
     if (session) {
       dispatch(setData(session));
     }
-  }, [dispatch]);
+  });
 
   return (
     <nav className="flex flex-col sticky w-full">
@@ -67,12 +78,8 @@ const Header = () => {
                   <p>{username}</p>
                 </div>
                 <button
-                  className="bg-white duration-300 hover:bg-gray-200 hover:duration-300 p-1 rounded-md pl-2 pr-2 border-b-2 border-black font-medium text-base w-32 mt-2"
-                  onClick={() => {
-                    localStorage.removeItem("userSession");
-                    dispatch(clearData());
-                    setDeploy(false);
-                  }}
+                  className="bg-white duration-300 hover:bg-gray-200 hover:duration-300 p-2 rounded-3xl pl-4 pr-4 border-b-2 border-black"
+                  onClick={logout}
                 >
                   Cerrar Sesión
                 </button>
@@ -95,10 +102,12 @@ const Header = () => {
           <div className="p-4 flex flex-col text-left justify-start select-none">
             {username ? (
               <Link to="/User">
-                <h5>Ir al Perfil</h5>
+                <h5 className="pl-2 hover:pl-4 hover:delay-300 duration-300 font-bold hover:cursor-pointer">
+                  Ir al Perfil
+                </h5>
               </Link>
             ) : null}
-            <h5 className="pl-2 hover:pl-4 hover:delay-300 duration-300 font-bold hover:cursor-pointer">
+            <h5 className="pl-2 mt-4 hover:pl-4 hover:delay-300 duration-300 font-bold hover:cursor-pointer">
               Productos
             </h5>
             <h5
