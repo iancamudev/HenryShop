@@ -44,6 +44,31 @@ router.get("/confirmation/:token", async (req: Request, res: Response) => {
   }
 });
 
+// ruta para re-enviar el mail
+router.post('/confirmationSend', userValidation, async (req: Request, res: Response) => {
+  try {
+    console.log('confirmation resend')
+    const { email } = req.body;
+    const authorization = req.get("authorization");
+    let token = null;
+    if (authorization && authorization.toLocaleLowerCase().startsWith("bearer")) {
+      token = authorization.split(" ")[1]; // obtenemos el token del authorization 'bearer token'
+    }
+    const decodedToken = jwt.verify(token, process.env.SECRETKEY);
+    if (!token || !decodedToken.id) {
+      return res.status(401).json({ error: "token missing or invalid" });
+    }
+    transporter.sendMail(
+      mailOptionsRegister(email, token),
+      (err: any, info: any) =>
+        err ? console.log(err) : console.log(info.response)
+    );
+    return res.status(200).send('Ok')
+  } catch (error: any) {
+    return res.status(500).send({ message: error.message });
+  }
+});
+
 router.post("/login", async (req: Request, res: Response) => {
   const username = req.body.username;
   const password = req.body.password;

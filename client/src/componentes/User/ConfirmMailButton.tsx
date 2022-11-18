@@ -1,8 +1,15 @@
 import React from "react";
+import axiosPostCall from "../../funciones/axiosPostCall";
 
-function ConfirmMailButton() {
+interface IProps {
+  email: string;
+}
+
+function ConfirmMailButton({ email }: IProps) {
   const sendMailHandler = () => {
-    
+    axiosPostCall("/users/confirmationSend", { email })
+      .then((response) => console.log(response))
+      .catch((e) => console.log(e));
   };
 
   return (
