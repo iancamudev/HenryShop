@@ -6,9 +6,9 @@ import {
 } from '../controllers/googleUser/index';
 import {googleUser} from '../Types';
 import passport from 'passport';
+const jwt = require("jsonwebtoken");
 
 const CLIENT_URL:string = (process.env.CLIENT_URL as string);
-console.log(CLIENT_URL);
 const routes = Router();
 
 routes.post('/', async (req: Request, res:Response)=>{
@@ -30,13 +30,19 @@ routes.get('/admin', async (req: Request, res:Response)=> {
 	}
 });
 
-routes.get('/login/success', (req:Request, res:Response)=>{
-	console.log(req.user);
+routes.get('/login/success', async (req:Request, res:Response)=>{
 	if(req.user){
+		console.log('hay usuario');
+		let newUser: string= JSON.stringify(req.user);
+		let newUser2: any = (JSON.parse(newUser) as object);
+		const user = await getGoogleUserById(newUser2.id);
+		const user2 = user? user: {name: '', email: '', id: ''};
+		const userForToken = { id: user2.id, email: user2.email, google: true };
+    const token = jwt.sign(userForToken, process.env.SECRETKEY);
 		res.status(200).json({
 			error:false,
 			message: "login succesful",
-			user: req.user,
+			user: { name: user2.name, token: token },
 		})
 	}
 });
@@ -46,10 +52,27 @@ routes.get('/login/failed', (req:Request, res:Response) => {
 })
 
 routes.get('/google/callback', passport.authenticate('google',{
-		successRedirect: CLIENT_URL,
 		failureRedirect: '/login/failed',
 	}
-))
+),(req:Request, res:Response) => {
+		try{
+			let newUser: string= JSON.stringify(req.user);
+			let newUser2: any = (JSON.parse(newUser) as object);
+			console.log(newUser2.emails[0].value);
+			const newUserObj:googleUser | null = typeof newUser2 === 'object'? {
+				name: newUser2.displayName,
+				googleId: newUser2.id,
+				email: newUser2.emails[0].value,
+				birthday:null,
+				isAdmin:false,
+			}: null;
+			const result:object | null = typeof newUserObj !== null? addNewGoogleUser((newUserObj as googleUser)): null;
+			res.redirect(CLIENT_URL);
+		}catch(error:any){
+			console.log(error.message);
+			res.redirect(CLIENT_URL);
+		}
+})
 
 routes.get('/google', passport.authenticate('google', {scope: ['google', 'email']}));
 

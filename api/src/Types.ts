@@ -27,7 +27,9 @@ export interface shopping {
 export interface googleUser {
   name: String;
   email: String;
-  birthday: Date;
+  googleId: String;
+  birthday: Date | null;
+  isAdmin: Boolean;
 }
 
 export interface category{

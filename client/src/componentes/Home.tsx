@@ -1,5 +1,5 @@
-<<<<<<< HEAD
-import React, {useState, useEffect} from "react";
+
+import React, {useState, useEffect, lazy} from "react";
 import Pagination from "./Pagination";
 import ProductCards from "./ProductCards";
 import Header from "./Header";
@@ -14,19 +14,18 @@ const Home = () => {
     try{
       const url = `${REACT_APP_BACKEND_URL}/googleusers/login/success`;
       const {data} = await axios.get(url, {withCredentials:true});
-      setGoogleUser(data.user._json);
+      window.localStorage.setItem('userSession', JSON.stringify({...data.user, username: data.user.name.split(' ')[0]}));
+      setGoogleUser(data);
     }catch(error:any){
       console.log(error);
     }
   };
 
-  useEffect(() => {
-      const logged = window.localStorage.getItem("userSession");
-      if (logged) {
-        console.log(JSON.parse(logged));
-      }
+  useEffect(()=>{
+    getUser();
+    
   }, []);
-  
+
   return (
     <>
       <Header />

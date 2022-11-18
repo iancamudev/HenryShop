@@ -7,7 +7,6 @@ import Filters from "./Filters";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { setFiltersAction } from "../redux/slices/FiltersSlice/filtersActions";
 import getObjectSession from "../funciones/getObjectSession";
-
 import { setData, clearData } from "../redux/slices/UserSlice";
 
 const Header = () => {
@@ -19,8 +18,11 @@ const Header = () => {
   const REACT_APP_BACKEND_URL:string = (process.env.REACT_APP_BACKEND_URL as string)
 
   const logout = () => {
+    localStorage.removeItem("userSession");
+    dispatch(clearData());
+    setDeploy(false);
     window.open(
-      `${REACT_APP_BACKEND_URL}/googleusers/logout`,
+      `${REACT_APP_BACKEND_URL}/googleusers/google/logout`,
       '_self'
     );
   };
@@ -30,7 +32,7 @@ const Header = () => {
     if (session) {
       dispatch(setData(session));
     }
-  }, [dispatch]);
+  });
 
   return (
     <nav className="flex flex-col sticky w-full">
