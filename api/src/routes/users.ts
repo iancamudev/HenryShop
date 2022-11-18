@@ -61,7 +61,7 @@ router.get("/:username", userValidation, async (req: Request, res: Response) => 
     // const authorization = req.get("authorization");
     // const token = authorization?.split(" ")[1] as string;
     // compareUsernames(username, token);
-    const user = getUser(username);
+    const user = await getUser(username);
     res.status(200).send({ user })
   } catch (error: any) {
     res.status(500).send({ message: error.message })

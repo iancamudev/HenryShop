@@ -95,10 +95,12 @@ const Header = () => {
           <div className="p-4 flex flex-col text-left justify-start select-none">
             {username ? (
               <Link to="/User">
-                <h5>Ir al Perfil</h5>
+                <h5 className="pl-2 hover:pl-4 hover:delay-300 duration-300 font-bold hover:cursor-pointer">
+                  Ir al Perfil
+                </h5>
               </Link>
             ) : null}
-            <h5 className="pl-2 hover:pl-4 hover:delay-300 duration-300 font-bold hover:cursor-pointer">
+            <h5 className="pl-2 mt-4 hover:pl-4 hover:delay-300 duration-300 font-bold hover:cursor-pointer">
               Productos
             </h5>
             <h5
