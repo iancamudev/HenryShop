@@ -112,10 +112,12 @@ router.get("/isUser", userValidation, async (req: Request, res: Response) => {
 router.put("/:username", userValidation, async (req: Request, res: Response) => {
   try {
     const { username, name, email, birthday } = req.body;
-    updateUser(username, { username, name, email, birthday });
-    res.status(200).send('Ok')
+    const updated = updateUser(username, { username, name, email, birthday });
+    if (!updated)
+      throw new Error('Usuario no encontrado');
+    res.status(200).send('Ok');
   } catch (error: any) {
-    res.status(500).send({ message: error.message })
+    res.status(500).send({ message: error.message });
   }
 })
 

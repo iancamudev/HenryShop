@@ -25,7 +25,15 @@ const UserInfoShow = ({ user }: IProps) => {
       <UserFields name="Nombre de usuario" value={username} />
       <UserFields name="E-Mail" value={email} />
       <UserFields name="Cumpleaños" value={birthday} />
-      <Link to="/UserEdit">
+      <Link
+        to="/UserEdit"
+        state={{
+          username,
+          name,
+          email,
+          birthday,
+        }}
+      >
         <button
           disabled={confirmed}
           className="p-2 bg-yellow rounded-lg font-bold"

@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import dayjs, { Dayjs } from "dayjs";
@@ -25,7 +25,6 @@ interface IFormData {
 const schema = yup
   .object({
     name: yup.string().default("a").required("Este campo es obligatorio"),
-    // .email("Debe ser un mail valido"),
     username: yup.string().required("Este campo es obligatorio"),
     email: yup
       .string()
@@ -38,17 +37,24 @@ const UserEdit = () => {
   const navigate = useNavigate();
   const [result, setResult] = useState("");
 
+  const location = useLocation();
+  const { username, name, email, birthday } = location.state;
+
   const [newBirthday, setNewBirthday] = React.useState<Dayjs | null>(
-    dayjs(new Date("2022-10-5"))
+    dayjs(new Date(birthday))
   );
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm<IFormData>({
     resolver: yupResolver(schema),
   });
+  setValue("name", name);
+  setValue("username", username);
+  setValue("email", email);
 
   const handleDateChange = (newValue: Dayjs | null) => {
     setNewBirthday(newValue);
@@ -64,7 +70,7 @@ const UserEdit = () => {
       birthday,
     })
       .then(({ data }) => {
-        navigate('/User');
+        navigate("/User");
       })
       .catch((e) => setResult(e.message));
   });
