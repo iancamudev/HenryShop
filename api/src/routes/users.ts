@@ -61,6 +61,14 @@ router.post("/login", async (req: Request, res: Response) => {
   }
 });
 
+router.get("/isAdmin", adminValidation, async (req: Request, res: Response) => {
+  console.log('yep admin')
+  try {
+    res.status(200).send("ok");
+  } catch (error: any) {
+    res.status(401).send("No admin");
+  }
+});
 
 router.get("/:username", userValidation, async (req: Request, res: Response) => {
   try {
@@ -74,7 +82,7 @@ router.get("/:username", userValidation, async (req: Request, res: Response) => 
   } catch (error: any) {
     res.status(500).send({ message: error.message })
   }
-);
+});
 
 router.get("/admin", async (req: Request, res: Response) => {
   try {
@@ -94,29 +102,21 @@ router.get("/admin/:username", async (req: Request, res: Response) => {
     result !== null
       ? res.status(200).json(result)
       : res.status(404).json({
-          error_message: "Ningún usuario encontrado con ese username",
-        });
+        error_message: "Ningún usuario encontrado con ese username",
+      });
   } catch (error: any) {
     res.status(500).json({ error_message: error.message });
   }
 });
 
-router.get("/isAdmin", adminValidation, async (req: Request, res: Response) => {
-  try {
-    res.status(200).send("ok");
-  } catch (error: any) {
-    res.status(401).send("No admin");
-  }
-});
-
 router.get("/isUser", userValidation, async (req: Request, res: Response) => {
+  console.log('yep user')
   try {
     res.status(200).send("ok");
   } catch (error: any) {
     res.status(401).send("No admin");
   }
 });
-
 
 router.put("/:username", userValidation, async (req: Request, res: Response) => {
   try {
