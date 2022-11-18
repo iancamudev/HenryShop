@@ -23,13 +23,24 @@ const Header = () => {
   const dispatch = useAppDispatch();
   const filters = useAppSelector((state) => state.filterState.filters);
   const { username } = useAppSelector((state) => state.user);
+  const REACT_APP_BACKEND_URL:string = (process.env.REACT_APP_BACKEND_URL as string)
+
+  const logout = () => {
+    localStorage.removeItem("userSession");
+    dispatch(clearData());
+    setDeploy(false);
+    window.open(
+      `${REACT_APP_BACKEND_URL}/googleusers/google/logout`,
+      '_self'
+    );
+  };
 
   useEffect(() => {
     const session = getObjectSession();
     if (session) {
       dispatch(setData(session));
     }
-  }, [dispatch]);
+  });
 
   return (
     <nav className="flex flex-col sticky w-full">
@@ -67,12 +78,8 @@ const Header = () => {
                   <p>{username}</p>
                 </div>
                 <button
-                  className="bg-white duration-300 hover:bg-gray-200 hover:duration-300 p-1 rounded-md pl-2 pr-2 border-b-2 border-black font-medium text-base w-32 mt-2"
-                  onClick={() => {
-                    localStorage.removeItem("userSession");
-                    dispatch(clearData());
-                    setDeploy(false);
-                  }}
+                  className="bg-white duration-300 hover:bg-gray-200 hover:duration-300 p-2 rounded-3xl pl-4 pr-4 border-b-2 border-black"
+                  onClick={logout}
                 >
                   Cerrar Sesión
                 </button>

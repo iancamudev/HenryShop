@@ -2,6 +2,9 @@ import express from "express";
 import dotenv from "dotenv";
 import routes from "./routes/index";
 import morgan from "morgan";
+import cookieSession from "cookie-session";
+const passport = require('passport');
+require('./passport.ts');
 
 dotenv.config();
 export const server = express();
@@ -23,6 +26,15 @@ server.use((_req, res, next) => {
   res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
   next();
 });
+
+server.use(cookieSession({
+  name: "Session",
+  keys: ["HenryShop"],
+  maxAge: 24*60*60^100,
+}));
+
+server.use(passport.initialize());
+server.use(passport.session());
 
 server.use("/", routes);
 
