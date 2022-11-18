@@ -41,7 +41,7 @@ const UserInfoShow = ({ user }: IProps) => {
           Editar Información
         </button>
       </Link>
-      {confirmed ? null : <ConfirmMailButton />}
+      {confirmed ? null : <ConfirmMailButton email={email} />}
     </div>
   );
 };
