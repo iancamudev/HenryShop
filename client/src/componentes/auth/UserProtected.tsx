@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axiosGetCall from "../../funciones/axiosGetCall";
 import { back_url } from "../../variables";
 
@@ -8,29 +8,28 @@ interface IProtectedProps {
   children: JSX.Element;
 }
 
-const Protected = ({ children }: IProtectedProps) => {
+const UserProtected = ({ children }: IProtectedProps) => {
   const [display, setDisplay] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     const session = window.localStorage.getItem("userSession");
-    setDisplay(false)
+    setDisplay(false);
     if (session) {
-      console.log('checking admin...')
-      axiosGetCall('/users/isAdmin')
+      axiosGetCall("/users/isUser")
         .then(() => {
-          console.log('yes admin')
           setDisplay(true);
         })
         .catch(() => {
-          navigate("/");
+          navigate("/unauthorized");
         });
-    }else{
-      navigate('/')
+    } else {
+      navigate("/unauthorized");
     }
-  }, [setDisplay, navigate]);
+  }, [setDisplay, navigate, children]);
 
-  return <>{display ? children : <>Checking if admin</>}</>;
+  // Replace with loader
+  return <>{display ? children : <>Checking if User</>}</>;
 };
 
-export default Protected;
+export default UserProtected;

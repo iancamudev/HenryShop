@@ -1,5 +1,6 @@
-import { user } from '../../Types';
-import { User } from '../../models/User'
+import { user } from "../../Types";
+import { User } from "../../models/User";
+const jwt = require("jsonwebtoken");
 
 export const addNewUser = async (user: user) => {
   if (
@@ -13,9 +14,7 @@ export const addNewUser = async (user: user) => {
   }
   const userFind = await User.findOne({ name: user.username });
   if (!userFind) {
-    let newUser = await User.create(
-      { ...user }
-    )
+    let newUser = await User.create({ ...user });
     return newUser;
   } else {
     throw new Error("Username ingresado ya existe");
@@ -28,13 +27,14 @@ export const getAllUser = async () => {
   const resultUsers: object = await User.paginate({ deleted: false });
   console.log(typeof resultUsers);
   return resultUsers;
-}
+};
 
 export const getUser = async (username: string) => {
   const resultUser = await User.findOne({ username: username }).exec();
   console.log("result: ", resultUser);
   return resultUser;
-}
+};
+
 export const updateEmail = async (id: string) => {
   const result = await User.findOneAndUpdate({ _id: id }, { confirmed: true });
 
@@ -43,3 +43,25 @@ export const updateEmail = async (id: string) => {
   }
   return result;
 };
+
+export const compareUsernames = async (username: string, token: string) => {
+  const decodedToken = jwt.verify(token, process.env.SECRETKEY);
+
+  if (username !== decodedToken.username)
+    throw new Error("No autorizado");
+}
+
+interface IUserChanges {
+  username: string;
+  name: string;
+  email: string;
+  birthday: string;
+}
+
+export const updateUser = async (oldUsername: string, { name, username, email, birthday }: IUserChanges) => {
+  const user = await User.findOneAndUpdate({ username: oldUsername }, {
+    name, username, email, birthday
+  })
+  return user;
+}
+
