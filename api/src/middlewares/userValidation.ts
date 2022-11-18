@@ -1,8 +1,9 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 const { request } = require("http");
 const jwt = require("jsonwebtoken");
 
-module.exports = (req: Request, res: any, next: any) => {
+module.exports = (req: Request, res: Response, next: NextFunction) => {
+  console.log('user validation')
   const authorization = req.get("authorization");
 
   let token = null;
@@ -14,5 +15,6 @@ module.exports = (req: Request, res: any, next: any) => {
     return res.status(401).json({ error: "token missing or invalid" });
   }
   const { id } = decodedToken;
-  next();
+  console.log('todo correcto')
+  return next();
 };

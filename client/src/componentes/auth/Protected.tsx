@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import {  useNavigate } from "react-router-dom";
+import axiosGetCall from "../../funciones/axiosGetCall";
 import { back_url } from "../../variables";
 
 interface IProtectedProps {
@@ -16,13 +17,7 @@ const Protected = ({ children }: IProtectedProps) => {
     setDisplay(false)
     if (session) {
       console.log('checking admin...')
-      const { token } = JSON.parse(session);
-      axios
-        .get(`${back_url}/users/isAdmin`, {
-          headers: {
-            authorization: `bearer ${token}`,
-          },
-        })
+      axiosGetCall('/users/isAdmin')
         .then(() => {
           console.log('yes admin')
           setDisplay(true);
@@ -33,7 +28,7 @@ const Protected = ({ children }: IProtectedProps) => {
     }else{
       navigate('/')
     }
-  }, [setDisplay, navigate, children]);
+  }, [setDisplay, navigate]);
 
   return <>{display ? children : <>Checking if admin</>}</>;
 };
