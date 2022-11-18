@@ -1,14 +1,16 @@
 import React from "react";
 import henryImg from "../../assets/logoHenryBlack.png";
 import RegisterForm from "./RegisterForm";
-import { GoogleLogin } from '@react-oauth/google';
 import jwt_decode from "jwt-decode";
 
 const Register = () => {
 
-  const handleGoogleSucces = (credentialResponse: any) => {
-    const information = jwt_decode(`${credentialResponse.credential}`);
-    // axios.post({name, email, brthday});
+  const googleAuth = () => {
+    const REACT_APP_BACKEND_URL:string = (process.env.REACT_APP_BACKEND_URL as string);
+    window.open(
+      `${REACT_APP_BACKEND_URL}/googleusers/google/callback`,
+      '_self'
+    );
   }
 
   return (
@@ -17,12 +19,9 @@ const Register = () => {
       <img src={henryImg} alt="Logo de Henry" className="w-3/4" />
       <h3>Regístrate</h3>
       <RegisterForm />
-      <GoogleLogin
-        onSuccess={handleGoogleSucces}
-        onError={() => {
-          console.log('Login Failed');
-        }}
-      />;
+      <button onClick = {googleAuth}>
+        Regístrate con Google
+      </button>
     </div>
   );
 };
