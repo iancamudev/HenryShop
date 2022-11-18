@@ -4,6 +4,7 @@ import Pagination from "./Pagination";
 import ProductCards from "./ProductCards";
 import Header from "./Header";
 import axios from "axios";
+import Filters from "./Filters";
 
 const Home = () => {
   const[googleUser, setGoogleUser] = useState(null);
@@ -29,6 +30,7 @@ const Home = () => {
   return (
     <>
       <Header />
+      <Filters />
       <ProductCards />
       <Pagination />
     </>

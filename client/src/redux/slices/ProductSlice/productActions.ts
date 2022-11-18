@@ -7,6 +7,8 @@ import { getProductList, getProductPages, getProductDetail } from "./index";
 
 export const URL_BACK_DEV: string = (process.env.REACT_APP_BACKEND_URL as string)
 
+console.log(URL_BACK_DEV);
+
 export const getAllProducts =
   (page?: number | null, filters?: Filters) => (dispatch: AppDispatch) => {
     let url = `${URL_BACK_DEV}/products${page ? `?page=${page}` : "?page="}${
