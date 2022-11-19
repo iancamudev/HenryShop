@@ -70,7 +70,7 @@ const UserEdit = () => {
       email,
       birthday,
     }).then(({ data }) => {
-      // window.localStorage.removeItem("userSession");
+      
       const newToken = JSON.stringify(data)
       window.localStorage.setItem("userSession", newToken );
         navigate("/");
