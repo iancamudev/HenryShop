@@ -17,7 +17,7 @@ const ProductCard: React.FC<CardProps> = ({ product }: CardProps) => {
   const { id } = product
 
   const quantity = getItemQuantity(id);
-  console.log(quantity)
+  
 
   return (
     <div className="flex flex-col bg-gray-300  ml-10 mr-10 p-10 mt-6 mb-6 delay-75 hover:bg-gray-400 hover:scale-105 hover:duration-300  duration-300 rounded hover:cursor-pointer">
