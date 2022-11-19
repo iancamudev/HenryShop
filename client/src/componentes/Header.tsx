@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import logo from "../assets/logoHenryBlack.png";
 import logoMobile from "../assets/hernyLogoSmall.png";
 import { GiHamburgerMenu } from "react-icons/gi";
-
 import { FaUserAlt } from "react-icons/fa";
 import Searchbar from "./Searchbar";
 import { Link, useNavigate } from "react-router-dom";
@@ -53,7 +52,31 @@ const Header = () => {
           />
         </Link>
         <Searchbar />
-        <GiHamburgerMenu
+        <div className="inline-flex space-x-28">
+          <div className="flex-1">
+          {cartQuantity > 0 && (
+          <Button 
+          onClick={openCart}
+          className="bg-transparent hover:bg-white text-black-700 font-semibold hover:text-yellow-200 py-2 px-4 border border-black hover:border-transparent rounded-full" 
+          style={{width: "4rem", position: "absolute"}}
+          >
+          <ShoppingCartIcon />
+          <div className="rounded-circle bg-red-500 d-flex justify-content-center align-items-center rounded-full"
+          style={{
+            color: "black",
+            width: "1.5rem",
+            height: "1.5 rem",
+            position: "absolute",
+            bottom: 0,
+            right: 0,
+            transform: "translate(25%, 25%",
+          }}
+          >{cartQuantity}
+          </div>
+          </Button>)}
+          </div>
+          <div className="flex-1 ">
+          <GiHamburgerMenu
           onClick={() => {
             setDeploy(!deploy);
           }}
@@ -62,7 +85,7 @@ const Header = () => {
               ? "-rotate-90 h-8 w-auto cursor-pointer duration-300"
               : "h-8 w-auto cursor-pointer duration-300"
           }
-        />
+          /></div></div>        
       </div>
       {deploy && (
         <div
@@ -153,31 +176,6 @@ const Header = () => {
             <h5 className=" hover:delay-300 pl-2 hover:pl-4 duration-300 font-bold mt-4  hover:cursor-pointer">
               Sobre nosotros
             </h5>
-          </div>
-          <div className="flex px-10">
-            {cartQuantity > 0 && (
-              <Button
-                onClick={openCart}
-                className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded-full"
-                style={{ width: "4rem", position: "absolute" }}
-              >
-                <ShoppingCartIcon />
-                <div
-                  className="rounded-circle bg-red-500 d-flex justify-content-center align-items-center rounded-full"
-                  style={{
-                    color: "black",
-                    width: "1.5rem",
-                    height: "1.5 rem",
-                    position: "absolute",
-                    bottom: 0,
-                    right: 0,
-                    transform: "translate(25%, 25%",
-                  }}
-                >
-                  {cartQuantity}
-                </div>
-              </Button>
-            )}
           </div>
         </div>
       )}
