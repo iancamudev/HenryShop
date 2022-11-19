@@ -21,6 +21,7 @@ module.exports = async (req: any, res: any, next: any) => {
     if (decodedToken) {
       user = await User.findOne({ _id: decodedToken.id });
     }
+    console.log('usuario is admin?: ', user)
     if(!user){
       user = await GoogleUser.findOne({ email: decodedToken.email });
     }
