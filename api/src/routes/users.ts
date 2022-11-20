@@ -165,8 +165,6 @@ router.get("/isUser", userValidation, async (req: Request, res: Response) => {
   }
 });
 
-
-
 router.put("/", userValidation, async (req: Request, res: Response) => {
   try {
     const body = req.body;
@@ -185,6 +183,6 @@ router.put("/", userValidation, async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(500).send({ message: error.message });
   }
-);
+});
 
 export default router;
