@@ -25,10 +25,21 @@ routes.get("/admin", async (req: Request, res: Response) => {
   try {
     const { name } = req.query;
     if (name && typeof name === "string") {
+
       const findName = await findByName(name);
-      res.status(200).send(findName);
+      
+      if(!findName.docs.length){
+        res.status(200).send("No se encontro el producto con ese nombre");
+      }
+      else {
+        res.status(200).send(findName);
+      }
+      
     } else {
       const result = await getAllProductsAdmin();
+      if(!result.docs){
+        res.status(200).send("No se encontraron productos");
+      }
       res.status(200).send(result);
     }
   } catch (error) {
