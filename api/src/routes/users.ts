@@ -107,7 +107,8 @@ router.get("/:username", userValidation, async (req: Request, res: Response) => 
   } catch (error: any) {
     res.status(500).send({ message: error.message })
   }
-});
+}
+);
 
 router.get("/admin", async (req: Request, res: Response) => {
   try {
@@ -143,13 +144,21 @@ router.get("/isUser", userValidation, async (req: Request, res: Response) => {
   }
 });
 
-router.put("/:username", userValidation, async (req: Request, res: Response) => {
+
+router.put("/", userValidation, async (req: Request, res: Response) => {
   try {
-    const { username, name, email, birthday } = req.body;
-    const updated = updateUser(username, { username, name, email, birthday });
+    const body = req.body;
+    const authorization = req.get("authorization");
+    let token: string | undefined= authorization?.split(" ")[1]; 
+    
+    const decodedToken = jwt.verify(token, process.env.SECRETKEY);
+    const id = decodedToken.id;
+    const updated = await updateUser(body, id);
+    
     if (!updated)
       throw new Error('Usuario no encontrado');
-    res.status(200).send('Ok');
+    
+    res.status(200).send(updated);
   } catch (error: any) {
     res.status(500).send({ message: error.message });
   }

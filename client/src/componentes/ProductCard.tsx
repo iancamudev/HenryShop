@@ -19,7 +19,7 @@ const ProductCard: React.FC<CardProps> = ({ product }: CardProps) => {
   const [variante, setVariante] = useState(Products.find(i => i.id === product.id)?.sizes ? Products.find(i => i.id === product.id)?.sizes[0] as string : "")
   const [quantity, setQuantity] = useState(1)
   const { id } = product
-  //const quantity = getItemQuantity(id);
+
   
   function getQuantityMinus(e: any){
     e.preventDefault();
@@ -55,20 +55,19 @@ const ProductCard: React.FC<CardProps> = ({ product }: CardProps) => {
   }
 
   return (
-    <div className="flex flex-col bg-gray-300  ml-10 mr-10 p-10 mt-6 mb-6 delay-75 hover:bg-gray-400 hover:scale-105 hover:duration-300  duration-300 rounded hover:cursor-pointer">
+   
+    <div className="flex flex-col border border-gray-400 bg-white shadow-lg    mt-6 mb-6 delay-75 hover:bg-gray-300 hover:scale-105 hover:duration-300  duration-300 rounded-md hover:cursor-pointer">
       {product && (
         <>
-          <Link to={`/products/${product.id}`}>
-            <h5 className="w-64 font-bold mb-4">{product.name}</h5>
-          </Link>
+         <Link to={`/products/${product.id}`}>
+                <img className="rounded-tl-md rounded-tr-md w-64 border-b-2 border-solid border-gray-100" src={product.image} alt={`${product.name}_image`} />
+          <h6 className="pl-2 flex items-start font-medium mt-1 text-2xl ">${product.price}</h6>
 
-      <img className="w-64" src={product.image} alt={`${product.name}_image`} />
-          <h6 className="flex items-start font-bold mt-4">
-            Talles: {product.sizes ? product.sizes.join(", ") : product.sizes}
-          </h6>
-          <h6 className="flex items-start">${product.price}</h6>
+          <h5 className="pl-2 mb-4 flex items-start w-64 font-light	 ">{product.name}</h5>
+
+      {/* <div className="d-flex mt-auto"> */}
       
-      
+        </Link>
           {
         <div className="relative w-[100%]">
         <input type="checkbox" className="absolute opacity-0 peer px-10 inline-flex aboslute inset-x-0 w-full h-12 z-10 cursor-pointer"></input>
@@ -127,6 +126,7 @@ const ProductCard: React.FC<CardProps> = ({ product }: CardProps) => {
       
       }
     </div>
+  
   );
 };
 

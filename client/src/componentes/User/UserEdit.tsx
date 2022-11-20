@@ -59,18 +59,21 @@ const UserEdit = () => {
   const handleDateChange = (newValue: Dayjs | null) => {
     setNewBirthday(newValue);
   };
-
+  
   const handlerSubmit = handleSubmit(({ username, name, email }) => {
     setResult("");
     const birthday = newBirthday?.format("YYYY-MM-DD");
-    axiosPutCall(`/users/${username}`, {
+    
+    axiosPutCall(`/users`, {
       username,
       name,
       email,
       birthday,
-    })
-      .then(({ data }) => {
-        navigate("/User");
+    }).then(({ data }) => {
+      
+      const newToken = JSON.stringify(data)
+      window.localStorage.setItem("userSession", newToken );
+        navigate("/");
       })
       .catch((e) => setResult(e.message));
   });

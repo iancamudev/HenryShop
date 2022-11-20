@@ -20,7 +20,7 @@ const UserInfo = () => {
     if (username)
       axiosGetCall(`/users/${username}`)
         .then(({ data }) => {
-          console.log(data);
+          
           const { name, username, email, birthday, confirmed } = data.user;
           setInfo({ name, username, email, birthday, confirmed });
           setDisplay(true);
