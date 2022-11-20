@@ -39,6 +39,7 @@ const Header = () => {
  
   const logout = () => {
     localStorage.removeItem("userSession");
+    localStorage.removeItem("Shoping-cart");
     dispatch(clearData());
     setDeploy(false);
     window.open(
