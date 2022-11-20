@@ -35,47 +35,46 @@ const Header = () => {
   const dispatch = useAppDispatch();
   const filters = useAppSelector((state) => state.filterState.filters);
   const { username } = useAppSelector((state) => state.user);
-  const REACT_APP_BACKEND_URL:string = (process.env.REACT_APP_BACKEND_URL as string)
- 
+  const REACT_APP_BACKEND_URL: string = process.env
+    .REACT_APP_BACKEND_URL as string;
+
   const logout = () => {
     localStorage.removeItem("userSession");
     dispatch(clearData());
     setDeploy(false);
-    window.open(
-      `${REACT_APP_BACKEND_URL}/googleusers/google/logout`,
-      '_self'
-    );
+    window.open(`${REACT_APP_BACKEND_URL}/googleusers/google/logout`, "_self");
   };
-  const token =  JSON.parse(window.localStorage.getItem('userSession') as string);
-  
+  const token = JSON.parse(
+    window.localStorage.getItem("userSession") as string
+  );
+
   const [userProps, setUserProps] = useState<userMod>({
     birthday: "",
-  confirmed: false,
-  deleted: false,
-  email: "",
-  id: "",
-  isAdmin: false,
-  name: "",
-  password: "",
-  username: "",
+    confirmed: false,
+    deleted: false,
+    email: "",
+    id: "",
+    isAdmin: false,
+    name: "",
+    password: "",
+    username: "",
   });
   // let userData;
   const getUser = async () => {
-      
-    const result = await axios.get(`${REACT_APP_BACKEND_URL}/users/getuser/${token?.username}`);
+    const result = await axios.get(
+      `${REACT_APP_BACKEND_URL}/users/getuser/${token?.username}`
+    );
     setUserProps(result.data);
-  }
-   
+  };
+
   useEffect(() => {
     const session = getObjectSession();
-    getUser()
+    getUser();
     if (session) {
       dispatch(setData(session));
-      
     }
-    
   }, [dispatch]);
-  
+
   return (
     <nav className="flex flex-col sticky w-full">
       <div className=" h-16 bg-yellow flex justify-between items-center pr-4 pl-4">
@@ -88,40 +87,19 @@ const Header = () => {
         </Link>
         <Searchbar />
         <div className="inline-flex space-x-28">
-          <div className="flex-1">
-          {cartQuantity > 0 && (
-          <Button 
-          onClick={openCart}
-          className="bg-transparent hover:bg-white text-black-700 font-semibold hover:text-yellow-200 py-2 px-4 border border-black hover:border-transparent rounded-full" 
-          style={{width: "4rem", position: "absolute"}}
-          >
-          <ShoppingCartIcon />
-          <div className="rounded-circle bg-red-500 d-flex justify-content-center align-items-center rounded-full"
-          style={{
-            color: "black",
-            width: "1.5rem",
-            height: "1.5 rem",
-            position: "absolute",
-            bottom: 0,
-            right: 0,
-            transform: "translate(25%, 25%",
-          }}
-          >{cartQuantity}
-          </div>
-          </Button>)}
-          </div>
-
           <div className="flex-1 ">
-          <GiHamburgerMenu
-          onClick={() => {
-            setDeploy(!deploy);
-          }}
-          className={
-            deploy
-              ? "-rotate-90 h-8 w-auto cursor-pointer duration-300"
-              : "h-8 w-auto cursor-pointer duration-300"
-          }
-          /></div></div>        
+            <GiHamburgerMenu
+              onClick={() => {
+                setDeploy(!deploy);
+              }}
+              className={
+                deploy
+                  ? "-rotate-90 h-8 w-auto cursor-pointer duration-300"
+                  : "h-8 w-auto cursor-pointer duration-300"
+              }
+            />
+          </div>
+        </div>
       </div>
       {deploy && (
         <div
@@ -159,14 +137,44 @@ const Header = () => {
             )}
           </div>
           <div>
-            { userProps && userProps.isAdmin === true ? 
-            <Link to="/admin">
-            <h4 className="pl-2 hover:pl-4 hover:delay-300 duration-300 font-bold hover:cursor-pointer">
-              Panel de admin
-            </h4>
-          </Link>:<div></div>}
+            {userProps && userProps.isAdmin === true ? (
+              <Link to="/admin">
+                <h4 className="pl-2 hover:pl-4 hover:delay-300 duration-300 font-bold hover:cursor-pointer">
+                  Panel de admin
+                </h4>
+              </Link>
+            ) : (
+              <div></div>
+            )}
           </div>
+
           <div className="p-4 flex flex-col text-left justify-start select-none">
+            {/* Carrito */}
+            {cartQuantity > 0 && (
+              <div className="flex-1">
+                <Button
+                  onClick={openCart}
+                  className="bg-transparent hover:bg-white text-black-700 font-semibold hover:text-yellow-200 py-2 px-4 border border-black hover:border-transparent rounded-full"
+                  style={{ width: "4rem", position: "absolute", right: "2rem" }}
+                >
+                  <ShoppingCartIcon />
+                  <div
+                    className="rounded-circle bg-red-500 d-flex justify-content-center align-items-center rounded-full"
+                    style={{
+                      color: "black",
+                      width: "1.5rem",
+                      height: "1.5 rem",
+                      position: "absolute",
+                      bottom: 0,
+                      right: 0,
+                      transform: "translate(25%, 25%)",
+                    }}
+                  >
+                    {cartQuantity}
+                  </div>
+                </Button>
+              </div>
+            )}
             {username ? (
               <Link to="/User">
                 <h5 className="pl-2 hover:pl-4 hover:delay-300 duration-300 font-bold hover:cursor-pointer">
@@ -174,9 +182,11 @@ const Header = () => {
                 </h5>
               </Link>
             ) : null}
-            <h5 className="pl-2 mt-4 hover:pl-4 hover:delay-300 duration-300 font-bold hover:cursor-pointer">
-              Productos
-            </h5>
+            <Link to="/">
+              <h5 className="pl-2 mt-4 hover:pl-4 hover:delay-300 duration-300 font-bold hover:cursor-pointer">
+                Productos
+              </h5>
+            </Link>
             <h5
               onClick={() => setCategoryDeploy(!categoryDeploy)}
               className="font-bold mt-4  hover:delay-300 hover:cursor-pointer pl-2 hover:pl-4 duration-300"
@@ -228,3 +238,32 @@ const Header = () => {
 };
 
 export default Header;
+
+/*
+ {cartQuantity > 0 && (
+            <div className="flex-1">
+              <Button
+                onClick={openCart}
+                className="bg-transparent hover:bg-white text-black-700 font-semibold hover:text-yellow-200 py-2 px-4 border border-black hover:border-transparent rounded-full"
+                style={{ width: "4rem", position: "absolute" }}
+              >
+                <ShoppingCartIcon />
+                <div
+                  className="rounded-circle bg-red-500 d-flex justify-content-center align-items-center rounded-full"
+                  style={{
+                    color: "black",
+                    width: "1.5rem",
+                    height: "1.5 rem",
+                    position: "absolute",
+                    bottom: 0,
+                    right: 0,
+                    transform: "translate(25%, 25%)",
+                  }}
+                >
+                  {cartQuantity}
+                </div>
+              </Button>
+            </div>
+          )}
+
+*/
