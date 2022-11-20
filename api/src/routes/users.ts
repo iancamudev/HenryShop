@@ -2,8 +2,15 @@ import { AnyMxRecord } from "dns";
 import { Router, Request, Response, response } from "express";
 import { sanitizeFilter } from "mongoose";
 import { isPlusToken } from "typescript";
-import { addNewUser, compareUsernames, getAllUser, getUser, updateEmail, updateUser } from "../controllers/user/index";
-import { User } from '../models/User'
+import {
+  addNewUser,
+  compareUsernames,
+  getAllUser,
+  getUser,
+  updateEmail,
+  updateUser,
+} from "../controllers/user/index";
+import { User } from "../models/User";
 import { mailOptionsRegister, transporter } from "../transport";
 const nodemailer = require("nodemailer");
 const bcrypt = require("bcrypt");
@@ -98,6 +105,7 @@ router.post("/login", async (req: Request, res: Response) => {
   }
 });
 
+
 router.get("/isAdmin", adminValidation, async (req: Request, res: Response) => {
   console.log('yep admin')
   try {
@@ -158,6 +166,7 @@ router.get("/isUser", userValidation, async (req: Request, res: Response) => {
 });
 
 
+
 router.put("/", userValidation, async (req: Request, res: Response) => {
   try {
     const body = req.body;
@@ -176,7 +185,6 @@ router.put("/", userValidation, async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(500).send({ message: error.message });
   }
-})
+);
 
 export default router;
-
