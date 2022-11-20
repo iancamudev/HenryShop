@@ -19,7 +19,7 @@ const ProductCard: React.FC<CardProps> = ({ product }: CardProps) => {
   const [variante, setVariante] = useState("")
   const [quantity, setQuantity] = useState(1)
   const { id } = product
-  console.log (id)
+  
   
   
   function getQuantityMinus(e: any){
