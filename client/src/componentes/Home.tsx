@@ -10,7 +10,7 @@ const Home = () => {
   const[googleUser, setGoogleUser] = useState(null);
   const REACT_APP_BACKEND_URL:string = (process.env.REACT_APP_BACKEND_URL as string);
 
-  const getUser = async () => {
+  const getGoogleUser = async () => {
 
     try{
       const url = `${REACT_APP_BACKEND_URL}/googleusers/login/success`;
@@ -22,10 +22,25 @@ const Home = () => {
     }
   };
 
+   const getGithubUser = async () => {
+    try{
+      const url = `${REACT_APP_BACKEND_URL}/githubusers/login/success`;
+      console.log('antes del axios');
+      const {data} = await axios.get(url);
+      console.log('luego del axios');
+      window.localStorage.setItem('userSession', JSON.stringify({...data.user}));
+      setGoogleUser(data);
+    }catch(error:any){
+      console.log("error");
+      console.log(error);
+    }
+  };
+
   useEffect(()=>{
-    getUser();
-    
-  }, []);
+    // getGoogleUser();
+    getGithubUser();
+    console.log('useeffect');
+  },[]);
 
   return (
     <>

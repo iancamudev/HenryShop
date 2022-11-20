@@ -33,6 +33,13 @@ export interface googleUser {
   isAdmin: Boolean;
 }
 
+export interface githubUser {
+  username: String;
+  githubId: String;
+  birthday: Date | null;
+  isAdmin: Boolean;
+}
+
 export interface category{
   name: String;
 }
