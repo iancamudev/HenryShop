@@ -1,6 +1,8 @@
 import { current } from "@reduxjs/toolkit";
 import { createContext, ReactNode, useState, useContext } from "react";
+import { useAppSelector } from "../../hooks";
 import { ShoppingCart } from "./ShoppingCart";
+import { useLocalStorage } from "./useLocalStorage";
 
 type ShoppingCartProviderProps = {
     children: ReactNode
@@ -19,7 +21,7 @@ type ShoppingCartContex = {
     getItemQuantity: (id: string) => number
     increaseCartQuantity: (id: string, color: string, variante: string) => void
     decreaseCartQuantity: (id: string, color: string, variante: string) => void
-    removeFromCart: (id: string) => void
+    removeFromCart: (id: string, color: string, variante: string) => void
     addToCart: (id: string, quantity: number, color: string, variante: string) => void
     cartQuantity: number
     cartItems: CartItem[]
@@ -30,15 +32,11 @@ const ShoppingCartContex = createContext({} as ShoppingCartContex)
 export function useShoppingCart(){
     return useContext(ShoppingCartContex)
 }
-
-
 export function ShoppingCartProvider({ children }:
 ShoppingCartProviderProps){
-
-    
     const [isOpen, setIsOPen] = useState(false)
-    const [cartItems, setCartItems] = useState<CartItem[]>([] as CartItem[])
-
+    const [cartItems, setCartItems] = useLocalStorage<CartItem[]>("Shoping-cart",[])
+    
     const cartQuantity = cartItems.reduce(
         (quantity, item) => item.quantity + quantity, 0
     )
@@ -98,9 +96,9 @@ ShoppingCartProviderProps){
 
     
 
-    function removeFromCart(id: string){
+    function removeFromCart(id: string, color: string, variante: string){
         setCartItems(currItems =>{
-            return currItems.filter(item => item.id !== id)
+            return currItems.filter(item => !(item.id === id && item.color === color && item.variante === variante))
         })
     }
 
