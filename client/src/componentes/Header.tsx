@@ -13,6 +13,19 @@ import { Button } from "react-bootstrap";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import getObjectSession from "../funciones/getObjectSession";
 import { setData, clearData } from "../redux/slices/UserSlice";
+import axios from "axios";
+
+interface userMod {
+  birthday: string;
+  confirmed: boolean;
+  deleted: boolean;
+  email: string;
+  id: string;
+  isAdmin: boolean;
+  name: string;
+  password: string;
+  username: string;
+}
 
 const Header = () => {
   const { openCart, cartQuantity } = useShoppingCart();
@@ -23,7 +36,7 @@ const Header = () => {
   const filters = useAppSelector((state) => state.filterState.filters);
   const { username } = useAppSelector((state) => state.user);
   const REACT_APP_BACKEND_URL:string = (process.env.REACT_APP_BACKEND_URL as string)
-
+ 
   const logout = () => {
     localStorage.removeItem("userSession");
     dispatch(clearData());
@@ -33,14 +46,36 @@ const Header = () => {
       '_self'
     );
   };
-
+  const token =  JSON.parse(window.localStorage.getItem('userSession') as string);
+  
+  const [userProps, setUserProps] = useState<userMod>({
+    birthday: "",
+  confirmed: false,
+  deleted: false,
+  email: "",
+  id: "",
+  isAdmin: false,
+  name: "",
+  password: "",
+  username: "",
+  });
+  // let userData;
+  const getUser = async () => {
+      
+    const result = await axios.get(`${REACT_APP_BACKEND_URL}/users/getuser/${token?.username}`);
+    setUserProps(result.data);
+  }
+   
   useEffect(() => {
     const session = getObjectSession();
+    getUser()
     if (session) {
       dispatch(setData(session));
+      
     }
-  });
-
+    
+  }, [dispatch]);
+  
   return (
     <nav className="flex flex-col sticky w-full">
       <div className=" h-16 bg-yellow flex justify-between items-center pr-4 pl-4">
@@ -75,6 +110,7 @@ const Header = () => {
           </div>
           </Button>)}
           </div>
+
           <div className="flex-1 ">
           <GiHamburgerMenu
           onClick={() => {
@@ -121,6 +157,14 @@ const Header = () => {
                 </Link>
               </div>
             )}
+          </div>
+          <div>
+            { userProps && userProps.isAdmin === true ? 
+            <Link to="/admin">
+            <h4 className="pl-2 hover:pl-4 hover:delay-300 duration-300 font-bold hover:cursor-pointer">
+              Panel de admin
+            </h4>
+          </Link>:<div></div>}
           </div>
           <div className="p-4 flex flex-col text-left justify-start select-none">
             {username ? (
