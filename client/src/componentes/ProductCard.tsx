@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useShoppingCart } from "./ShoppingCart/ContextShoppingCart";
 import { Button } from "react-bootstrap";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { useAppSelector } from "../hooks";
 
 
 interface CardProps {
@@ -12,15 +13,13 @@ interface CardProps {
 
 
 const ProductCard: React.FC<CardProps> = ({ product }: CardProps) => {
-  
+  const Products = useAppSelector((state) => state.products.productList);
   const {addToCart} = useShoppingCart()
-  
-  const [color, setColor] = useState("")
-  const [variante, setVariante] = useState("")
+  const [color, setColor] = useState(Products.find(i => i.id === product.id)?.colors ? Products.find(i => i.id === product.id)?.colors[0] as string : "")
+  const [variante, setVariante] = useState(Products.find(i => i.id === product.id)?.sizes ? Products.find(i => i.id === product.id)?.sizes[0] as string : "")
   const [quantity, setQuantity] = useState(1)
   const { id } = product
-  console.log (id)
-  
+
   
   function getQuantityMinus(e: any){
     e.preventDefault();
@@ -36,17 +35,12 @@ const ProductCard: React.FC<CardProps> = ({ product }: CardProps) => {
 }
   function getItemColor(e: any){
         e.preventDefault();
-        if(e.target.value === ""){
-          
-        } else{
         setColor(e.target.value);
-      }
   }
 
   function getItemVariant(e: any){
         e.preventDefault();
         setVariante(e.target.value);
-        
 }
   function setAll(e: any){
         e.preventDefault();

@@ -23,7 +23,7 @@ export function CartItem({id, quantity, color, variante}: CartItemProps) {
             style = {{ width: "180px", height: "250 px", objectFit: "cover"}} className="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-l-lg" />
             <div className="flex-col">
                  <div className="text-3xl">
-                    <div><button  style = {{ width: "180px", }} onClick={()=> removeFromCart(prod?.id as string)}><DeleteOutlineIcon fontSize="medium"/></button>               
+                    <div><button  style = {{ width: "180px", }} onClick={()=> removeFromCart(prod?.id as string, color, variante)}><DeleteOutlineIcon fontSize="medium"/></button>               
                     </div>
                     {prod?.name} {" "}
                     </div>
