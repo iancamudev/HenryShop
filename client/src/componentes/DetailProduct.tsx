@@ -8,18 +8,18 @@ import { useShoppingCart } from "./ShoppingCart/ContextShoppingCart";
 
 export const DetailProduct: React.FunctionComponent = () => {
   const producto = useAppSelector((state) => state.products.productDetail);
+  const Products = useAppSelector((state) => state.products.productList);
   const { id } = useParams();
   const dispatch = useAppDispatch();
   const [quantity, setQuantity] = useState(1);
   const [value, setValue] = useState(1);
   const {addToCart} = useShoppingCart()
-  const [color, setColor] = useState(producto.colors ? producto.colors[0] : "")
-  const [variante, setVariante] = useState(producto.sizes ? producto.sizes[0] : "")
+  const [color, setColor] = useState(Products.find(i => i.id === id)?.colors ? Products.find(i => i.id === id)?.colors[0] as string : "")
+  const [variante, setVariante] = useState(Products.find(i => i.id === id)?.sizes ? Products.find(i => i.id === id)?.sizes[0] as string : "")
 
   useEffect(() => {
     dispatch(getProductsById(String(id)));
   }, [dispatch, id]);
-
   const handleClickPlus = () => {
     setQuantity(quantity + 1);
   };

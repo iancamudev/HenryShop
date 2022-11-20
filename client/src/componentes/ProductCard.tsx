@@ -18,7 +18,6 @@ const ProductCard: React.FC<CardProps> = ({ product }: CardProps) => {
   const [color, setColor] = useState(Products.find(i => i.id === product.id)?.colors ? Products.find(i => i.id === product.id)?.colors[0] as string : "")
   const [variante, setVariante] = useState(Products.find(i => i.id === product.id)?.sizes ? Products.find(i => i.id === product.id)?.sizes[0] as string : "")
   const [quantity, setQuantity] = useState(1)
-  const { id } = product
   //const quantity = getItemQuantity(id);
   
   function getQuantityMinus(e: any){
