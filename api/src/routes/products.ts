@@ -132,8 +132,6 @@ routes.post("/payment", userValidation, async (req: Request, res: Response) => {
     const decodedToken = jwt.verify(token, process.env.SECRETKEY);
     const user = await User.findOne({ _id: decodedToken.id });
 
-    console.log(productosForFind, token);
-
     const productAndQuantity = async (ArrObj: any) => {
       let arr: any = [];
       let el: any;
@@ -161,12 +159,17 @@ routes.post("/payment", userValidation, async (req: Request, res: Response) => {
             unit_price: el.price,
           };
         }),
-
         payer: {
           email: user.email,
         },
+        back_urls: {
+          success: "http://localhost:3000/success",
+          failure: "http://www.failure.com",
+          pending: "http://www.pending.com",
+        },
+        auto_return: "approved",
+        binary_mode: true,
       };
-      console.log(preference);
       mercadopago.preferences
         .create(preference)
         .then((response: any) => {

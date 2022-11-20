@@ -19,7 +19,11 @@ import UserInfo from "./componentes/User/UserInfo";
 import UserProtected from "./componentes/auth/UserProtected";
 import Header from "./componentes/Header";
 import UserEdit from "./componentes/User/UserEdit";
+
+import Success from "./componentes/Success";
+
 import Unaothorized from "./componentes/auth/Unaothorized";
+
 
 function App() {
   const { username } = useAppSelector((state) => state.user);
@@ -96,6 +100,9 @@ function App() {
               </Protected>
             }
           />
+
+          <Route path="/unauthorized" element={<>{"sin permiso"}</>} />
+          <Route path="/success" element={<Success />} />
           <Route path="/unauthorized" element={<Unaothorized />} />
         </Routes>
       </div>
