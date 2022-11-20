@@ -2,8 +2,15 @@ import { AnyMxRecord } from "dns";
 import { Router, Request, Response, response } from "express";
 import { sanitizeFilter } from "mongoose";
 import { isPlusToken } from "typescript";
-import { addNewUser, compareUsernames, getAllUser, getUser, updateEmail, updateUser } from "../controllers/user/index";
-import { User } from '../models/User'
+import {
+  addNewUser,
+  compareUsernames,
+  getAllUser,
+  getUser,
+  updateEmail,
+  updateUser,
+} from "../controllers/user/index";
+import { User } from "../models/User";
 import { mailOptionsRegister, transporter } from "../transport";
 const nodemailer = require("nodemailer");
 const bcrypt = require("bcrypt");
@@ -61,18 +68,21 @@ router.post("/login", async (req: Request, res: Response) => {
   }
 });
 
-
-router.get("/:username", userValidation, async (req: Request, res: Response) => {
-  try {
-    const { username } = req.params;
-    // comparar el username mandado con el que está en el token
-    // const authorization = req.get("authorization");
-    // const token = authorization?.split(" ")[1] as string;
-    // compareUsernames(username, token);
-    const user = await getUser(username);
-    res.status(200).send({ user })
-  } catch (error: any) {
-    res.status(500).send({ message: error.message })
+router.get(
+  "/:username",
+  userValidation,
+  async (req: Request, res: Response) => {
+    try {
+      const { username } = req.params;
+      // comparar el username mandado con el que está en el token
+      // const authorization = req.get("authorization");
+      // const token = authorization?.split(" ")[1] as string;
+      // compareUsernames(username, token);
+      const user = await getUser(username);
+      res.status(200).send({ user });
+    } catch (error: any) {
+      res.status(500).send({ message: error.message });
+    }
   }
 );
 
@@ -117,18 +127,19 @@ router.get("/isUser", userValidation, async (req: Request, res: Response) => {
   }
 });
 
-
-router.put("/:username", userValidation, async (req: Request, res: Response) => {
-  try {
-    const { username, name, email, birthday } = req.body;
-    const updated = updateUser(username, { username, name, email, birthday });
-    if (!updated)
-      throw new Error('Usuario no encontrado');
-    res.status(200).send('Ok');
-  } catch (error: any) {
-    res.status(500).send({ message: error.message });
+router.put(
+  "/:username",
+  userValidation,
+  async (req: Request, res: Response) => {
+    try {
+      const { username, name, email, birthday } = req.body;
+      const updated = updateUser(username, { username, name, email, birthday });
+      if (!updated) throw new Error("Usuario no encontrado");
+      res.status(200).send("Ok");
+    } catch (error: any) {
+      res.status(500).send({ message: error.message });
+    }
   }
-})
+);
 
 export default router;
-
