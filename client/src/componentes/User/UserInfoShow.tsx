@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import ConfirmMailButton from "./ConfirmMailButton";
+import { TailSpin } from "react-loader-spinner";
 
 export interface IUserShowProps {
   name: string;
@@ -41,7 +42,7 @@ const UserInfoShow = ({ user }: IProps) => {
           Editar Información
         </button>
       </Link>
-      {confirmed ? null : <ConfirmMailButton />}
+      {confirmed ? null : <ConfirmMailButton email={email} />}
     </div>
   );
 };

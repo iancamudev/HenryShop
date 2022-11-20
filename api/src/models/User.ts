@@ -6,7 +6,7 @@ const bcrypt = require("bcrypt");
 const userSchema = new Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
-  confirmed: { type: Boolean, default: false},
+  confirmed: { type: Boolean, default: false },
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   birthday: { type: String, required: true },
@@ -33,7 +33,7 @@ userSchema.pre("save", async function (next) {
   }
 });
 
-interface UserDocument extends Document, user {}
+interface UserDocument extends Document, user { }
 
 userSchema.plugin(mongoosePaginate);
 

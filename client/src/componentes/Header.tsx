@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import logo from "../assets/logoHenryBlack.png";
 import logoMobile from "../assets/hernyLogoSmall.png";
 import { GiHamburgerMenu } from "react-icons/gi";
-
 import { FaUserAlt } from "react-icons/fa";
 import Searchbar from "./Searchbar";
 import { Link, useNavigate } from "react-router-dom";
@@ -14,6 +13,19 @@ import { Button } from "react-bootstrap";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import getObjectSession from "../funciones/getObjectSession";
 import { setData, clearData } from "../redux/slices/UserSlice";
+import axios from "axios";
+
+interface userMod {
+  birthday: string;
+  confirmed: boolean;
+  deleted: boolean;
+  email: string;
+  id: string;
+  isAdmin: boolean;
+  name: string;
+  password: string;
+  username: string;
+}
 
 const Header = () => {
   const { openCart, cartQuantity } = useShoppingCart();
@@ -24,7 +36,7 @@ const Header = () => {
   const filters = useAppSelector((state) => state.filterState.filters);
   const { username } = useAppSelector((state) => state.user);
   const REACT_APP_BACKEND_URL:string = (process.env.REACT_APP_BACKEND_URL as string)
-
+ 
   const logout = () => {
     localStorage.removeItem("userSession");
     dispatch(clearData());
@@ -34,14 +46,36 @@ const Header = () => {
       '_self'
     );
   };
-
+  const token =  JSON.parse(window.localStorage.getItem('userSession') as string);
+  
+  const [userProps, setUserProps] = useState<userMod>({
+    birthday: "",
+  confirmed: false,
+  deleted: false,
+  email: "",
+  id: "",
+  isAdmin: false,
+  name: "",
+  password: "",
+  username: "",
+  });
+  // let userData;
+  const getUser = async () => {
+      
+    const result = await axios.get(`${REACT_APP_BACKEND_URL}/users/getuser/${token?.username}`);
+    setUserProps(result.data);
+  }
+   
   useEffect(() => {
     const session = getObjectSession();
+    getUser()
     if (session) {
       dispatch(setData(session));
+      
     }
-  });
-
+    
+  }, [dispatch]);
+  
   return (
     <nav className="flex flex-col sticky w-full">
       <div className=" h-16 bg-yellow flex justify-between items-center pr-4 pl-4">
@@ -53,7 +87,32 @@ const Header = () => {
           />
         </Link>
         <Searchbar />
-        <GiHamburgerMenu
+        <div className="inline-flex space-x-28">
+          <div className="flex-1">
+          {cartQuantity > 0 && (
+          <Button 
+          onClick={openCart}
+          className="bg-transparent hover:bg-white text-black-700 font-semibold hover:text-yellow-200 py-2 px-4 border border-black hover:border-transparent rounded-full" 
+          style={{width: "4rem", position: "absolute"}}
+          >
+          <ShoppingCartIcon />
+          <div className="rounded-circle bg-red-500 d-flex justify-content-center align-items-center rounded-full"
+          style={{
+            color: "black",
+            width: "1.5rem",
+            height: "1.5 rem",
+            position: "absolute",
+            bottom: 0,
+            right: 0,
+            transform: "translate(25%, 25%",
+          }}
+          >{cartQuantity}
+          </div>
+          </Button>)}
+          </div>
+
+          <div className="flex-1 ">
+          <GiHamburgerMenu
           onClick={() => {
             setDeploy(!deploy);
           }}
@@ -62,7 +121,7 @@ const Header = () => {
               ? "-rotate-90 h-8 w-auto cursor-pointer duration-300"
               : "h-8 w-auto cursor-pointer duration-300"
           }
-        />
+          /></div></div>        
       </div>
       {deploy && (
         <div
@@ -98,6 +157,14 @@ const Header = () => {
                 </Link>
               </div>
             )}
+          </div>
+          <div>
+            { userProps && userProps.isAdmin === true ? 
+            <Link to="/admin">
+            <h4 className="pl-2 hover:pl-4 hover:delay-300 duration-300 font-bold hover:cursor-pointer">
+              Panel de admin
+            </h4>
+          </Link>:<div></div>}
           </div>
           <div className="p-4 flex flex-col text-left justify-start select-none">
             {username ? (
@@ -153,31 +220,6 @@ const Header = () => {
             <h5 className=" hover:delay-300 pl-2 hover:pl-4 duration-300 font-bold mt-4  hover:cursor-pointer">
               Sobre nosotros
             </h5>
-          </div>
-          <div className="flex px-10">
-            {cartQuantity > 0 && (
-              <Button
-                onClick={openCart}
-                className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded-full"
-                style={{ width: "4rem", position: "absolute" }}
-              >
-                <ShoppingCartIcon />
-                <div
-                  className="rounded-circle bg-red-500 d-flex justify-content-center align-items-center rounded-full"
-                  style={{
-                    color: "black",
-                    width: "1.5rem",
-                    height: "1.5 rem",
-                    position: "absolute",
-                    bottom: 0,
-                    right: 0,
-                    transform: "translate(25%, 25%",
-                  }}
-                >
-                  {cartQuantity}
-                </div>
-              </Button>
-            )}
           </div>
         </div>
       )}
