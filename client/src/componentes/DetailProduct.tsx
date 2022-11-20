@@ -13,8 +13,8 @@ export const DetailProduct: React.FunctionComponent = () => {
   const [quantity, setQuantity] = useState(1);
   const [value, setValue] = useState(1);
   const {addToCart} = useShoppingCart()
-  const [color, setColor] = useState("")
-  const [variante, setVariante] = useState("")
+  const [color, setColor] = useState(producto.colors ? producto.colors[0] : "")
+  const [variante, setVariante] = useState(producto.sizes ? producto.sizes[0] : "")
 
   useEffect(() => {
     dispatch(getProductsById(String(id)));
@@ -32,10 +32,10 @@ export const DetailProduct: React.FunctionComponent = () => {
       setQuantity(quantity - 1);
     }
   };
-
   function getItemColor(e: any){
     e.preventDefault();
     setColor(e.target.value);
+    console.log(e.target.value)
 }
 function getItemVariant(e: any){
     e.preventDefault();
@@ -43,9 +43,9 @@ function getItemVariant(e: any){
 }
 function setAll(e: any){
     e.preventDefault();
-    addToCart(producto.id, quantity, color, variante);
+    addToCart(id!, quantity, color, variante);
+    console.log(color)
     setQuantity(1)
-
 }
   return (
     <>
