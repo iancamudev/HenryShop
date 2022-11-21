@@ -98,8 +98,12 @@ ShoppingCartProviderProps){
 
     function removeFromCart(id: string, color: string, variante: string){
         setCartItems(currItems =>{
-            return currItems.filter(item => !(item.id === id && item.color === color && item.variante === variante))
-        })
+            if(currItems.find(item => item.id === id && item.color === color && item.variante === variante)){
+                return currItems.filter(item => !(item.id === id && item.color === color && item.variante === variante))
+            } else {
+                return [...currItems]
+            }
+            })
     }
 
     return (

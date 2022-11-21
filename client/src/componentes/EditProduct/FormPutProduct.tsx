@@ -6,7 +6,7 @@ import * as yup from "yup";
 import axios from "axios";
 import { getProductsById } from "../../redux/slices/ProductSlice/productActions";
 import { useAppDispatch, useAppSelector } from "../../hooks";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { uploadImageToFirebaseStorage } from "../../firebase/uploadImageToFirebaseStorage";
 
 const sizes = { XS: "XS", S: "S", M: "M", L: "L", XL: "XL", XXL: "XXL" };
@@ -35,7 +35,7 @@ const schema = yup
       .transform((v, o) => (o === "" ? null : v)),
     description: yup
       .string()
-      .min(1, "Se requiere por lo menos un caracter")
+      .min(0, "Se requiere por lo menos un caracter")
       .max(80, "No se pueden una descripción mayor a 80 caracteres")
       .required(),
     price: yup
@@ -71,7 +71,7 @@ const FormPutProduct = () => {
   }, [dispatch, id]);
   const Product = useAppSelector((state) => state.products.productDetail);
   console.log(Product);
-  
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -81,25 +81,41 @@ const FormPutProduct = () => {
   });
   const initialForm: formData = {
     name: "",
-    rating: -1,
+    rating: 0,
     description: "",
-    price: -1,
+    price: 0,
     image: "",
-    stock: -1,
+    stock: 0,
     category: "",
     colors: [""],
     sizes: [""],
   };
   const [input, setInput] = useState(initialForm);
+  const [imgTemp, setImgTemp] = useState("");
+  const [file, setFile] = useState(null);
+
   let imgUrl: any;
-  async function imagePreview(e: any){
-       const target = e.target as HTMLInputElement;
-      const archivo= target.files?.[0];
-      imgUrl = await uploadImageToFirebaseStorage(archivo);
-      
-  }
-  const submitForm = handleSubmit(
-    ({
+  let imgSrc: any;
+  let imgFile: any;
+ 
+  const imagePreview = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    
+    const target =  e.target as HTMLInputElement;
+    imgSrc = target.files?.[0];
+    setFile(imgSrc)
+    console.log(imgSrc);
+    let arr: string = "";
+    
+    
+      imgFile =  URL.createObjectURL(imgSrc);
+      arr = imgFile;
+      console.log("hola", imgFile);
+      setImgTemp(arr);
+    
+
+  };
+  const submitForm =  (
+    async ({
       name,
       rating,
       description,
@@ -109,10 +125,11 @@ const FormPutProduct = () => {
       category,
       colors,
       sizes,
-    }) => {
+    }:formData) => {
       let backData = process.env.REACT_APP_BACKEND_URL;
-      
-      if(imgUrl && backData){
+      imgUrl =  await uploadImageToFirebaseStorage(file);
+      console.log(imgUrl);
+      if( imgUrl && backData){
         axios
         .put(`${backData}/products/${id}`, {
           name,
@@ -127,6 +144,8 @@ const FormPutProduct = () => {
         })
         .then((res) => {
           console.log(res);
+          alert("Se actualizo el producto");
+          navigate("/admin")
         })
         .catch((err) => console.error(err));
        }
@@ -137,7 +156,6 @@ const FormPutProduct = () => {
           rating,
           description,
           price,
-          image,
           stock,
           category,
           colors,
@@ -145,6 +163,8 @@ const FormPutProduct = () => {
         })
         .then((res) => {
           console.log(res);
+          alert("Se actualizo el producto");
+          navigate("/admin")
         })
         .catch((err) => console.error(err));
        }
@@ -153,7 +173,7 @@ const FormPutProduct = () => {
 
   return (
     <form
-      onSubmit={submitForm}
+      onSubmit={handleSubmit(submitForm)}
       className="flex justify-center flex-col items-center w-9/12 m-auto"
     >
       <div className="mb-3.5 w-full">
@@ -220,9 +240,10 @@ const FormPutProduct = () => {
           <p className="text-red-600 font-bold">{errors.price.message}</p>
         )}
       </div>
-
+      
       <div className="mb-3.5 w-full">
         <div className="flex justify-center">
+          
           <input
             {...register("image")}
             id="image"
@@ -233,6 +254,16 @@ const FormPutProduct = () => {
           />
           *
         </div>
+        <div>
+          {
+            imgTemp ? <div><p> Imagen nueva <img className="h-40 " src={imgTemp}/> </p></div> : <></>
+          }  
+      </div>
+        <div>
+          {
+            Product.image ? <div><p> Imagen actual <img className="h-40 " src={Product.image}/> </p></div> : <></>
+          }  
+      </div>
         {errors?.image && (
           <p className="text-red-600 font-bold">{errors.image.message}</p>
         )}
@@ -285,7 +316,9 @@ const FormPutProduct = () => {
                     id="colors"
                     type="checkbox"
                     className="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-blue-200 checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+
                     defaultChecked={Product.colors.includes(color)}
+
                   />
                   <label className="w-5/12">{color}</label>
                 </div>
@@ -310,7 +343,9 @@ const FormPutProduct = () => {
                     id="sizes"
                     type="checkbox"
                     className="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-blue-200 checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+
                     defaultChecked={Product.sizes.includes(size)}
+
                   />
                   <label className="w-5/12">{size}</label>
                 </div>
@@ -331,3 +366,7 @@ const FormPutProduct = () => {
 };
 
 export default FormPutProduct;
+function async(arg0: ({ name, rating, description, price, image, stock, category, colors, sizes, }: formData) => void) {
+  throw new Error("Function not implemented.");
+}
+

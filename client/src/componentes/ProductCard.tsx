@@ -18,8 +18,8 @@ const ProductCard: React.FC<CardProps> = ({ product }: CardProps) => {
   const [color, setColor] = useState(Products.find(i => i.id === product.id)?.colors ? Products.find(i => i.id === product.id)?.colors[0] as string : "")
   const [variante, setVariante] = useState(Products.find(i => i.id === product.id)?.sizes ? Products.find(i => i.id === product.id)?.sizes[0] as string : "")
   const [quantity, setQuantity] = useState(1)
-  const { id } = product
 
+  const { id } = product
   
   function getQuantityMinus(e: any){
     e.preventDefault();
@@ -93,7 +93,7 @@ const ProductCard: React.FC<CardProps> = ({ product }: CardProps) => {
          <select className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-1.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" onChange={getItemColor}> 
           {product?.colors.map((i) => {
           return (
-          <option value={i}>{i}</option>
+          <option key={i} value={i}>{i}</option>
           )})
           }</select>
           </div>
@@ -102,7 +102,7 @@ const ProductCard: React.FC<CardProps> = ({ product }: CardProps) => {
           <select className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block py-1.5 px-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" onChange={getItemVariant}> 
           {product.sizes?.map((i) => {
           return (
-          <option value={i}>{i}</option>
+          <option key={i} value={i}>{i}</option>
           )})
           }
           </select>

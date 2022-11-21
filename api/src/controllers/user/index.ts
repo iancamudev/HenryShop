@@ -1,5 +1,6 @@
 import { user } from "../../Types";
 import { User } from "../../models/User";
+import { GoogleUser } from "../../models/googleUser";
 const jwt = require("jsonwebtoken");
 
 export const addNewUser = async (user: user) => {
@@ -23,22 +24,21 @@ export const addNewUser = async (user: user) => {
 
 const pageSize = 10;
 
+
 export const getAllUser = async (page: number ) => {
 
     const resultUsers = await User.paginate({deleted: false}, { page: page })
-
   return resultUsers;
 };
 
 export const getUser = async (username: string) => {
-  const resultUser = await User.findOne({ username: username }).exec();
-
+  let resultUser = null;
+  resultUser = await User.findOne({ username: username }).exec();
   return resultUser;
 };
 
 export const updateEmail = async (id: string) => {
   const result = await User.findOneAndUpdate({ _id: id }, { confirmed: true });
-
   if (!result) {
     throw new Error("No se puede cambiar la propiedad confirmed");
   }

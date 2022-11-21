@@ -10,7 +10,7 @@ const Home = () => {
   const[googleUser, setGoogleUser] = useState(null);
   const REACT_APP_BACKEND_URL:string = (process.env.REACT_APP_BACKEND_URL as string);
 
-  const getUser = async () => {
+  const getGoogleUser = async () => {
 
     try{
       const url = `${REACT_APP_BACKEND_URL}/googleusers/login/success`;
@@ -23,9 +23,8 @@ const Home = () => {
   };
 
   useEffect(()=>{
-    getUser();
-    
-  }, []);
+    getGoogleUser();
+  },[]);
 
   return (
     <>

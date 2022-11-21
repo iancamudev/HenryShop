@@ -24,6 +24,14 @@ export const getGoogleUserById = async (id:string) => {
 
 };
 
+export const getGoogleUserByEmail = async (email:string) => {
+
+	const result = await GoogleUser.findOne({email: email});
+	return result;
+
+};
+
+
 export const getAllGoogleUsers = async () => {
 	const result = await GoogleUser.find();
 	return result;	
