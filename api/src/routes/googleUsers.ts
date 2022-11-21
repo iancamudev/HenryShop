@@ -40,11 +40,22 @@ routes.get('/login/success', async (req:Request, res:Response)=>{
 		const user2 = user? user: {name: '', email: '', id: ''};
 		const userForToken = { id: user2.id, email: user2.email };
     const token = jwt.sign(userForToken, process.env.SECRETKEY);
-		res.status(200).json({
+		const response = {
 			error:false,
 			message: "login succesful",
-			user: { name: user2.name, token: token, origin: 'google', email: user2.email },
-		})
+			user: { username: user2.name.split(' ')[0], token: token, origin: 'google', email: user2.email },
+		};
+		const jsonResponse = JSON.stringify(response);
+		res.status(200).send(
+			`<!DOCTYPE HTML>
+				<html lang="en">
+					<body></body>
+					<script>
+						window.opener.postMessage(${jsonResponse}, '${CLIENT_URL}')
+					</script>
+				</html>
+			`
+		)
 	}
 });
 
@@ -54,6 +65,7 @@ routes.get('/login/failed', (req:Request, res:Response) => {
 
 routes.get('/google/callback', passport.authenticate('google',{
 		failureRedirect: '/login/failed',
+		successRedirect: '/googleusers/login/success'
 	}
 ),(req:Request, res:Response) => {
 		try{
@@ -69,10 +81,9 @@ routes.get('/google/callback', passport.authenticate('google',{
 				confirmed: true,
 			}: null;
 			const result:object | null = typeof newUserObj !== null? addNewGoogleUser((newUserObj as googleUser)): null;
-			res.redirect(CLIENT_URL);
+			res.redirect(`${CLIENT_URL}/googleusers/login/success`);
 		}catch(error:any){
 			console.log(error.message);
-			res.redirect(CLIENT_URL);
 		}
 })
 
