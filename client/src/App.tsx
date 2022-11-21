@@ -23,7 +23,7 @@ import UserEdit from "./componentes/User/UserEdit";
 import Success from "./componentes/Success";
 
 import Unaothorized from "./componentes/auth/Unaothorized";
-
+import { setUserData } from "./redux/slices/UserSlice/UserActions";
 
 function App() {
   const { username } = useAppSelector((state) => state.user);
@@ -32,9 +32,9 @@ function App() {
   useEffect(() => {
     const session = getObjectSession();
     if (session) {
-      dispatch(setData(session));
+      dispatch(setUserData());
     }
-  }, [dispatch]);
+  }, []);
 
   return (
     <ShoppingCartProvider>

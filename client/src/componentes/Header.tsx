@@ -12,7 +12,10 @@ import { useShoppingCart } from "./ShoppingCart/ContextShoppingCart";
 import { Button } from "react-bootstrap";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import getObjectSession from "../funciones/getObjectSession";
-import { setData, clearData } from "../redux/slices/UserSlice";
+import {
+  setUserData,
+  clearUserData,
+} from "../redux/slices/UserSlice/UserActions";
 import axios from "axios";
 
 interface userMod {
@@ -41,7 +44,7 @@ const Header = () => {
   const logout = () => {
     localStorage.removeItem("userSession");
     localStorage.removeItem("Shoping-cart");
-    dispatch(clearData());
+    dispatch(clearUserData());
     setDeploy(false);
     window.open(`${REACT_APP_BACKEND_URL}/googleusers/google/logout`, "_self");
   };
@@ -60,6 +63,7 @@ const Header = () => {
     password: "",
     username: "",
   });
+
   // let userData;
   const getUser = async () => {
     const result = await axios.get(
@@ -72,9 +76,9 @@ const Header = () => {
     const session = getObjectSession();
     getUser();
     if (session) {
-      dispatch(setData(session));
+      dispatch(setUserData());
     }
-  }, [dispatch]);
+  }, []);
 
   return (
     <nav className="flex flex-col sticky w-full">
@@ -154,7 +158,10 @@ const Header = () => {
             {cartQuantity > 0 && (
               <div className="flex-1">
                 <Button
-                  onClick={openCart}
+                  onClick={() => {
+                    dispatch(setUserData());
+                    openCart();
+                  }}
                   className="bg-transparent hover:bg-white text-black-700 font-semibold hover:text-yellow-200 py-2 px-4 border border-black hover:border-transparent rounded-full"
                   style={{ width: "4rem", position: "absolute", right: "2rem" }}
                 >
