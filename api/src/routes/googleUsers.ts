@@ -2,6 +2,7 @@ import {Router, Request, Response} from 'express';
 import {
 	addNewGoogleUser,
 	getAllGoogleUsers,
+	getGoogleUserByEmail,
 	getGoogleUserById,
 } from '../controllers/googleUser/index';
 import {googleUser} from '../Types';
@@ -37,13 +38,24 @@ routes.get('/login/success', async (req:Request, res:Response)=>{
 		let newUser2: any = (JSON.parse(newUser) as object);
 		const user = await getGoogleUserById(newUser2.id);
 		const user2 = user? user: {name: '', email: '', id: ''};
-		const userForToken = { id: user2.id, email: user2.email, google: true };
+		const userForToken = { id: user2.id, email: user2.email };
     const token = jwt.sign(userForToken, process.env.SECRETKEY);
-		res.status(200).json({
+		const response = {
 			error:false,
 			message: "login succesful",
-			user: { name: user2.name, token: token },
-		})
+			user: { username: user2.name.split(' ')[0], token: token, origin: 'google', email: user2.email },
+		};
+		const jsonResponse = JSON.stringify(response);
+		res.status(200).send(
+			`<!DOCTYPE HTML>
+				<html lang="en">
+					<body></body>
+					<script>
+						window.opener.postMessage(${jsonResponse}, '${CLIENT_URL}')
+					</script>
+				</html>
+			`
+		)
 	}
 });
 
@@ -53,6 +65,7 @@ routes.get('/login/failed', (req:Request, res:Response) => {
 
 routes.get('/google/callback', passport.authenticate('google',{
 		failureRedirect: '/login/failed',
+		successRedirect: '/googleusers/login/success'
 	}
 ),(req:Request, res:Response) => {
 		try{
@@ -65,12 +78,12 @@ routes.get('/google/callback', passport.authenticate('google',{
 				email: newUser2.emails[0].value,
 				birthday:null,
 				isAdmin:false,
+				confirmed: true,
 			}: null;
 			const result:object | null = typeof newUserObj !== null? addNewGoogleUser((newUserObj as googleUser)): null;
-			res.redirect(CLIENT_URL);
+			res.redirect(`${CLIENT_URL}/googleusers/login/success`);
 		}catch(error:any){
 			console.log(error.message);
-			res.redirect(CLIENT_URL);
 		}
 })
 
@@ -84,9 +97,9 @@ routes.get('/google/logout', (req:Request, res:Response)=>{
 	res.redirect(CLIENT_URL);
 })
 
-routes.get('/:id', async (req: Request, res:Response) => {
+routes.get('/:email', async (req: Request, res:Response) => {
 	try{
-		const result = await getGoogleUserById(req.params.id);
+		const result = await getGoogleUserByEmail(req.params.email);
 		res.status(200).json(result);
 	}catch(error:any){
 		res.status(500).json({error_message: error.message});
