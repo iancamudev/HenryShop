@@ -4,9 +4,12 @@ import mongoosePaginate from "mongoose-paginate-v2"
 
 const googleUserSchema = new Schema({
 	name: {type: String, required: true},
+  googleId: {type: String, required: true, unique: true},
 	email: {type: String, required: true, unique: true},
-	birthday: {type: String, required: true},
+	birthday: Date,
+  isAdmin:{type:Boolean, default: false},
 	deleted: {type: Boolean, default: false},
+  confirmed: { type: Boolean, default: true },
 });
 // modifica el _id de lo que te devuelve la base de datos por id, ademas remueve el __v
 googleUserSchema.set("toJSON", {

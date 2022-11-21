@@ -1,8 +1,7 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { redirect, useNavigate } from "react-router-dom";
-import { useAppSelector } from "../../hooks";
-import { back_url } from "../../variables";
+import {  useNavigate } from "react-router-dom";
+import axiosGetCall from "../../funciones/axiosGetCall";
+import UserLoader from "./UserLoader";
 
 interface IProtectedProps {
   children: JSX.Element;
@@ -17,26 +16,22 @@ const Protected = ({ children }: IProtectedProps) => {
     setDisplay(false)
     if (session) {
       console.log('checking admin...')
-      const { token } = JSON.parse(session);
-      axios
-        .get(`${back_url}/users/isAdmin`, {
-          headers: {
-            authorization: `bearer ${token}`,
-          },
-        })
+      axiosGetCall('/users/isAdmin')
         .then(() => {
           console.log('yes admin')
           setDisplay(true);
         })
         .catch(() => {
+          console.log('bye no admin')
           navigate("/");
         });
     }else{
+      console.log('bye no admin 2')
       navigate('/')
     }
-  }, [setDisplay, navigate, children]);
+  }, [setDisplay, navigate]);
 
-  return <>{display ? children : <>Checking if admin</>}</>;
+  return <>{display ? children : <UserLoader />}</>;
 };
 
 export default Protected;

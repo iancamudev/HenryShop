@@ -2,8 +2,8 @@ import React, { useEffect } from "react";
 import { useAppDispatch } from "../../hooks";
 import { getAllProducts } from "../../redux/slices/ProductSlice/productActions";
 import Header from "./Header";
-import Panel from "./Panel";
-
+import ProductsPanel from "./ProductsPanel/ProductsPanel";
+import UsersPanel from './UsersPanel/UsersPanel'
 const AdminPanel = () => {
   const dispatch = useAppDispatch();
   useEffect(() => {
@@ -12,7 +12,7 @@ const AdminPanel = () => {
   return (
     <div className="flex flex-col items-center">
       <Header />
-      <Panel />
+      <ProductsPanel />
     </div>
   );
 };

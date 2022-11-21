@@ -1,5 +1,7 @@
 import { Request, Response } from "express";
 import { User } from "../models/User";
+import { GoogleUser } from "../models/googleUser";
+import { GithubUser } from "../models/githubUser";
 const { request } = require("http");
 const jwt = require("jsonwebtoken");
 
@@ -15,13 +17,17 @@ module.exports = async (req: any, res: any, next: any) => {
     return res.status(401).json({ error: "token missing or invalid admin" });
   } else {
     const decodedToken = jwt.verify(token, process.env.SECRETKEY);
-    console.log(decodedToken);
 
     let user = null;
     if (decodedToken) {
       user = await User.findOne({ _id: decodedToken.id });
     }
-    console.log(user);
+    if(!user){
+      user = await GoogleUser.findOne({ email: decodedToken.email });
+    }
+    if(!user){
+      user = await GithubUser.findOne({ username: decodedToken.username });
+    }
     if (!token || !decodedToken.id || !user?.isAdmin) {
       return res.status(401).json({ error: "token missing or invalid admin" });
     }

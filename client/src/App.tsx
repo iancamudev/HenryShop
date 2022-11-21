@@ -15,6 +15,19 @@ import { useEffect } from "react";
 import { setData } from "./redux/slices/UserSlice";
 import Confirmation from "./componentes/Confirmation";
 import Protected from "./componentes/auth/Protected";
+import UserInfo from "./componentes/User/UserInfo";
+import UserProtected from "./componentes/auth/UserProtected";
+import Header from "./componentes/Header";
+import UserEdit from "./componentes/User/UserEdit";
+import HeaderAdmin from './componentes/Admin/Header'
+import Success from "./componentes/Success";
+
+import Unaothorized from "./componentes/auth/Unaothorized";
+
+import { setUserData } from "./redux/slices/UserSlice/UserActions";
+
+import UsersPanel from "./componentes/Admin/UsersPanel/UsersPanel";
+import AdminPanelUsers from "./componentes/Admin/AdminPanelUsers";
 
 
 
@@ -25,52 +38,80 @@ function App() {
   useEffect(() => {
     const session = getObjectSession();
     if (session) {
-      dispatch(setData(session));
+      dispatch(setUserData());
     }
-  }, [dispatch]);
+  }, []);
 
   return (
     <ShoppingCartProvider>
-    <div className="App flex flex-col items-center bg-[#FFFDE7]">
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route
-          path="/Login"
-          element={username ? <Navigate to="/" replace={true} /> : <Login />}
-        />
-        <Route
-          path="/Register"
-          element={username ? <Navigate to="/" replace={true} /> : <Register />}
-        />
-        <Route
-          path="/createproduct"
-          element={
-            <Protected>
-              <CreateProduct />
-            </Protected>
-          }
-        />
-        <Route path="/products/:id" element={<DetailProduct />} />
-        <Route path="/" element={<ProductCards />} />
-        <Route path="/users/confirmation/:token" element={<Confirmation />} />
-        <Route
-          path="/admin"
-          element={
-            <Protected>
-              <AdminPanel />
-            </Protected>
-          }
-        />
-        <Route
-          path="/admin/:id"
-          element={
-            <Protected>
-              <EditProduct />
-            </Protected>
-          }
-        />
-      </Routes>
-    </div>
+      <div className="App flex flex-col items-center bg-[#FFFDE7]">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route
+            path="/Login"
+            element={username ? <Navigate to="/" replace={true} /> : <Login />}
+          />
+          <Route
+            path="/Register"
+            element={
+              username ? <Navigate to="/" replace={true} /> : <Register />
+            }
+          />
+          <Route
+            path="/createproduct"
+            element={
+              <Protected>
+                <CreateProduct />
+              </Protected>
+            }
+          />
+          <Route path="/products/:id" element={<DetailProduct />} />
+          <Route path="/" element={<ProductCards />} />
+          <Route path="/users/confirmation/:token" element={<Confirmation />} />
+          <Route
+            path="/User"
+            element={
+              <UserProtected>
+                <>
+                  <Header />
+                  <UserInfo />
+                </>
+              </UserProtected>
+            }
+          />
+          <Route
+            path="/UserEdit"
+            element={
+              <UserProtected>
+                <>
+                  <Header />
+                  <UserEdit />
+                </>
+              </UserProtected>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              <Protected>
+                <AdminPanel />
+              </Protected>
+            }
+          />
+            <Route  path='/admin/users' element={<Protected>
+              <AdminPanelUsers/></Protected>}/>
+          <Route
+            path="/admin/:id"
+            element={
+              <Protected>
+                <EditProduct />
+              </Protected>
+            }
+          />
+          <Route path="/success" element={<Success />} />
+          <Route path="/unauthorized" element={<Unaothorized />} />
+        </Routes>
+      </div>
     </ShoppingCartProvider>
   );
 }
