@@ -14,7 +14,7 @@ interface CardProps {
 
 const ProductCard: React.FC<CardProps> = ({ product }: CardProps) => {
   const Products = useAppSelector((state) => state.products.productList);
-  const {addToCart} = useShoppingCart()
+  const {addToCart, openCart} = useShoppingCart()
   const [color, setColor] = useState(Products.find(i => i.id === product.id)?.colors ? Products.find(i => i.id === product.id)?.colors[0] as string : "")
   const [variante, setVariante] = useState(Products.find(i => i.id === product.id)?.sizes ? Products.find(i => i.id === product.id)?.sizes[0] as string : "")
   const [quantity, setQuantity] = useState(1)
@@ -46,6 +46,7 @@ const ProductCard: React.FC<CardProps> = ({ product }: CardProps) => {
         e.preventDefault();
         addToCart(product.id, quantity, color, variante);
         setQuantity(1)
+        openCart()
         /*const input = document.getElementById("val") as HTMLInputElement || null;
         console.log(input.value)
         if(input.checked === true){
@@ -71,7 +72,7 @@ const ProductCard: React.FC<CardProps> = ({ product }: CardProps) => {
           {
         <div className="relative w-[100%]">
         <input type="checkbox" className="absolute opacity-0 peer px-10 inline-flex aboslute inset-x-0 w-full h-12 z-10 cursor-pointer"></input>
-        <span className="p-5 w-full items-center text-orange-600 transition-transform duration-500 peer-checked:text-black"><ShoppingCartIcon fontSize="large"/></span>
+        <span className="p-5 items-center text-orange-600 transition-transform duration-500 peer-checked:text-black"><ShoppingCartIcon fontSize="large"/></span>
         <br/><br/>
         <div className="bg-gray-transparent overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-40">
         <div className="d-flex mt-auto">

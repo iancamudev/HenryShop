@@ -5,9 +5,12 @@ import { Drawer } from "@mui/material";
 import { useAppSelector } from "../../hooks";
 import axios from "axios";
 import { redirect } from "react-router-dom";
+import sc from "../../assets/SC.gif"
+
 import { useEffect, useState } from "react";
 import axiosGetCall from "../../funciones/axiosGetCall";
 import { userInfo } from "os";
+
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 /*<Offcanvas show={isOpen} onHide = {closeCart}>
             <Offcanvas.Header closeButton>
@@ -57,19 +60,25 @@ export function ShoppingCart({ isOpen }: ShoppingCartProps) {
   };
   return (
     <Drawer anchor="right" open={isOpen} onClose={closeCart}>
-      <div className="text-center py-5 ms-auto font-bold  text-3xl ">
+      <div className="text-center py-5 px-10  font-bold font-serif text-4xl ">
         Carrito de Compras
       </div>
       {cartItems.map((item) => (
         <CartItem key={item.id} {...item} />
       ))}
-      <div className="text-center py-10 ms-auto font-bold text-4xl ">
+      {cartItems[0]?
+      <div className="text-center py-10 ms-auto font-bold font-serif text-4xl ">
         Total:{" $"}
         {cartItems.reduce((total, cartItem) => {
           const prod = Products.find((i) => i.id === cartItem.id);
           return total + (prod?.price || 0) * cartItem.quantity;
         }, 0)}
-      </div>
+
+      </div> : <div className="flex flex-col items-center"><img
+            src={sc}
+            alt="Shopping Cart"
+            className=" h-80 select-none"
+          /> <div className="text-center p-14 px-5 ms-auto font-bold font-serif text-3xl">Agrega Productos al Carrito...</div></div>}
       <div className="py-4 flex flex-col items-center">
         {User.confirmed ? (
           <button
@@ -87,6 +96,7 @@ export function ShoppingCart({ isOpen }: ShoppingCartProps) {
             NO HABILITADO
           </button>
         )}
+
       </div>
     </Drawer>
   );
