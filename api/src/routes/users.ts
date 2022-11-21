@@ -103,7 +103,7 @@ router.post("/login", async (req: Request, res: Response) => {
   } else {
     const userForToken = { id: user.id, username: user.username };
     const token = jwt.sign(userForToken, process.env.SECRETKEY);
-    return res.status(200).send({ username: user.username, token: token });
+    return res.status(200).send({ username: user.username, token: token, origin:'default' });
   }
 });
 
