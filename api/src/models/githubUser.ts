@@ -8,6 +8,7 @@ const githubUserSchema = new Schema({
 	birthday: Date,
   isAdmin:{type:Boolean, default: false},
 	deleted: {type: Boolean, default: false},
+  confirmed: { type: Boolean, default: true },
 });
 // modifica el _id de lo que te devuelve la base de datos por id, ademas remueve el __v
 githubUserSchema.set("toJSON", {

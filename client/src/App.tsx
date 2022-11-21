@@ -17,6 +17,9 @@ import Confirmation from "./componentes/Confirmation";
 import Protected from "./componentes/auth/Protected";
 import UserInfo from "./componentes/User/UserInfo";
 import UserProtected from "./componentes/auth/UserProtected";
+import Header from "./componentes/Header";
+import UserEdit from "./componentes/User/UserEdit";
+import Unaothorized from "./componentes/auth/Unaothorized";
 
 function App() {
   const { username } = useAppSelector((state) => state.user);
@@ -59,7 +62,21 @@ function App() {
             path="/User"
             element={
               <UserProtected>
-                <UserInfo />
+                <>
+                  <Header />
+                  <UserInfo />
+                </>
+              </UserProtected>
+            }
+          />
+          <Route
+            path="/UserEdit"
+            element={
+              <UserProtected>
+                <>
+                  <Header />
+                  <UserEdit />
+                </>
               </UserProtected>
             }
           />
@@ -79,7 +96,7 @@ function App() {
               </Protected>
             }
           />
-          <Route path="/unauthorized" element={<>{"sin permiso"}</>} />
+          <Route path="/unauthorized" element={<Unaothorized />} />
         </Routes>
       </div>
     </ShoppingCartProvider>

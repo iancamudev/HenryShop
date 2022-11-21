@@ -22,24 +22,8 @@ const Home = () => {
     }
   };
 
-   const getGithubUser = async () => {
-    try{
-      const url = `${REACT_APP_BACKEND_URL}/githubusers/login/success`;
-      console.log('antes del axios');
-      const {data} = await axios.get(url);
-      console.log('luego del axios');
-      window.localStorage.setItem('userSession', JSON.stringify({...data.user}));
-      setGoogleUser(data);
-    }catch(error:any){
-      console.log("error");
-      console.log(error);
-    }
-  };
-
   useEffect(()=>{
-    // getGoogleUser();
-    getGithubUser();
-    console.log('useeffect');
+    getGoogleUser();
   },[]);
 
   return (

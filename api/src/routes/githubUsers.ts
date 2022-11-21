@@ -27,15 +27,16 @@ routes.get('/github/callback',passport.authenticate('auth-github',{
 		githubId: newUser2.nodeId,
 		birthday: null,
 		isAdmin: false,
+		confirmed: true,
 	};
 	const result = await addNewGithubUser(newUserObj);
 	const user= result? result: {username: '', email: '', id: ''};
-	const userForToken = { id: user.id, username: user.username, github: true };
+	const userForToken = { id: user.id, username: user.username };
 	const token = jwt.sign(userForToken, process.env.SECRETKEY);
 	const response = {
 		error:false,
 		message: "login successful",
-		user: { username: userForToken.username, token: token },
+		user: { username: userForToken.username, token: token, origin: "github" },
 	};
 	const jsonResponse = JSON.stringify(response);
 	res.status(200).send(
