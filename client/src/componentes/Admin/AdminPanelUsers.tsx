@@ -4,7 +4,7 @@ import { getAllProducts } from "../../redux/slices/ProductSlice/productActions";
 import Header from "./Header";
 import ProductsPanel from "./ProductsPanel/ProductsPanel";
 import UsersPanel from './UsersPanel/UsersPanel'
-const AdminPanel = () => {
+const AdminPanelUsers = () => {
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getAllProducts());
@@ -12,9 +12,9 @@ const AdminPanel = () => {
   return (
     <div className="flex flex-col items-center">
       <Header />
-      <ProductsPanel />
+      <UsersPanel />
     </div>
   );
 };
 
-export default AdminPanel;
+export default AdminPanelUsers;

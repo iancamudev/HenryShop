@@ -1,11 +1,11 @@
 import axios from "axios";
 import React, { SetStateAction, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../hooks";
-import { getAllProducts } from "../../redux/slices/ProductSlice/productActions";
-import { URL_BACK_DEV } from "../../redux/slices/ProductSlice/productActions";
+import { useAppDispatch, useAppSelector } from "../../../hooks";
+import { getAllProducts } from "../../../redux/slices/ProductSlice/productActions";
+import { URL_BACK_DEV } from "../../../redux/slices/ProductSlice/productActions";
 import { BiEdit, BiX } from "react-icons/bi";
-const Panel = () => {
+const ProductsPanel = () => {
   let navigate = useNavigate();
   const routeChangeToEdit = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
@@ -136,4 +136,4 @@ const Panel = () => {
   );
 };
 
-export default Panel;
+export default ProductsPanel;
