@@ -100,8 +100,6 @@ function App() {
               </Protected>
             }
           />
-
-          <Route path="/unauthorized" element={<>{"sin permiso"}</>} />
           <Route path="/success" element={<Success />} />
           <Route path="/unauthorized" element={<Unaothorized />} />
         </Routes>
