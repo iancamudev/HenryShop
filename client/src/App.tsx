@@ -23,8 +23,12 @@ import HeaderAdmin from './componentes/Admin/Header'
 import Success from "./componentes/Success";
 
 import Unaothorized from "./componentes/auth/Unaothorized";
+
+import { setUserData } from "./redux/slices/UserSlice/UserActions";
+
 import UsersPanel from "./componentes/Admin/UsersPanel/UsersPanel";
 import AdminPanelUsers from "./componentes/Admin/AdminPanelUsers";
+
 
 
 function App() {
@@ -34,9 +38,9 @@ function App() {
   useEffect(() => {
     const session = getObjectSession();
     if (session) {
-      dispatch(setData(session));
+      dispatch(setUserData());
     }
-  }, [dispatch]);
+  }, []);
 
   return (
     <ShoppingCartProvider>

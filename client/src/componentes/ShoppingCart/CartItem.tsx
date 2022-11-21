@@ -18,37 +18,37 @@ export function CartItem({id, quantity, color, variante}: CartItemProps) {
     const { increaseCartQuantity, decreaseCartQuantity, removeFromCart } = useShoppingCart()
     const prod = Products.find(i => i.id ===id)
     if(prod === null) return null
-    return (<Stack direction = "horizontal" gap={2} className="flex flex-col items-center  bg-white border rounded-lg shadow-md md:flex-row md:max-w-xl hover:bg-gray-100  dark:bg-yellow dark:hover:bg-yellow hover:border-gray-300">
+    return (<div className="flex flex-col m-2 p-2 items-center  bg-yellow border rounded-lg shadow-md md:flex-row md:max-w-xl">
             <img src={prod?.image}
-            style = {{ width: "180px", height: "250 px", objectFit: "cover"}} className="object-cover  w-full rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-l-lg " />
-            <div className="flex-col bg-yellow" >
-                 <div className="text-3xl  ">
-                    <div><button  style = {{ width: "180px", }} onClick={()=> removeFromCart(prod?.id as string, color, variante)}><DeleteOutlineIcon fontSize="medium"/></button>               
-                    </div>
+            className="object-cover rounded-l-lg w-24 h-70 md:h-auto md:rounded-none md:rounded-l-lg " />
+            <div className="flex p-2 w-full justify-between" >
+                 <div className="w-full"><div className="text-xl font-bold ">
+                    
                     {prod?.name} {" "}
                     </div>
-                    <div className="text-xl">
-                        Cantidad: {quantity}
-                </div>
-                    <div className="text-xl">
-                        medida: {variante}
+                    <div className="font-medium flex w-full justify-between"><div>
+                    <div className="text-lg">
+                        Variante: {variante}
                     </div>
-                    <div className="text-xl">
-                        color: {color}
+                    <div className="font-medium text-lg">
+                        Color: {color}
+                    </div></div>
+                    <div className="text-2xl py-2 px-4 font-semibold">
+                         ${prod?.price as number * quantity}
+                    </div></div>
+                    
+                    <div className="flex mt-1 p-1 px-4 ml-16 justify-center w-32 border border-gray-600 rounded-xl space-x-3" >
+                <div className="d-flex  justify-center" style={{gap: ".5rem"}}>
+                <Button className="w-9 py-1 px-3 rounded-xl  bg-gray-600 text-white text-xl"  onClick={()=> decreaseCartQuantity(prod?.id as string, color, variante)}>-</Button>
                     </div>
-                    <div className="text-xl">
-                        ${prod?.price as number * quantity}
-                    </div>
-                    <div className="inline-flex space-x-5" >
-                <div className="d-flex aling-items-center justify-content-center" style={{gap: ".5rem"}}>
-                <Button className="py-1 px-3 rounded w-100 bg-blue-500 text-white"  onClick={()=> decreaseCartQuantity(prod?.id as string, color, variante)}>-</Button>
-                    </div>
-                    <div  className="fs-3">{quantity}</div> 
+                    <div  className="fs-3 pt-0.5 font-semibold text-2xl">{quantity}</div> 
                     <div> 
-                <Button className="py-1 px-3 rounded w-100 bg-blue-500 text-white"  onClick={() => increaseCartQuantity(prod?.id as string, color, variante)}>+</Button>
+                <Button className="w-9 py-1 px-3 rounded-xl bg-gray-600 text-white text-xl"  onClick={() => increaseCartQuantity(prod?.id as string, color, variante)}>+</Button>
                 </div>
+                </div></div>
+                <div className="pt-10 m-0 px-0"><button  style = {{ width: "80px", }} onClick={()=> removeFromCart(prod?.id as string, color, variante)}><DeleteOutlineIcon fontSize="large"/></button>               
+                    </div>
                 </div>
-                </div>
-                </Stack>)
+                </div>)
         
 }
