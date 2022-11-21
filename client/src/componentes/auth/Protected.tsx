@@ -22,9 +22,11 @@ const Protected = ({ children }: IProtectedProps) => {
           setDisplay(true);
         })
         .catch(() => {
+          console.log('bye no admin')
           navigate("/");
         });
     }else{
+      console.log('bye no admin 2')
       navigate('/')
     }
   }, [setDisplay, navigate]);

@@ -51,18 +51,20 @@ router.get("/confirmation/:token", async (req: Request, res: Response) => {
   }
 });
 
-router.get("/getuser/:username",  async (req: Request, res: Response) => {
-
-   try {
-   const { username } = req.params;
-    const allUsers = await getUser(username);
-    console.log(allUsers)
-    res.status(200).send(allUsers);
-
-   } catch (error) {
+router.get("/getuser/:username", async (req: Request, res: Response) => {
+  // getUser para usuarios comunes y de terceros.
+  try {
+    const { username } = req.params;
+    const user = await getUser(username);
+    console.log(user)
+    if (!user) throw new Error();
+    res.status(200).send(user);
+  } catch (error) {
     console.log(error)
-   }
+    res.status(404).send({ message: 'Usuario no encontrado' })
+  }
 });
+
 // ruta para re-enviar el mail
 router.post('/confirmationSend', userValidation, async (req: Request, res: Response) => {
   try {
@@ -91,7 +93,7 @@ router.post('/confirmationSend', userValidation, async (req: Request, res: Respo
 router.post("/login", async (req: Request, res: Response) => {
   const username = req.body.username;
   const password = req.body.password;
-  const user = await getUser(username);
+  let user = await getUser(username);
   const passwordCorrect =
     user === null ? false : await bcrypt.compare(password, user.password); // Si no hay usuario passwordCorrect = false, si no Comparamos el password de la base de datos hasheado, con el que nos viene por body
   if (!passwordCorrect || !user) {
@@ -115,21 +117,15 @@ router.get("/isAdmin", adminValidation, async (req: Request, res: Response) => {
   }
 });
 
-router.get("/:username", userValidation, async (req: Request, res: Response) => {
-  try {
-    const { username } = req.params;
-    // comparar el username mandado con el que está en el token
-    // const authorization = req.get("authorization");
-    // const token = authorization?.split(" ")[1] as string;
-    // compareUsernames(username, token);
-    const user = await getUser(username);
-    
-    res.status(200).send({ user })
-  } catch (error: any) {
-    res.status(500).send({ message: error.message })
-  }
-}
-);
+// router.get("/:username", userValidation, async (req: Request, res: Response) => {
+//   try {
+//     const { username } = req.params;
+//     const user = await getUser(username);
+//     res.status(200).send({ user })
+//   } catch (error: any) {
+//     res.status(500).send({ message: error.message })
+//   }
+// });
 
 router.get("/admin", async (req: Request, res: Response) => {
   try {
@@ -169,16 +165,16 @@ router.put("/", userValidation, async (req: Request, res: Response) => {
   try {
     const body = req.body;
     const authorization = req.get("authorization");
-    
-    let token: string | undefined= authorization?.split(" ")[1]; 
-    
+
+    let token: string | undefined = authorization?.split(" ")[1];
+
     const decodedToken = jwt.verify(token, process.env.SECRETKEY);
     const id = decodedToken.id;
     const updated = await updateUser(body, id);
-    
+
     if (!updated)
       throw new Error('Usuario no encontrado');
-    
+
     res.status(200).send(updated);
   } catch (error: any) {
     res.status(500).send({ message: error.message });
