@@ -4,7 +4,7 @@ import routes from "./routes/index";
 import morgan from "morgan";
 import cookieSession from "cookie-session";
 const passport = require('passport');
-require('./passport.ts');
+require('./passport');
 
 dotenv.config();
 export const server = express();
