@@ -4,6 +4,7 @@ import {githubUser} from '../Types';
 import {
 	addNewGithubUser,
 	getGithubUserById,
+	getGithubUserByUsername,
 }from '../controllers/githubUser/index';
 const jwt = require("jsonwebtoken");
 
@@ -49,6 +50,15 @@ routes.get('/github/callback',passport.authenticate('auth-github',{
 			</html>
 		`
 	)
+});
+
+routes.get('/:username', async (req: Request, res:Response) => {
+	try{
+		const result = await getGithubUserByUsername(req.params.username);
+		res.status(200).json(result);
+	}catch(error:any){
+		res.status(500).json({error_message: error.message});
+	}
 });
 
 export default routes;

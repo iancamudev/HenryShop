@@ -74,7 +74,6 @@ const Header = () => {
     const session = getObjectSession();
     getUser();
     if (session) {
-<<<<<<< HEAD
       dispatch(setData(session)); 
     }
   }, [dispatch]);
@@ -92,8 +91,7 @@ const Header = () => {
     } else {
       setIsAdmin(false);
     }
-      dispatch(setData(session));
-    }
+  }
   , [dispatch]);
 
   return (
@@ -158,24 +156,13 @@ const Header = () => {
             )}
           </div>
           <div>
-<<<<<<< HEAD
+
             { isAdmin ? 
             <Link to="/admin">
-            <h4 className="pl-2 hover:pl-4 hover:delay-300 duration-300 font-bold hover:cursor-pointer">
-              Panel de admin
-            </h4>
-          </Link>:<div></div>}
-=======
-            {userProps && userProps.isAdmin === true ? (
-              <Link to="/admin">
-                <h4 className="pl-2 hover:pl-4 hover:delay-300 duration-300 font-bold hover:cursor-pointer">
-                  Panel de admin
-                </h4>
-              </Link>
-            ) : (
-              <div></div>
-            )}
->>>>>>> 13b177a72cccc4182a0add89fbb8898c1cbb4fe8
+              <h4 className="pl-2 hover:pl-4 hover:delay-300 duration-300 font-bold hover:cursor-pointer">
+                Panel de admin
+              </h4>
+            </Link>:<div></div>}
           </div>
 
           <div className="p-4 flex flex-col text-left justify-start select-none">

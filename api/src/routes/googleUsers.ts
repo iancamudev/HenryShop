@@ -2,6 +2,7 @@ import {Router, Request, Response} from 'express';
 import {
 	addNewGoogleUser,
 	getAllGoogleUsers,
+	getGoogleUserByEmail,
 	getGoogleUserById,
 } from '../controllers/googleUser/index';
 import {googleUser} from '../Types';
@@ -42,7 +43,7 @@ routes.get('/login/success', async (req:Request, res:Response)=>{
 		res.status(200).json({
 			error:false,
 			message: "login succesful",
-			user: { name: user2.name, token: token, origin: 'google' },
+			user: { name: user2.name, token: token, origin: 'google', email: user2.email },
 		})
 	}
 });
@@ -85,9 +86,9 @@ routes.get('/google/logout', (req:Request, res:Response)=>{
 	res.redirect(CLIENT_URL);
 })
 
-routes.get('/:id', async (req: Request, res:Response) => {
+routes.get('/:email', async (req: Request, res:Response) => {
 	try{
-		const result = await getGoogleUserById(req.params.id);
+		const result = await getGoogleUserByEmail(req.params.email);
 		res.status(200).json(result);
 	}catch(error:any){
 		res.status(500).json({error_message: error.message});

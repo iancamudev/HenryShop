@@ -14,7 +14,13 @@ export const addNewGithubUser = async ({username, githubId, birthday, isAdmin}: 
 		return result;
 	}
 };
+
 export const getGithubUserById = async (id: string) => {
 	const result = GithubUser.findOne({githubId: id});
+	return result;
+}
+
+export const getGithubUserByUsername = async (username: string) => {
+	const result = GithubUser.findOne({username: username});
 	return result;
 }
