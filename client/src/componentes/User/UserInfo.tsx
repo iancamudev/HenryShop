@@ -18,14 +18,21 @@ const UserInfo = () => {
 
   useEffect(() => {
     if (username)
+<<<<<<< HEAD
       console.log('cambio');
+=======
+>>>>>>> 13b177a72cccc4182a0add89fbb8898c1cbb4fe8
       axiosGetCall(`/users/getuser/${username}`)
         .then(({ data }) => {
           const { name, username, email, birthday, confirmed } = data.user;
           setInfo({ name, username, email, birthday, confirmed });
           setDisplay(true);
         })
-        .catch(() => navigate("/unauthorized"));
+        .catch((e) => {
+          console.log("por aqui");
+          console.log(e)
+          navigate("/unauthorized");
+        });
   }, [username, navigate]);
 
   return <>{display ? <UserInfoShow user={info} /> : <>Loading</>}</>;

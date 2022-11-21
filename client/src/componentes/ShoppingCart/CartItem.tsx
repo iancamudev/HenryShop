@@ -18,11 +18,11 @@ export function CartItem({id, quantity, color, variante}: CartItemProps) {
     const { increaseCartQuantity, decreaseCartQuantity, removeFromCart } = useShoppingCart()
     const prod = Products.find(i => i.id ===id)
     if(prod === null) return null
-    return (<Stack direction = "horizontal" gap={2} className="flex flex-col items-center bg-white border rounded-lg shadow-md md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
+    return (<Stack direction = "horizontal" gap={2} className="flex flex-col items-center  bg-white border rounded-lg shadow-md md:flex-row md:max-w-xl hover:bg-gray-100  dark:bg-yellow dark:hover:bg-yellow hover:border-gray-300">
             <img src={prod?.image}
-            style = {{ width: "180px", height: "250 px", objectFit: "cover"}} className="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-l-lg" />
-            <div className="flex-col">
-                 <div className="text-3xl">
+            style = {{ width: "180px", height: "250 px", objectFit: "cover"}} className="object-cover  w-full rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-l-lg " />
+            <div className="flex-col bg-yellow" >
+                 <div className="text-3xl  ">
                     <div><button  style = {{ width: "180px", }} onClick={()=> removeFromCart(prod?.id as string, color, variante)}><DeleteOutlineIcon fontSize="medium"/></button>               
                     </div>
                     {prod?.name} {" "}

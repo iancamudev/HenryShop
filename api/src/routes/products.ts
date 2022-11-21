@@ -25,10 +25,21 @@ routes.get("/admin", async (req: Request, res: Response) => {
   try {
     const { name } = req.query;
     if (name && typeof name === "string") {
+
       const findName = await findByName(name);
-      res.status(200).send(findName);
+      
+      if(!findName.docs.length){
+        res.status(200).send("No se encontro el producto con ese nombre");
+      }
+      else {
+        res.status(200).send(findName);
+      }
+      
     } else {
       const result = await getAllProductsAdmin();
+      if(!result.docs){
+        res.status(200).send("No se encontraron productos");
+      }
       res.status(200).send(result);
     }
   } catch (error) {
@@ -121,8 +132,6 @@ routes.post("/payment", userValidation, async (req: Request, res: Response) => {
     const decodedToken = jwt.verify(token, process.env.SECRETKEY);
     const user = await User.findOne({ _id: decodedToken.id });
 
-    console.log(productosForFind, token);
-
     const productAndQuantity = async (ArrObj: any) => {
       let arr: any = [];
       let el: any;
@@ -150,12 +159,17 @@ routes.post("/payment", userValidation, async (req: Request, res: Response) => {
             unit_price: el.price,
           };
         }),
-
         payer: {
           email: user.email,
         },
+        back_urls: {
+          success: "http://localhost:3000/success",
+          failure: "http://www.failure.com",
+          pending: "http://www.pending.com",
+        },
+        auto_return: "approved",
+        binary_mode: true,
       };
-      console.log(preference);
       mercadopago.preferences
         .create(preference)
         .then((response: any) => {
