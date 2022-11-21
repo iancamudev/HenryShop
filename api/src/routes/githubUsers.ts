@@ -6,8 +6,9 @@ import {
 	getGithubUserById,
 	getGithubUserByUsername,
 }from '../controllers/githubUser/index';
+const userValidation = require("../middlewares/userValidation");
 const jwt = require("jsonwebtoken");
-
+import {GithubUser} from '../models/githubUser';
 const routes = Router();
 const CLIENT_URL:string = (process.env.CLIENT_URL as string);
 
@@ -52,6 +53,25 @@ routes.get('/github/callback',passport.authenticate('auth-github',{
 		`
 	)
 });
+
+routes.get(
+  "/getGithubUserByToken",
+  userValidation,
+  async (req: Request, res: Response) => {
+    try {
+      const authorization = req.get("authorization");
+      let token: string | undefined = authorization?.split(" ")[1];
+      const decodedToken = jwt.verify(token, process.env.SECRETKEY);
+      const id = decodedToken.id;
+      const user = await GithubUser.findById(id);
+      user
+        ? res.status(200).send(user)
+        : res.status(400).send("el usuario no esta confirmado");
+    } catch (error: any) {
+      res.status(401).send("Erorr isConfirmed");
+    }
+  }
+);
 
 routes.get('/:username', async (req: Request, res:Response) => {
 	try{

@@ -6,8 +6,10 @@ import {
 	getGoogleUserById,
 } from '../controllers/googleUser/index';
 import {googleUser} from '../Types';
+import {GoogleUser} from '../models/googleUser'
 import passport from 'passport';
 const jwt = require("jsonwebtoken");
+const userValidation = require("../middlewares/userValidation");
 
 const CLIENT_URL:string = (process.env.CLIENT_URL as string);
 const routes = Router();
@@ -30,6 +32,26 @@ routes.get('/admin', async (req: Request, res:Response)=> {
 		res.status(500).json({error_message: error.message});
 	}
 });
+routes.get(
+  "/getGoogleUserByToken",
+  userValidation,
+  async (req: Request, res: Response) => {
+    try {
+      const authorization = req.get("authorization");
+
+      let token: string | undefined = authorization?.split(" ")[1];
+
+      const decodedToken = jwt.verify(token, process.env.SECRETKEY);
+      const id = decodedToken.id;
+      const user = await GoogleUser.findById(id);
+      user
+        ? res.status(200).send(user)
+        : res.status(400).send("el usuario no esta confirmado");
+    } catch (error: any) {
+      res.status(401).send("Erorr isConfirmed");
+    }
+  }
+);
 
 routes.get('/login/success', async (req:Request, res:Response)=>{
 	if(req.user){
@@ -105,5 +127,7 @@ routes.get('/:email', async (req: Request, res:Response) => {
 		res.status(500).json({error_message: error.message});
 	}
 });
+
+
 
 export default routes;

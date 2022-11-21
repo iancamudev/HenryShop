@@ -28,10 +28,7 @@ module.exports = async (req: any, res: any, next: any) => {
     if(!user){
       user = await GithubUser.findOne({ username: decodedToken.username });
     }
-    console.log(user);
-    console.log(decodedToken);
     if (!decodedToken.id) {
-      console.log('userrrrrrr');
       return res.status(401).json({ error: "token missing or invalid admin" });
     }
     const { id } = decodedToken;
