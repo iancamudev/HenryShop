@@ -18,13 +18,17 @@ const UserInfo = () => {
 
   useEffect(() => {
     if (username)
-      axiosGetCall(`/users/${username}`)
+      axiosGetCall(`/users/getuser/${username}`)
         .then(({ data }) => {
           const { name, username, email, birthday, confirmed } = data.user;
           setInfo({ name, username, email, birthday, confirmed });
           setDisplay(true);
         })
-        .catch(() => navigate("/unauthorized"));
+        .catch((e) => {
+          console.log("por aqui");
+          console.log(e)
+          navigate("/unauthorized");
+        });
   }, [username, navigate]);
 
   return <>{display ? <UserInfoShow user={info} /> : <>Loading</>}</>;
