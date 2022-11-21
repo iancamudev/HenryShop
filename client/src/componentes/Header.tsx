@@ -79,14 +79,10 @@ const Header = () => {
     const session = getObjectSession();
     getUser();
     if (session) {
-
       dispatch(setUserData());
     }
   }, []);
 
-      dispatch(setData(session)); 
-    }
-  }, [dispatch]);
   
   useEffect(() => {
     const session = window.localStorage.getItem("userSession");
