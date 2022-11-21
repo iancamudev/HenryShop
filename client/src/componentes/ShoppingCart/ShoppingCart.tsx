@@ -31,7 +31,6 @@ export function ShoppingCart({ isOpen }: ShoppingCartProps) {
     JSON.parse(window.localStorage.getItem("userSession") as string) &&
     (JSON.parse(window.localStorage.getItem("userSession") as string)
       .token as string);
-
       
   const compraHandler = async () => {
     await axios
