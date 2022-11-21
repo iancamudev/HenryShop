@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import ConfirmMailButton from "./ConfirmMailButton";
-import { TailSpin } from "react-loader-spinner";
+// import { TailSpin } from "react-loader-spinner";
 
 export interface IUserShowProps {
   name: string;

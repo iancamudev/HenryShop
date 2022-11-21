@@ -5,6 +5,7 @@ import { isPlusToken } from "typescript";
 import {
   addNewUser,
   compareUsernames,
+  deleteUserByID,
   getAllUser,
   getUser,
   updateEmail,
@@ -131,9 +132,13 @@ router.get("/:username", userValidation, async (req: Request, res: Response) => 
 }
 );
 
-router.get("/admin", async (req: Request, res: Response) => {
+router.get("/admin/allusers", async (req: Request, res: Response) => {
+   const { page } = req.query
   try {
-    const result = await getAllUser();
+    var result;
+    var y: number;
+    page ? y = +page : y = 0; 
+    page ? result = await getAllUser(y) : result = await getAllUser(1);
     result !== null
       ? res.status(200).json(result)
       : res.status(404).json({ error_message: "Ningún usuario encontrado" });
@@ -185,6 +190,16 @@ router.put("/", userValidation, async (req: Request, res: Response) => {
   } catch (error: any) {
     res.status(500).send({ message: error.message });
   }
+}
 );
+router.delete('/:id', adminValidation, async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const result = await deleteUserByID(id);
+    res.send(result)
+  } catch (error) {
+    res.status(400).send(error)
+  }
+})
 
 export default router;

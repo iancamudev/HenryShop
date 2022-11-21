@@ -23,8 +23,9 @@ export const addNewUser = async (user: user) => {
 
 const pageSize = 10;
 
-export const getAllUser = async () => {
-  const resultUsers: object = await User.paginate({ deleted: false });
+export const getAllUser = async (page: number ) => {
+
+    const resultUsers = await User.paginate({deleted: false}, { page: page })
 
   return resultUsers;
 };
@@ -85,3 +86,7 @@ export const updateUser = async (body: putBody, id: number) => {
 
   return tokenJson;
 };
+export const deleteUserByID = async (id: string) => {
+  const findIdUser = await User.findOneAndUpdate({ _id: id}, {deleted: true})
+  return findIdUser
+}

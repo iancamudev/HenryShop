@@ -285,7 +285,7 @@ const FormPutProduct = () => {
                     id="colors"
                     type="checkbox"
                     className="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-blue-200 checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-                    defaultValue={`${Product.colors}`}
+                    defaultChecked={Product.colors.includes(color)}
                   />
                   <label className="w-5/12">{color}</label>
                 </div>
@@ -310,7 +310,7 @@ const FormPutProduct = () => {
                     id="sizes"
                     type="checkbox"
                     className="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-blue-200 checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-                    defaultValue={`${Product.sizes}`}
+                    defaultChecked={Product.sizes.includes(size)}
                   />
                   <label className="w-5/12">{size}</label>
                 </div>
