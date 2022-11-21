@@ -40,6 +40,7 @@ const Header = () => {
 
   const logout = () => {
     localStorage.removeItem("userSession");
+    localStorage.removeItem("Shoping-cart");
     dispatch(clearData());
     setDeploy(false);
     window.open(`${REACT_APP_BACKEND_URL}/googleusers/google/logout`, "_self");

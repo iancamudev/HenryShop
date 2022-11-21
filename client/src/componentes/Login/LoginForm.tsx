@@ -47,7 +47,7 @@ const LoginForm = () => {
           localStorage.setItem("userSession", JSON.stringify(data));
           navigate("/");
         })
-        .catch((e) => setResult(e.message));
+        .catch((e) => setResult(e.response.data.message));
   });
 
   return (

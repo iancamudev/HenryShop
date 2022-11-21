@@ -94,7 +94,7 @@ router.post("/login", async (req: Request, res: Response) => {
   const user = await getUser(username);
   const passwordCorrect =
     user === null ? false : await bcrypt.compare(password, user.password); // Si no hay usuario passwordCorrect = false, si no Comparamos el password de la base de datos hasheado, con el que nos viene por body
-  if (!(passwordCorrect && user)) {
+  if (!passwordCorrect || !user) {
     return res
       .status(401)
       .json({ message: "Usuario o contraseña incorrecto." });
