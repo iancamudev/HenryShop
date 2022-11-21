@@ -2,12 +2,11 @@ import axios from "axios";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { AppDispatch } from "../../store";
 import { Filters } from "../FiltersSlice";
-import { getProductList, getProductPages, getProductDetail } from "./index";
+import { getProductList, getProductPages, getProductDetail, setLoading } from "./index";
+
+export const URL_BACK_DEV: string = process.env.REACT_APP_BACKEND_URL as string;
 
 
-export const URL_BACK_DEV: string = (process.env.REACT_APP_BACKEND_URL as string)
-
-console.log(URL_BACK_DEV);
 
 export const getAllProducts =
   (page?: number | null, filters?: Filters) => (dispatch: AppDispatch) => {
@@ -24,12 +23,14 @@ export const getAllProducts =
         ? `&property=${filters.property}&order=${filters.order}`
         : ""
     }`;
-
+    
     axios
       .get(url)
       .then(({ data }) => {
         dispatch(getProductList(data.docs));
         dispatch(getProductPages(data.totalPages));
+        
+        dispatch(setLoading(false))
       })
       .catch((error) => {
         console.error(error);
@@ -45,3 +46,5 @@ export const getProductsById =
         console.error(error);
       });
   };
+
+  

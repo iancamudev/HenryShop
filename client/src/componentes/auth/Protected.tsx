@@ -1,8 +1,7 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import {  useNavigate } from "react-router-dom";
 import axiosGetCall from "../../funciones/axiosGetCall";
-import { back_url } from "../../variables";
+import UserLoader from "./UserLoader";
 
 interface IProtectedProps {
   children: JSX.Element;
@@ -30,7 +29,7 @@ const Protected = ({ children }: IProtectedProps) => {
     }
   }, [setDisplay, navigate]);
 
-  return <>{display ? children : <>Checking if admin</>}</>;
+  return <>{display ? children : <UserLoader />}</>;
 };
 
 export default Protected;
