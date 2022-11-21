@@ -14,8 +14,9 @@ const jwt = require("jsonwebtoken");
 const userValidation = require("../middlewares/userValidation");
 require("../mongo");
 const { mercadopago } = require("../utils/mercadoPago");
-
 const adminValidation = require("../middlewares/adminValidation");
+import { GoogleUser } from "../models/googleUser";
+import { GithubUser } from "../models/githubUser";
 
 const routes = Router();
 
@@ -88,6 +89,7 @@ routes.get("/:id", async (req: Request, res: Response) => {
 routes.post("/", async (req: Request, res: Response) => {
   try {
     const newProduct = req.body;
+    
     if (!newProduct) {
       res.status(400).send({ error: "Info Missing" });
     }
@@ -124,13 +126,23 @@ routes.put("/:id", async (req: Request, res: Response) => {
 
 routes.post("/payment", userValidation, async (req: Request, res: Response) => {
   try {
+    console.log('paymenttttttt');
     const productosForFind = req.body.products;
     let token = req.get("authorization");
     if (token) {
       token = token.split(" ")[1];
     }
     const decodedToken = jwt.verify(token, process.env.SECRETKEY);
-    const user = await User.findOne({ _id: decodedToken.id });
+    let user = null;
+    if (decodedToken) {
+      user = await User.findOne({ _id: decodedToken.id });
+    }
+    if(!user){
+      user = await GoogleUser.findOne({ email: decodedToken.email });
+    }
+    if(!user){
+      user = await GithubUser.findOne({ username: decodedToken.username });
+    }
 
     const productAndQuantity = async (ArrObj: any) => {
       let arr: any = [];
@@ -144,8 +156,9 @@ routes.post("/payment", userValidation, async (req: Request, res: Response) => {
     };
 
     const productos = await productAndQuantity(productosForFind);
-
+    console.log(productos,user);
     if (productos && user) {
+      console.log('asssssssss');
       let preference = {
         items: productos.map((el: any) => {
           return {
@@ -159,9 +172,6 @@ routes.post("/payment", userValidation, async (req: Request, res: Response) => {
             unit_price: el.price,
           };
         }),
-        payer: {
-          email: user.email,
-        },
         back_urls: {
           success: "http://localhost:3000/success",
           failure: "http://www.failure.com",

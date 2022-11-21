@@ -8,6 +8,7 @@ import {
 import {
   addNewUser,
   compareUsernames,
+  deleteUserByID,
   getAllUser,
   getUser,
   updateEmail,
@@ -55,15 +56,20 @@ router.get("/confirmation/:token", async (req: Request, res: Response) => {
 });
 
 router.get("/getuser/:username", async (req: Request, res: Response) => {
+
+  // getUser para usuarios comunes y de terceros.
   try {
     const { username } = req.params;
-    const allUsers = await getUser(username);
-    console.log(allUsers);
-    res.status(200).send(allUsers);
+    const user = await getUser(username);
+    console.log(user)
+    if (!user) throw new Error();
+    res.status(200).send(user);
   } catch (error) {
-    console.log(error);
+    console.log(error)
+    res.status(404).send({ message: 'Usuario no encontrado' })
   }
 });
+
 // ruta para re-enviar el mail
 router.post(
   "/confirmationSend",
@@ -99,7 +105,7 @@ router.post(
 router.post("/login", async (req: Request, res: Response) => {
   const username = req.body.username;
   const password = req.body.password;
-  const user = await getUser(username);
+  let user = await getUser(username);
   const passwordCorrect =
     user === null ? false : await bcrypt.compare(password, user.password); // Si no hay usuario passwordCorrect = false, si no Comparamos el password de la base de datos hasheado, con el que nos viene por body
   if (!passwordCorrect || !user) {
@@ -109,7 +115,7 @@ router.post("/login", async (req: Request, res: Response) => {
   } else {
     const userForToken = { id: user.id, username: user.username };
     const token = jwt.sign(userForToken, process.env.SECRETKEY);
-    return res.status(200).send({ username: user.username, token: token });
+    return res.status(200).send({ username: user.username, token: token, origin:'default' });
   }
 });
 
@@ -122,9 +128,14 @@ router.get("/isAdmin", adminValidation, async (req: Request, res: Response) => {
   }
 });
 
-router.get("/admin", async (req: Request, res: Response) => {
+router.get("/admin/allusers", async (req: Request, res: Response) => {
+   const { page } = req.query
+
   try {
-    const result = await getAllUser();
+    var result;
+    var y: number;
+    page ? y = +page : y = 0; 
+    page ? result = await getAllUser(y) : result = await getAllUser(1);
     result !== null
       ? res.status(200).json(result)
       : res.status(404).json({ error_message: "Ningún usuario encontrado" });
@@ -167,13 +178,28 @@ router.put("/", userValidation, async (req: Request, res: Response) => {
     const id = decodedToken.id;
     const updated = await updateUser(body, id);
 
-    if (!updated) throw new Error("Usuario no encontrado");
+
+    if (!updated)
+      throw new Error('Usuario no encontrado');
+
 
     res.status(200).send(updated);
   } catch (error: any) {
     res.status(500).send({ message: error.message });
   }
-});
+
+}
+);
+router.delete('/:id', adminValidation, async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const result = await deleteUserByID(id);
+    res.send(result)
+  } catch (error) {
+    res.status(400).send(error)
+  }
+})
+
 
 router.get(
   "/getUserByToken",

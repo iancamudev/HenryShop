@@ -31,6 +31,15 @@ export interface googleUser {
   googleId: String;
   birthday: Date | null;
   isAdmin: Boolean;
+  confirmed: Boolean;
+}
+
+export interface githubUser {
+  username: String;
+  githubId: String;
+  birthday: Date | null;
+  isAdmin: Boolean;
+  confirmed: Boolean;
 }
 
 export interface category{

@@ -10,8 +10,14 @@ const Home = () => {
   const REACT_APP_BACKEND_URL: string = process.env
     .REACT_APP_BACKEND_URL as string;
 
+
   const getUser = async () => {
     try {
+
+  const getGoogleUser = async () => {
+
+    try{
+
       const url = `${REACT_APP_BACKEND_URL}/googleusers/login/success`;
       const { data } = await axios.get(url, { withCredentials: true });
       window.localStorage.setItem(
@@ -24,9 +30,14 @@ const Home = () => {
     }
   };
 
+
   useEffect(() => {
     getUser();
   }, []);
+
+  useEffect(()=>{
+    getGoogleUser();
+  },[]);
 
   return (
     <>

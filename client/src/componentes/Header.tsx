@@ -17,6 +17,7 @@ import {
   clearUserData,
 } from "../redux/slices/UserSlice/UserActions";
 import axios from "axios";
+import axiosGetCall from "../funciones/axiosGetCall";
 
 interface userMod {
   birthday: string;
@@ -64,6 +65,8 @@ const Header = () => {
     username: "",
   });
 
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+
   // let userData;
   const getUser = async () => {
     const result = await axios.get(
@@ -76,9 +79,31 @@ const Header = () => {
     const session = getObjectSession();
     getUser();
     if (session) {
+
       dispatch(setUserData());
     }
   }, []);
+
+      dispatch(setData(session)); 
+    }
+  }, [dispatch]);
+  
+  useEffect(() => {
+    const session = window.localStorage.getItem("userSession");
+    if (session) {
+      axiosGetCall("/users/isAdmin")
+        .then(() => {
+          setIsAdmin(true);
+        })
+        .catch(() => {
+          setIsAdmin(false);
+        });
+    } else {
+      setIsAdmin(false);
+    }
+  }
+  , [dispatch]);
+
 
   return (
     <nav className="flex flex-col sticky w-full">
@@ -142,15 +167,13 @@ const Header = () => {
             )}
           </div>
           <div>
-            {userProps && userProps.isAdmin === true ? (
-              <Link to="/admin">
-                <h4 className="pl-2 hover:pl-4 hover:delay-300 duration-300 font-bold hover:cursor-pointer">
-                  Panel de admin
-                </h4>
-              </Link>
-            ) : (
-              <div></div>
-            )}
+
+            { isAdmin ? 
+            <Link to="/admin">
+              <h4 className="pl-2 hover:pl-4 hover:delay-300 duration-300 font-bold hover:cursor-pointer">
+                Panel de admin
+              </h4>
+            </Link>:<div></div>}
           </div>
 
           <div className="p-4 flex flex-col text-left justify-start select-none">

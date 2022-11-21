@@ -39,10 +39,16 @@ const Header = () => {
               Volver al home
             </h5>
             <h5
-              onClick={() => setCategoryDeploy(!categoryDeploy)}
+              onClick={() => navigate('/admin/users')}
               className="font-bold mt-4  hover:delay-300 hover:cursor-pointer pl-2 hover:pl-4 duration-300"
             >
-              Categorias
+              Users
+            </h5>
+            <h5
+              onClick={() => navigate('/admin')}
+              className="font-bold mt-4  hover:delay-300 hover:cursor-pointer pl-2 hover:pl-4 duration-300"
+            >
+              Products
             </h5>
             {/* {categoryDeploy && (
               <div className="animate-open-menu origin-top">

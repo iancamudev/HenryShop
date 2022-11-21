@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
@@ -71,7 +72,7 @@ const Form = () => {
   } = useForm<formData>({
     resolver: yupResolver(schema),
   });
-
+  const navigate = useNavigate();
   const initialForm: formData = {
     name: "",
     rating: -1,
@@ -85,6 +86,7 @@ const Form = () => {
     sizes: [""],
   };
   const [input, setInput] = useState(initialForm);
+  
   const [file, setFile] = useState(null);
   
   let imgSrc: any;
@@ -96,7 +98,7 @@ const Form = () => {
     const target =  e.target as HTMLInputElement;
     imgSrc = target.files?.[0];
     setFile(imgSrc)
-    let arr: any = "";
+    let arr: string = "";
     
     
       imgFile =  URL.createObjectURL(imgSrc);
@@ -137,8 +139,10 @@ const Form = () => {
           sizes,
         })
         .then((res) => {
-          console.log(res);
-        })
+          alert("Se creo el producto");
+          window.location.reload();
+        }
+        )
         .catch((err) => console.error(err));
   }
 

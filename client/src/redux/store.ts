@@ -1,6 +1,7 @@
 // here goes the store
 import { configureStore } from "@reduxjs/toolkit";
 import ProductSlice from "../redux/slices/ProductSlice/index";
+import AdminSlice from "./slices/AdminSlice";
 import FiltersSlice from "./slices/FiltersSlice";
 import UserSlice from "./slices/UserSlice";
 
@@ -8,7 +9,8 @@ const store = configureStore({
   reducer: {
     products: ProductSlice,
     filterState: FiltersSlice,
-    user: UserSlice
+    user: UserSlice,
+    admin: AdminSlice,
   },
 });
 
