@@ -45,7 +45,8 @@ routes.get('/github/callback',passport.authenticate('auth-github',{
 			<html lang="en">
 				<body></body>
 				<script>
-					window.opener.postMessage(${jsonResponse}, '${CLIENT_URL}')
+					window.opener.postMessage(${jsonResponse}, '${CLIENT_URL}');
+					console.log('aa');
 				</script>
 			</html>
 		`

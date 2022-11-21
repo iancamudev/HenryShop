@@ -19,10 +19,16 @@ import UserInfo from "./componentes/User/UserInfo";
 import UserProtected from "./componentes/auth/UserProtected";
 import Header from "./componentes/Header";
 import UserEdit from "./componentes/User/UserEdit";
-
+import HeaderAdmin from './componentes/Admin/Header'
 import Success from "./componentes/Success";
 
 import Unaothorized from "./componentes/auth/Unaothorized";
+
+import { setUserData } from "./redux/slices/UserSlice/UserActions";
+
+import UsersPanel from "./componentes/Admin/UsersPanel/UsersPanel";
+import AdminPanelUsers from "./componentes/Admin/AdminPanelUsers";
+
 
 
 function App() {
@@ -32,9 +38,9 @@ function App() {
   useEffect(() => {
     const session = getObjectSession();
     if (session) {
-      dispatch(setData(session));
+      dispatch(setUserData());
     }
-  }, [dispatch]);
+  }, []);
 
   return (
     <ShoppingCartProvider>
@@ -92,6 +98,8 @@ function App() {
               </Protected>
             }
           />
+            <Route  path='/admin/users' element={<Protected>
+              <AdminPanelUsers/></Protected>}/>
           <Route
             path="/admin/:id"
             element={

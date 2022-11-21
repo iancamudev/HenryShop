@@ -6,6 +6,11 @@ import { useAppSelector } from "../../hooks";
 import axios from "axios";
 import { redirect } from "react-router-dom";
 import sc from "../../assets/SC.gif"
+
+import { useEffect, useState } from "react";
+import axiosGetCall from "../../funciones/axiosGetCall";
+import { userInfo } from "os";
+
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 /*<Offcanvas show={isOpen} onHide = {closeCart}>
             <Offcanvas.Header closeButton>
@@ -28,11 +33,13 @@ export function ShoppingCart({ isOpen }: ShoppingCartProps) {
   const { closeCart, cartItems } = useShoppingCart();
 
   const Products = useAppSelector((state) => state.products.productList);
+  const User = useAppSelector((state) => state.user);
+
   const token =
     JSON.parse(window.localStorage.getItem("userSession") as string) &&
     (JSON.parse(window.localStorage.getItem("userSession") as string)
       .token as string);
-      
+
   const compraHandler = async () => {
     await axios
       .post(
@@ -66,19 +73,30 @@ export function ShoppingCart({ isOpen }: ShoppingCartProps) {
           const prod = Products.find((i) => i.id === cartItem.id);
           return total + (prod?.price || 0) * cartItem.quantity;
         }, 0)}
+
       </div> : <div className="flex flex-col items-center"><img
             src={sc}
             alt="Shopping Cart"
             className=" h-80 select-none"
           /> <div className="text-center p-14 px-5 ms-auto font-bold font-serif text-3xl">Agrega Productos al Carrito...</div></div>}
-      <div className=" flex flex-col items-center">
-        <button
-          style={{ width: "250px" }}
-          className="justify-center items-center bg-blue-500 hover:bg-blue-700 text-white font-bold p-4 rounded-full"
-          onClick={compraHandler}
-        >
-          INICIAR COMPRA
-        </button>
+      <div className="py-4 flex flex-col items-center">
+        {User.confirmed ? (
+          <button
+            style={{ width: "250px" }}
+            className="justify-center items-center bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+            onClick={compraHandler}
+          >
+            INICIAR COMPRA
+          </button>
+        ) : (
+          <button
+            style={{ width: "250px" }}
+            className="justify-center items-center bg-gray-500 text-white font-bold py-2 px-4 rounded-full cursor-none"
+          >
+            NO HABILITADO
+          </button>
+        )}
+
       </div>
     </Drawer>
   );
