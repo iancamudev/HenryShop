@@ -20,6 +20,7 @@ interface ProductState {
   productDetail: ProductDetails;
   productPages: Number;
   loading: boolean;
+  error: string;
 }
 
 //Definimos el estado
@@ -39,7 +40,8 @@ const initialState: ProductState = {
     quantity: 0,
   },
   productPages: 0,
-  loading: true,
+  loading: false,
+  error: '',
 };
 
 //PORCION DE ESTADO GLOBAL
@@ -56,12 +58,19 @@ const ProductSlice = createSlice({
     getProductDetail(state, action: PayloadAction<ProductDetails>) {
       state.productDetail = action.payload;
     },
-    setLoading(state, action:PayloadAction<boolean>) {
+    setLoading(state, action: PayloadAction<boolean>) {
       state.loading = action.payload;
-    }
+    },
+    setError(state, action: PayloadAction<string>) {
+      state.error = action.payload;
+    },
+    clearProductLsit(state) {
+      state.error = '';
+      state.productList = [];
+    },
   },
 });
 
 export default ProductSlice.reducer;
-export const { getProductList, getProductPages, getProductDetail, setLoading } =
+export const { getProductList, getProductPages, getProductDetail, setLoading, setError, clearProductLsit } =
   ProductSlice.actions;

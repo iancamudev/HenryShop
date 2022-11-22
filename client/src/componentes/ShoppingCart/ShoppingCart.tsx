@@ -5,8 +5,8 @@ import { Drawer } from "@mui/material";
 import { useAppSelector } from "../../hooks";
 import axios from "axios";
 import { redirect } from "react-router-dom";
-import sc from "../../assets/SC.gif";
-import { IoMdCloseCircle } from "react-icons/io";
+import sc from "../../assets/SC.gif"
+
 import { useEffect, useState } from "react";
 import axiosGetCall from "../../funciones/axiosGetCall";
 import { userInfo } from "os";
@@ -60,7 +60,7 @@ export function ShoppingCart({ isOpen }: ShoppingCartProps) {
   };
   return (
     <Drawer anchor="right" open={isOpen} onClose={closeCart}>
-      <div className="flex"><div className="text-center py-5 px-10  font-bold font-serif text-4xl ">
+      <div><div className="text-center py-5 px-10  font-bold font-serif text-4xl ">
         Carrito de Compras
       </div>
       <button className="w-8 h-8 text-black rounded-lg border border-gray-300 m-4 bg-yellow" onClick={closeCart}>X</button></div>
