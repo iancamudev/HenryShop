@@ -1,9 +1,8 @@
-import React, { useState, useEffect, lazy } from "react";
+import React from "react";
 import Pagination from "./Pagination";
-import ProductCards from "./ProductCards";
 import Header from "./Header";
-import axios from "axios";
 import Filters from "./Filters";
+import ProductList from "./Products/ProductList";
 
 const Home = () => {
 
@@ -11,7 +10,7 @@ const Home = () => {
     <>
       <Header />
       <Filters />
-      <ProductCards />
+      <ProductList />
       <Pagination />
     </>
   );
