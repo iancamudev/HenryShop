@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import "./App.css";
 import { Route, Routes, Navigate } from "react-router-dom";
 import Login from "./componentes/Login";
@@ -12,21 +14,21 @@ import { ShoppingCartProvider } from "./componentes/ShoppingCart/ContextShopping
 import { useAppSelector, useAppDispatch } from "./hooks";
 import getObjectSession from "./funciones/getObjectSession";
 import { useEffect } from "react";
-import { setData } from "./redux/slices/UserSlice";
+//import { setData } from "./redux/slices/UserSlice";
 import Confirmation from "./componentes/Confirmation";
 import Protected from "./componentes/auth/Protected";
 import UserInfo from "./componentes/User/UserInfo";
 import UserProtected from "./componentes/auth/UserProtected";
 import Header from "./componentes/Header";
 import UserEdit from "./componentes/User/UserEdit";
-import HeaderAdmin from './componentes/Admin/Header'
+//import HeaderAdmin from './componentes/Admin/Header'
 import Success from "./componentes/Success";
 
 import Unaothorized from "./componentes/auth/Unaothorized";
 
 import { setUserData } from "./redux/slices/UserSlice/UserActions";
 
-import UsersPanel from "./componentes/Admin/UsersPanel/UsersPanel";
+//import UsersPanel from "./componentes/Admin/UsersPanel/UsersPanel";
 import AdminPanelUsers from "./componentes/Admin/AdminPanelUsers";
 
 
