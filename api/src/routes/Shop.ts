@@ -1,5 +1,5 @@
 import { Router, Request, Response } from "express";
-import { addNewShop } from "../controllers/ShopCart";
+import { addNewShop, getAllShopAdmin } from "../controllers/ShopCart";
 import { Product } from "../models/Product";
 import { Shopping } from "../models/Shopping";
 import User from "../models/User";
@@ -41,6 +41,18 @@ router.post("/", async (req: Request, res: Response)=>{
     } catch (error: any) {
         res.status(400).send({error: error.message})
     }
+})
+router.get("/adminusers",  async (req: Request, res: Response)=> {
+  try {
+    const { page } = req.query
+    var result;
+    var y: number;
+    page ? y = +page : y = 0; 
+    page ? result = await getAllShopAdmin(y) : result = await getAllShopAdmin(1);
+    res.send(result)
+  } catch (error) {
+    res.status(400).send(error)
+  }
 })
 
 export default router;
