@@ -11,6 +11,7 @@ import {
   deleteUserByID,
   getAllUser,
   getUser,
+  putSwitchUserDelete,
   updateEmail,
   updateUser,
 } from "../controllers/user/index";
@@ -127,7 +128,6 @@ router.get("/isAdmin", adminValidation, async (req: Request, res: Response) => {
     res.status(401).send("No admin");
   }
 });
-
 router.get("/admin/allusers", async (req: Request, res: Response) => {
    const { page } = req.query
 
@@ -143,7 +143,15 @@ router.get("/admin/allusers", async (req: Request, res: Response) => {
     res.status(500).json({ error_message: error.message });
   }
 });
-
+router.put('/admin/users/:id', adminValidation, async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params
+    const result = await putSwitchUserDelete(id);
+    res.send(result)
+  } catch (error) {
+    res.status(400).send(error)
+  }
+})
 router.get("/admin/:username", async (req: Request, res: Response) => {
   try {
     const username = req.params.username;
