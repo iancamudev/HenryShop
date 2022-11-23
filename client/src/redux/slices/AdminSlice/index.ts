@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { ProductDetails } from "../ProductSlice";
 
 //INTERFACES
 export interface AdminUserDetail {
@@ -12,11 +13,17 @@ export interface AdminUserDetail {
     deleted: boolean;
     id: string;
   }
-  
+export interface Payments {
+  userId: string;
+  products: Array<ProductDetails>;
+  id: string;
+}
   interface AdminUserState {
     usersList: Array<AdminUserDetail>;
     userDetail: AdminUserDetail;
     userPages: Number;
+    payments: Array<Payments>;
+    paymentsPages: Number;
   }
 //Definimos el estado
 const initialState: AdminUserState = {
@@ -33,6 +40,8 @@ const initialState: AdminUserState = {
     id: ""
   },
   userPages: 0,
+  payments: [],
+  paymentsPages: 0,
 };
 
 //PORCION DE ESTADO GLOBAL
@@ -48,10 +57,16 @@ const AdminSlice = createSlice({
     },
     getUsersPages(state, action: PayloadAction<Number>){
        state.userPages = action.payload;
-    }
+    },
+    getPayments(state, action: PayloadAction<Array<Payments>>){
+      state.payments = action.payload
+    },
+    getPaymentsPages(state, action: PayloadAction<Number>){
+      state.paymentsPages = action.payload;
+   },
   },
 });
 
 export default AdminSlice.reducer;
-export const { getUsersList, getUsersPages} =
+export const { getUsersList, getUsersPages, getPayments, getPaymentsPages } =
   AdminSlice.actions;

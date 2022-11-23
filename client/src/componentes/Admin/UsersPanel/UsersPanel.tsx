@@ -5,7 +5,9 @@ import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { getAllProducts } from "../../../redux/slices/ProductSlice/productActions";
 import { URL_BACK_DEV } from "../../../redux/slices/ProductSlice/productActions";
 import { BiEdit, BiX } from "react-icons/bi";
+import { AiOutlineCheck } from "react-icons/ai"
 import { getAllUsers } from "../../../redux/slices/AdminSlice/adminActions";
+import axiosPutCall from "../../../funciones/axiosPutCall";
 const UsersPanel = () => {
   let navigate = useNavigate();
   const routeChangeToEdit = (
@@ -19,11 +21,11 @@ const UsersPanel = () => {
     navigate(path);
   };
   const dispatch = useAppDispatch();
+  const Users = useAppSelector((state) => state.admin.usersList);
   const [currentPage, setCurrentPage] = useState(1);
   useEffect(() => {
     dispatch(getAllUsers(currentPage));
-  }, [currentPage]);
-  const Users = useAppSelector((state) => state.admin.usersList);
+  }, [currentPage, Users]);
   const Pages = useAppSelector((state) => state.admin.userPages);
   var array: Array<number> = [];
   let id = 1;
@@ -59,6 +61,12 @@ const UsersPanel = () => {
   ) => {
     event.preventDefault();
   };
+  const handleActivate = async (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    event.preventDefault();
+    await axiosPutCall(`/users/admin/users/${event.currentTarget.value}`, {})
+  }
   return (
     <div className="flex justify-center items-center max-w-xs">
       <div className=" mt-8 mb-8 flex flex-col justify-center shadow">
@@ -86,51 +94,41 @@ const UsersPanel = () => {
             </th>
             <th className="border border-black font-normal p-2">Username</th>
             <th className="border border-black font-normal p-2 pl-4 pr-4">
-              Actions
+              Status
             </th>
           </tr>
           {Users &&
             Users.map((user) => (
-              <tr className="border border-slate-300">
+              <tr className="border border-slate-300 ">
                 <td
-                  className={
-                    id % 2 !== 0
-                      ? "bg-gray-200 border-black"
-                      : "bg-gray-300 border-black"
-                  }
+                  className={ user.deleted ? "bg-gray-300 border-black text-white" : "bg-gray-200 border-black"}
+  
                 >
                   {id++}
                 </td>
                 <td
-                  className={
-                    id % 2 !== 0
-                      ? "max-w-1/3 bg-gray-300  border-black"
-                      : "max-w-1/3 bg-gray-200  border-black"
-                  }
+                  className={ user.deleted ? "bg-gray-300 border-black text-white" : "bg-gray-200 border-black"}
                 >
                   {<p className="text-xs font-bold">{user.username}</p>}
                 </td>{" "}
                 <td
-                  className={
-                    id % 2 !== 0
-                      ? "flex items-center justify-center bg-gray-300 p-2 border-black"
-                      : "flex items-center justify-center bg-gray-200 p-2 border-black"
-                  }
-                >
-                  <button
-                    onClick={(e) => handleDelete(e)}
+                    className={ user.deleted ? "bg-gray-300 border-black text-white" : "bg-gray-200 border-black"}
+                > 
+                 { user.deleted ? <button
+                    onClick={(e) => handleActivate(e)}
                     value={user.id}
-                    className="w-12 h-12 p-3 bg-red-500 hover:bg-red-700 text-white font-bold  border border-red-700 rounded hover:duration-500 duration-300"
+                    className="  margin-auto mt-2 mb-2 w-12 h-12 p-3 bg-red-500 hover:bg-red-700 text-white font-bold  border border-red-700 rounded hover:duration-500 duration-300"
                   >
                     <BiX className="w-6 h-6" />
-                  </button>
-                  {/* <button
-                    onClick={(e) => routeChangeToEdit(e)}
+                  </button> : <button
+                    onClick={(e) => handleDelete(e)}
                     value={user.id}
-                    className="w-12 h-12 p-3 bg-amber-500 hover:bg-amber-700 text-white font-bold  border border-amber-700 rounded hover:duration-500 duration-300"
+                    className="margin-auto mt-2 mb-2 w-12 h-12 p-3 bg-green-500 hover:bg-green-700 text-white font-bold  border border-green-700 rounded hover:duration-500 duration-300"
+                    
                   >
-                    <BiEdit className="w-6 h-6" />
-                  </button> */}
+                    <AiOutlineCheck className=" w-4 h-4 ml-1" />
+                  </button> }
+                  
                 </td>
               </tr>
             ))}

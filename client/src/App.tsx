@@ -30,6 +30,8 @@ import { setUserData } from "./redux/slices/UserSlice/UserActions";
 
 //import UsersPanel from "./componentes/Admin/UsersPanel/UsersPanel";
 import AdminPanelUsers from "./componentes/Admin/AdminPanelUsers";
+import PaymentsPanel from "./componentes/Admin/PaymentsPanel/PaymentsPanel";
+import AdminPanelPayments from "./componentes/Admin/AdminPanelPayments";
 
 
 
@@ -100,6 +102,8 @@ function App() {
               </Protected>
             }
           />
+            <Route  path='/admin/payments' element={<Protected>
+              <AdminPanelPayments/></Protected>}/>
             <Route  path='/admin/users' element={<Protected>
               <AdminPanelUsers/></Protected>}/>
           <Route
