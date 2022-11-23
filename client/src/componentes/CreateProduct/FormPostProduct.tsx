@@ -139,7 +139,7 @@ const Form = () => {
           sizes,
         })
         .then((res) => {
-          alert("Se creo el producto");
+          alert("Producto creado correctamente");
           window.location.reload();
         }
         )

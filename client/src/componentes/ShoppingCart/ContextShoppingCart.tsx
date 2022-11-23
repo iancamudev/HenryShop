@@ -1,6 +1,7 @@
-import { current } from "@reduxjs/toolkit";
+/* eslint-disable @typescript-eslint/no-redeclare */
+//import { current } from "@reduxjs/toolkit";
 import { createContext, ReactNode, useState, useContext } from "react";
-import { useAppSelector } from "../../hooks";
+//import { useAppSelector } from "../../hooks";
 import { ShoppingCart } from "./ShoppingCart";
 import { useLocalStorage } from "./useLocalStorage";
 
@@ -25,6 +26,7 @@ type ShoppingCartContex = {
     addToCart: (id: string, quantity: number, color: string, variante: string) => void
     cartQuantity: number
     cartItems: CartItem[]
+    setEmptyCart: (event: any) => void
 }
 
 const ShoppingCartContex = createContext({} as ShoppingCartContex)
@@ -36,6 +38,10 @@ export function ShoppingCartProvider({ children }:
 ShoppingCartProviderProps){
     const [isOpen, setIsOPen] = useState(false)
     const [cartItems, setCartItems] = useLocalStorage<CartItem[]>("Shoping-cart",[])
+
+    const setEmptyCart = (event: any) => {
+        setCartItems([])
+    }
     
     const cartQuantity = cartItems.reduce(
         (quantity, item) => item.quantity + quantity, 0
@@ -107,7 +113,7 @@ ShoppingCartProviderProps){
     }
 
     return (
-        <ShoppingCartContex.Provider value={{getItemQuantity, increaseCartQuantity, decreaseCartQuantity, removeFromCart, openCart, closeCart, addToCart, cartItems, cartQuantity}}>
+        <ShoppingCartContex.Provider value={{getItemQuantity, increaseCartQuantity, decreaseCartQuantity, removeFromCart, openCart, closeCart, addToCart, setEmptyCart ,cartItems, cartQuantity}}>
             {children}
         <ShoppingCart isOpen={isOpen}/>
         </ShoppingCartContex.Provider>
