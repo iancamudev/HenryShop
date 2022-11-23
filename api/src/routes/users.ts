@@ -61,8 +61,9 @@ router.get("/getuser/:username", async (req: Request, res: Response) => {
   try {
     const { username } = req.params;
     const user = await getUser(username);
-    console.log(user)
     if (!user) throw new Error();
+    await user.populate('reviews')
+    console.log(user)
     res.status(200).send(user);
   } catch (error) {
     console.log(error)
@@ -115,7 +116,7 @@ router.post("/login", async (req: Request, res: Response) => {
   } else {
     const userForToken = { id: user.id, username: user.username };
     const token = jwt.sign(userForToken, process.env.SECRETKEY);
-    return res.status(200).send({ username: user.username, token: token, origin:'default' });
+    return res.status(200).send({ username: user.username, token: token, origin: 'default' });
   }
 });
 
@@ -129,12 +130,12 @@ router.get("/isAdmin", adminValidation, async (req: Request, res: Response) => {
 });
 
 router.get("/admin/allusers", async (req: Request, res: Response) => {
-   const { page } = req.query
+  const { page } = req.query
 
   try {
     var result;
     var y: number;
-    page ? y = +page : y = 0; 
+    page ? y = +page : y = 0;
     page ? result = await getAllUser(y) : result = await getAllUser(1);
     result !== null
       ? res.status(200).json(result)
@@ -151,8 +152,8 @@ router.get("/admin/:username", async (req: Request, res: Response) => {
     result !== null
       ? res.status(200).json(result)
       : res.status(404).json({
-          error_message: "Ningún usuario encontrado con ese username",
-        });
+        error_message: "Ningún usuario encontrado con ese username",
+      });
   } catch (error: any) {
     res.status(500).json({ error_message: error.message });
   }
@@ -171,25 +172,18 @@ router.put("/", userValidation, async (req: Request, res: Response) => {
   try {
     const body = req.body;
     const authorization = req.get("authorization");
-
     let token: string | undefined = authorization?.split(" ")[1];
-
     const decodedToken = jwt.verify(token, process.env.SECRETKEY);
     const id = decodedToken.id;
     const updated = await updateUser(body, id);
-
-
     if (!updated)
       throw new Error('Usuario no encontrado');
-
-
     res.status(200).send(updated);
   } catch (error: any) {
     res.status(500).send({ message: error.message });
   }
+});
 
-}
-);
 router.delete('/:id', adminValidation, async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -199,7 +193,6 @@ router.delete('/:id', adminValidation, async (req: Request, res: Response) => {
     res.status(400).send(error)
   }
 })
-
 
 router.get(
   "/getUserByToken",

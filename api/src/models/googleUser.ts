@@ -28,3 +28,5 @@ export const GoogleUser = model<
   GoogleUserDocument,
   PaginateModel<GoogleUserDocument>
 >('GoogleUser', googleUserSchema, 'googleUsers');
+
+export default GoogleUser

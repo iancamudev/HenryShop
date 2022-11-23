@@ -8,6 +8,7 @@ export interface product {
   category: String;
   colors: Array<string>;
   sizes: Array<string>;
+  reviews: Array<object>;
 }
 
 export interface user {
@@ -18,6 +19,7 @@ export interface user {
   password: String;
   birthday: Date;
   isAdmin: Boolean;
+  reviews: Array<object>;
 }
 
 export interface shopping {
@@ -46,3 +48,7 @@ export interface category{
   name: String;
 }
 
+export interface review {
+  text: String;
+  number: Number;
+}
