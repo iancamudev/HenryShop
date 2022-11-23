@@ -14,6 +14,7 @@ const productSchema = new Schema({
   sizes: Array,
   deleted: { type: Boolean, default: false },
   quantity: { type: Number },
+  reviews: [{ type: Schema.Types.ObjectId, ref: 'Reviews' }],
 });
 
 // modifica el _id de lo que te devuelve la base de datos por id, ademas remueve el __v
@@ -25,7 +26,7 @@ productSchema.set("toJSON", {
   },
 });
 
-interface ProductDocument extends Document, product {}
+interface ProductDocument extends Document, product { }
 
 productSchema.plugin(mongoosePaginate);
 
@@ -34,3 +35,5 @@ export const Product = model<ProductDocument, PaginateModel<ProductDocument>>(
   productSchema,
   "products"
 );
+
+export default Product;
