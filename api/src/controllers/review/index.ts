@@ -1,17 +1,17 @@
 import Review from "../../models/Review";
-import { product, review, user } from "../../Types";
+import {review} from "../../Types";
 
 export const addNewReview = async (
-  text: string, rating: number, userId: object, productId: object
+  text: string, rating: number, user: object, product: object
 ) => {
   if (
     !text ||
-    !rating ||
-    !productId ||
-    !userId
+    !rating || 
+    !user ||
+    !product
   ) throw new Error("Flata enviar datos");
 
-  const newReview = await Review.create({ text, rating, userId, productId })
+  const newReview = await Review.create({ text, rating, user, product })
   console.log('created')
   return newReview;
 }

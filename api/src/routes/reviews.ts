@@ -5,22 +5,21 @@ import GithubUser from "../models/githubUser";
 import Product from "../models/Product";
 import Review from "../models/Review";
 import { addNewReview } from "../controllers/review";
-import { review } from "../Types";
 const userValidation = require("../middlewares/userValidation");
 require("../mongo");
 
 const router = Router();
 
-router.post('/', userValidation, async (req: Request, res: Response) => {
-  const { userId, productId, text, rating } = req.body;
+router.post('/', async (req: Request, res: Response) => {
+  const { text, rating, userId, productId} = req.body;
   try {
-    const user = await User.findById(userId);
-    const product = await Product.findById(productId);
+   const user = await User.findById(userId);
+   const product = await Product.findById(productId);
 
-    const review = await addNewReview(text, rating, user._id, product._id) 
+    const review = await addNewReview(text, rating, user._id, product._id); 
 
-    // await User.findByIdAndUpdate(user._id, { reviews: [...user.reviews, { info: review._id }] })
-    // await Product.findByIdAndUpdate(product._id, { reviews: [...user.reviews, { info: review._id }] })
+    await User.findByIdAndUpdate(user._id, { reviews: [...user.reviews, { info: review.id }] })
+    await Product.findByIdAndUpdate(product._id, { reviews: [...user.reviews, { info: review.id }] })
 
     res.status(200).send(review)
   } catch (e: any) {

@@ -51,6 +51,6 @@ export interface category{
 export interface review {
   text: String;
   rating: Number;
-  user: user;
-  product: product;
+  user: object;
+  product: object;
 }
