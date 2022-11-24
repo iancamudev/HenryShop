@@ -42,6 +42,7 @@ router.post("/", async (req: Request, res: Response)=>{
         res.status(400).send({error: error.message})
     }
 })
+
 router.get("/adminusers",  async (req: Request, res: Response)=> {
   try {
     const { page } = req.query

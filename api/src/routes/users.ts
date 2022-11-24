@@ -5,6 +5,7 @@ import {
   collapseTextChangeRangesAcrossMultipleVersions,
   isPlusToken,
 } from "typescript";
+import { addNewShop } from "../controllers/ShopCart";
 import {
   addNewUser,
   compareUsernames,
@@ -15,6 +16,9 @@ import {
   updateEmail,
   updateUser,
 } from "../controllers/user/index";
+import GithubUser from "../models/githubUser";
+import GoogleUser from "../models/googleUser";
+import Product from "../models/Product";
 import { User } from "../models/User";
 import { mailOptionsRegister, transporter } from "../transport";
 const nodemailer = require("nodemailer");
@@ -243,5 +247,61 @@ router.get(
     }
   }
 );
+
+
+
+
+
+
+router.post("/shopping", userValidation, async (req: Request, res: Response) => {
+  try {
+    const productosForFind = req.body.products;
+    let token = req.get("authorization");
+    if (token) {
+      token = token.split(" ")[1];
+    }
+    const decodedToken = jwt.verify(token, process.env.SECRETKEY);
+    let user = null;
+    if (decodedToken) {
+      user = await User.findOne({ _id: decodedToken.id });
+    }
+    if(!user){
+      user = await GoogleUser.findOne({ email: decodedToken.email });
+    }
+    if(!user){
+      user = await GithubUser.findOne({ username: decodedToken.username });
+    }
+
+    const productAndQuantity = async (ArrObj: any) => {
+      let arr: any = [];
+      let el: any;
+      for (el of ArrObj) {
+        let p = await Product.findOne({ _id: el.id });
+        let copia: any = { ...p };
+        arr.push({ id: p.id, name: p.name, rating: p.rating, description: p.description, 
+          price: p.price, total_Price: p.price.valueOf() * el.quantity, image: p.image, 
+          category: p.category, quantity: el.quantity, color: el.color, variante: el.variante });
+      }
+      return arr;
+    };
+
+    const productos = await productAndQuantity(productosForFind);
+    console.log(productos, user);
+    if(user && productos){
+      const us = await User.findById(user.id);
+      const shopping = await addNewShop(user.id, productos);
+      await shopping.save()
+      us.shopping = [...us.shopping, shopping._id]
+      await us.save()
+      res.status(200).send(shopping);
+  }
+  } catch (error) {
+    res.status(401).send({ error });
+  }
+});
+
+
+
+
 
 export default router;

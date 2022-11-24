@@ -30,6 +30,7 @@ routes.get('/github/callback',passport.authenticate('auth-github',{
 		birthday: null,
 		isAdmin: false,
 		confirmed: true,
+		shopping: []
 	};
 	const result = await addNewGithubUser(newUserObj);
 	const user= result? result: {username: '', email: '', id: ''};
