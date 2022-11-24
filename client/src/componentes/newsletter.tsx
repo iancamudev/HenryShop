@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { FormEvent, useState } from 'react'
-import {RiMailAddFill} from 'react-icons/ri'
+import { RiMailAddFill } from 'react-icons/ri'
 
 const NewsLetter = () => {
 
@@ -15,15 +15,16 @@ const NewsLetter = () => {
     const submitHandler = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        axios.post(`${bEnd}/newsletter`, { email })	
+        axios.post(`${bEnd}/newsletter`, { email })
+        alert('Gracias por suscribirte, Email agregado a la newsletter')
 
         setEmail('')
     }
 
     return (
-        <form 
-        onSubmit={submitHandler}
-        className="flex flex-row rounded-md shadow-lg  bg-white border-0 border-b-2 border-black border-solid"
+        <form
+            onSubmit={submitHandler}
+            className="flex flex-row rounded-md shadow-lg  bg-white border-0 border-b-2 border-black border-solid"
         >
 
             <input
@@ -40,7 +41,7 @@ const NewsLetter = () => {
                 className="text-base text-gray-900 pl-3 pr-4 hover:bg-gray-200 rounded-br-md rounded-tr-md"
 
             >
-                
+
                 <RiMailAddFill className="h-6 w-6 text-gray-600" />
             </button>
 
