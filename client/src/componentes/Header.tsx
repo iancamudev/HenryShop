@@ -18,6 +18,7 @@ import {
 } from "../redux/slices/UserSlice/UserActions";
 import axios from "axios";
 import axiosGetCall from "../funciones/axiosGetCall";
+import NewsLetter from "./newsletter";
 
 interface userMod {
   birthday: string;
@@ -112,6 +113,7 @@ const Header = () => {
           />
         </Link>
         <Searchbar />
+        <NewsLetter />
         <div className="inline-flex space-x-28">
           <div className="flex-1 ">
             <GiHamburgerMenu
