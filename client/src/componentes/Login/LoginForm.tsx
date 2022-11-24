@@ -8,7 +8,7 @@ import axios from "axios";
 const errorStyle =
   "mt-1 text-red-600 font-bold bg-red-100 p-1 border-2 border-red-700 border-solid rounded-2xl";
 const inputStyle =
-  "border border-black border-solid w-full rounded-2xl pl-2 py-1";
+  "border border-black border-solid w-full rounded-sm pl-2 py-1";
 
 interface IFormData {
   username: string;
@@ -53,7 +53,7 @@ const LoginForm = () => {
   return (
     <form
       onSubmit={handlerSubmit}
-      className="flex justify-center flex-col items-center w-9/12 m-auto"
+      className="flex justify-center flex-col items-center w-9/12 mt-6 mb-10"
     >
       <div className="mb-3.5 w-full">
         <input
@@ -79,25 +79,27 @@ const LoginForm = () => {
         )}
       </div>
 
-      <div className="self-start">
-        <input
+      <div className="flex self-start">
+        <input className="xl:w-4 xl:h-4 xl:mt-1"
           type={"checkbox"}
           name="remember"
           checked={remember}
           onChange={() => setRemember(!remember)}
         />{" "}
-        Recordar mi sesión
+        <p className="xl:mb-1 ml-1">Recordar mi sesión</p>
       </div>
       {result.length ? <p className={errorStyle}>{result}</p> : null}
-      <button className="bg-[#d9d9d9] w-full py-2 rounded-2xl font-bold my-1.5">
+      <div className="flex flex-row justify-center items-center gap-2 sm:gap-3 xl:gap-3">
+      <button className="bg-yellow w-auto px-6 py-2  rounded-sm font-bold my-1.5 hover:bg-black hover:text-yellow hover:duration-500 duration-300 shadow-lg">
         Ingresar
       </button>
-      <Link
-        to="/register"
-        className="bg-[#d9d9d9] w-full py-2 rounded-2xl font-bold my-1.5 mb-8"
-      >
-        Registrate
-      </Link>
+        <Link
+          to="/register"
+          className="bg-yellow w-auto py-2 px-4 rounded-sm font-bold my-1.5 hover:bg-black hover:text-yellow hover:duration-500 duration-300 shadow-lg"
+        >
+          Registrate
+        </Link>
+      </div>
     </form>
   );
 };
