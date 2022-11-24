@@ -6,7 +6,7 @@ export interface ProductDetails {
   name: string;
   rating: number;
   description: string;
-  price: number;
+  price: Array<number>;
   image: string;
   stock: number;
   category: string;
@@ -18,6 +18,7 @@ export interface ProductDetails {
 interface ProductState {
   productList: Array<ProductDetails>;
   productDetail: ProductDetails;
+  carrouselList: Array<Object>;
   productPages: Number;
   loading: boolean;
   error: string;
@@ -26,12 +27,13 @@ interface ProductState {
 //Definimos el estado
 const initialState: ProductState = {
   productList: [],
+  carrouselList: [],
   productDetail: {
     id: "",
     name: "",
     rating: -1,
     description: "",
-    price: 0,
+    price: [],
     image: "",
     stock: 0,
     category: "",
@@ -41,9 +43,8 @@ const initialState: ProductState = {
   },
   productPages: 0,
   loading: false,
-  error: '',
+  error: "",
 };
-
 //PORCION DE ESTADO GLOBAL
 const ProductSlice = createSlice({
   name: "Products",
@@ -65,12 +66,22 @@ const ProductSlice = createSlice({
       state.error = action.payload;
     },
     clearProductLsit(state) {
-      state.error = '';
+      state.error = "";
       state.productList = [];
+    },
+    getBestOffersList(state, action: PayloadAction<Array<Object>>) {
+      state.carrouselList = action.payload;
     },
   },
 });
 
 export default ProductSlice.reducer;
-export const { getProductList, getProductPages, getProductDetail, setLoading, setError, clearProductLsit } =
-  ProductSlice.actions;
+export const {
+  getProductList,
+  getProductPages,
+  getProductDetail,
+  setLoading,
+  setError,
+  clearProductLsit,
+  getBestOffersList,
+} = ProductSlice.actions;

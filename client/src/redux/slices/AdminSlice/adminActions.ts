@@ -3,7 +3,7 @@ import axiosPostCall from "../../../funciones/axiosPostCall";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { AppDispatch } from "../../store";
 import { Filters } from "../FiltersSlice";
-import { getUsersList, getUsersPages } from "./index";
+import { getUsersList, getUsersPages, getPayments, getPaymentsPages } from "./index";
 
 export const URL_BACK_DEV: string = process.env.REACT_APP_BACKEND_URL as string;
 
@@ -43,7 +43,15 @@ export const getAllUsers = (page: number | null) =>  (dispatch: AppDispatch) => 
         dispatch(getUsersPages(data.totalPages))
     })
 }
+export const getAllPayments = (page: number | null) => (dispatch: AppDispatch) => {
+    let url;
+    page ? url = `${URL_BACK_DEV}/shop/adminusers?page=${page}` : url = `${URL_BACK_DEV}/shop/adminusers`
+    axios.get(url).then(({ data }) => {
+        dispatch(getPayments(data.docs))
+        dispatch(getPaymentsPages(data.totalPages))
+    })
 
+}  
 
 // export const getProductsById =
 //   (id: string | undefined) => (dispatch: AppDispatch) => {

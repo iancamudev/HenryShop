@@ -27,7 +27,7 @@ const pageSize = 10;
 
 export const getAllUser = async (page: number ) => {
 
-    const resultUsers = await User.paginate({deleted: false}, { page: page })
+    const resultUsers = await User.paginate( { page: page })
   return resultUsers;
 };
 
@@ -86,6 +86,10 @@ export const updateUser = async (body: putBody, id: number) => {
 
   return tokenJson;
 };
+export const putSwitchUserDelete = async (id: string) => {
+  const result = await User.findOneAndUpdate({ _id: id}, { deleted: false })
+  return result
+}
 export const deleteUserByID = async (id: string) => {
   const findIdUser = await User.findOneAndUpdate({ _id: id}, {deleted: true})
   return findIdUser

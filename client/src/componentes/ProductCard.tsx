@@ -70,7 +70,7 @@ const ProductCard: React.FC<CardProps> = ({ product }: CardProps) => {
               loading="lazy"
             />
             <h6 className="pl-2 flex items-start font-medium mt-1 text-2xl ">
-              ${product.price}
+              ${product.price[product.price.length - 1]}
             </h6>
 
             <h5 className="pl-2 mb-4 flex items-start w-64 font-light	 ">

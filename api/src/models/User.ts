@@ -12,7 +12,9 @@ const userSchema = new Schema({
   birthday: { type: String, required: true },
   isAdmin: { type: Boolean, default: false },
   deleted: { type: Boolean, default: false },
+  reviews: [{ type: Schema.Types.ObjectId, ref: 'Reviews' }],
 });
+
 // modifica el _id de lo que te devuelve la base de datos por id, ademas remueve el __v
 userSchema.set("toJSON", {
   transform: (_document, returnedObject) => {
@@ -21,6 +23,7 @@ userSchema.set("toJSON", {
     delete returnedObject.__v;
   },
 });
+
 //Hasheamos la password
 userSchema.pre("save", async function (next) {
   try {

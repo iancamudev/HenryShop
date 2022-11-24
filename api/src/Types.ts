@@ -2,12 +2,13 @@ export interface product {
   name: String;
   rating: Number;
   description: String;
-  price: Number;
+  price: Array<Number>;
   image: string;
   stock: Number;
   category: String;
   colors: Array<string>;
   sizes: Array<string>;
+  reviews: Array<object>;
 }
 
 export interface user {
@@ -18,11 +19,12 @@ export interface user {
   password: String;
   birthday: Date;
   isAdmin: Boolean;
+  reviews: Array<object>;
 }
 
 export interface shopping {
-  userId: string,
-  products: Array<object>
+  userId: string;
+  products: Array<object>;
 }
 
 export interface googleUser {
@@ -42,7 +44,11 @@ export interface githubUser {
   confirmed: Boolean;
 }
 
-export interface category{
+export interface category {
   name: String;
 }
 
+export interface review {
+  text: String;
+  number: Number;
+}

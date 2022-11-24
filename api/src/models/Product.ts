@@ -6,7 +6,7 @@ const productSchema = new Schema({
   name: { type: String, required: true, unique: true },
   rating: Number,
   description: { type: String, required: true },
-  price: { type: Number, required: true },
+  price: { type: Array<Number>, required: true },
   image: { type: String, required: true },
   stock: { type: Number, required: true },
   category: { type: String, required: true },
@@ -14,6 +14,7 @@ const productSchema = new Schema({
   sizes: Array,
   deleted: { type: Boolean, default: false },
   quantity: { type: Number },
+  reviews: [{ type: Schema.Types.ObjectId, ref: "Reviews" }],
 });
 
 // modifica el _id de lo que te devuelve la base de datos por id, ademas remueve el __v
@@ -34,3 +35,5 @@ export const Product = model<ProductDocument, PaginateModel<ProductDocument>>(
   productSchema,
   "products"
 );
+
+export default Product;
