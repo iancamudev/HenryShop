@@ -1,7 +1,7 @@
 import axios from "axios";
 import { AppDispatch } from "../../store";
 import { Filters } from "../FiltersSlice";
-import { getProductList, getProductPages, getProductDetail, setLoading, setError, clearProductLsit } from "./index";
+import { getProductList, getProductPages, getProductDetail, setLoading, setError, clearProductLsit,getBestRankList } from "./index";
 
 export const URL_BACK_DEV: string = process.env.REACT_APP_BACKEND_URL as string;
 
@@ -43,3 +43,13 @@ export const getProductsById =
       });
   };
 
+
+  export const getBestRank =
+  () => (dispatch: AppDispatch) => {
+    axios
+      .get(`${URL_BACK_DEV}/carrousel`)
+      .then(({ data }) => dispatch(getBestRankList(data)))
+      .catch((error) => {
+        console.error(error);
+      });
+  };
