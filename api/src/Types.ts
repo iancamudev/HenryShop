@@ -2,7 +2,7 @@ export interface product {
   name: String;
   rating: Number;
   description: String;
-  price: Number;
+  price: Array<Number>;
   image: string;
   stock: Number;
   category: String;
@@ -24,8 +24,8 @@ export interface user {
 }
 
 export interface shopping {
-  userId: string,
-  products: Array<object>
+  userId: string;
+  products: Array<object>;
 }
 
 export interface googleUser {
@@ -47,7 +47,7 @@ export interface githubUser {
   shopping: Array<object>;
 }
 
-export interface category{
+export interface category {
   name: String;
 }
 

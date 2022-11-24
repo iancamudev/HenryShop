@@ -74,7 +74,10 @@ export function ShoppingCart({ isOpen }: ShoppingCartProps) {
           Total:{" $"}
           {cartItems.reduce((total, cartItem) => {
             const prod = Products.find((i) => i.id === cartItem.id);
-            return total + (prod?.price || 0) * cartItem.quantity;
+            return (
+              total +
+              (prod?.price[prod.price.length - 1] || 0) * cartItem.quantity
+            );
           }, 0)}
         </div>
       ) : (

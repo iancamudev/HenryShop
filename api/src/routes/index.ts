@@ -5,7 +5,8 @@ import userShop from "./Shop"
 import categoryRouter from "./categories";
 import googleUserRouter from "./googleUsers";
 import githubUserRouter from "./githubUsers";
-import reviewsRouter from './reviews'
+import reviewsRouter from './reviews';
+import carrousel from "./carrousel";
 
 const route = Router();
 
@@ -16,5 +17,5 @@ route.use("/categories", categoryRouter);
 route.use("/googleusers", googleUserRouter);
 route.use("/githubusers", githubUserRouter);
 route.use("/reviews", reviewsRouter);
-
+route.use("/carrousel", carrousel)
 export default route;

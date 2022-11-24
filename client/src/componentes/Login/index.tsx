@@ -3,6 +3,9 @@ import henryImg from "../../assets/logoHenryBlack.png";
 import LoginForm from "./LoginForm";
 import { GoogleLogin } from '@react-oauth/google';
 import jwt_decode from "jwt-decode";
+import henryShop from "../../assets/henryShop.png"
+import googleLogo from "../../assets/2875404.png"
+import githubLogo from "../../assets/25231.png"
 import {useNavigate} from "react-router-dom";
 
 const Login = () => {
@@ -59,18 +62,25 @@ const Login = () => {
 
   return (
     <>
-      <div className="flex flex-col items-center bg-[#FFFDE7]">
-        <h4 className="mt-4">Bienvenido a </h4>
-        <img src={henryImg} alt="Logo de Henry" className="w-3/4" />
-        <h3>Inicia Sesión</h3>
-        <LoginForm />
+    <div className="flex items-center 2xl:justify-between xl:justify-between xl:w-screen xl:bg-yellow xl:h-screen mr-8 xl:mr-0 2xl:mr-0 2xl:w-screen">
+      <div className="xl:w-screen xl:mb-72 ml-9 2xl:w-screen">
+        <img className="xl:p-6 h-0 w-0 sm:h-0 sm:w-0 xl:w-auto xl:h-80 xl:mt-80 " src={henryShop} alt="Logo_henry" />
       </div>
-      <button onClick={googleAuth}>
-        Inicia sesion con Google
-      </button>
-      <button onClick={gitAuth}>
-        Inicia sesion GitHub
-      </button>
+      <div className="flex flex-col items-center xl:w-screen xl:h-screen bg-[#FFFDE7] 2xl:w-screen">
+        <h4 className="mt-20 sm:mt-48 xl:mt-56 2xl:mt-32">Bienvenido a</h4>
+        <img src={henryImg} alt="Logo de Henry" className="w-3/4 xl:p-2" />
+        <h3 className="p-2">Inicia Sesión</h3>
+          <LoginForm />
+        <div className="xl:mb-60 xl:flex xl:flex-col">
+          <button className="p-2 flex flex-row bg-white border-black border mb-4 rounded-sm shadow-md" onClick={googleAuth}>
+           <img className= "w-6 h-6 mr-2"src={googleLogo} alt="" /> <p>Inicia sesion con Google</p>
+          </button>
+          <button className="p-2 w-full flex flex-row bg-white border-black border rounded-sm shadow-md" onClick={gitAuth}>
+            <img className="w-6 h-6 mr-2" src={githubLogo} alt="" /> <p className="w-auto">Inicia sesion GitHub</p>
+          </button>
+        </div>
+      </div>
+    </div>
     </>
   );
 };

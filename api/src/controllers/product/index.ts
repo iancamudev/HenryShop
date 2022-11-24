@@ -205,14 +205,14 @@ export const getProductById = async (id: String) => {
 
 export const addNewProduct = async (prod: product) => {
   const productFind = await Product.findOne({ name: prod.name });
-  
+
   if (
     !prod ||
     !prod.name ||
     !prod.description ||
     !prod.stock ||
     !prod.price ||
-    !prod.category 
+    !prod.category
   ) {
     throw new Error("Info Missing");
   } else if (productFind) {
@@ -240,7 +240,6 @@ export const addNewProduct = async (prod: product) => {
   }
 };
 
-
 export const deleteProduct = async (id: string) => {
   const result = await Product.findOneAndUpdate({ _id: id }, { deleted: true });
 
@@ -250,8 +249,11 @@ export const deleteProduct = async (id: string) => {
   return result;
 };
 
-
 export const changeProperties = async (id: string, body: any) => {
+  const product = await Product.findById(id);
+
+  product.price.push(body.price);
+  body.price = product.price;
 
   const result = await Product.findOneAndUpdate({ _id: id }, body);
   if (!result) {
@@ -262,4 +264,4 @@ export const changeProperties = async (id: string, body: any) => {
     throw new Error("No existe el producto");
   }
   return result;
-}
+};
