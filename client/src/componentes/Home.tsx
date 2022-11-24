@@ -3,15 +3,14 @@ import Pagination from "./Pagination";
 import Header from "./Header";
 import Filters from "./Filters";
 import ProductList from "./Products/ProductList";
-import Carrousel from "./carrousel/Carrousel"
+import Carrousel from "./carrousel/Carrousel";
 
 const Home = () => {
-
   return (
     <>
       <Header />
+      <Carrousel />
       <Filters />
-      <Carrousel/>
       <ProductList />
       <Pagination />
     </>
