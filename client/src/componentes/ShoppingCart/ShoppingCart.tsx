@@ -59,6 +59,7 @@ export function ShoppingCart({ isOpen }: ShoppingCartProps) {
       });
       console.log(cartItems)
   };
+
   return (
     <Drawer anchor="right" open={isOpen} onClose={closeCart}>
       <div><div className="text-center py-5 px-10  font-bold font-serif text-4xl ">

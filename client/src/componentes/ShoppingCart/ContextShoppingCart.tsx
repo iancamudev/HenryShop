@@ -26,7 +26,7 @@ type ShoppingCartContex = {
     addToCart: (id: string, quantity: number, color: string, variante: string) => void
     cartQuantity: number
     cartItems: CartItem[]
-    setEmptyCart: (event: any) => void
+    setEmptyCart: () => void
 }
 
 const ShoppingCartContex = createContext({} as ShoppingCartContex)
@@ -42,7 +42,7 @@ ShoppingCartProviderProps){
     //**LocalStorage**
     const [cartItems, setCartItems] = useLocalStorage<CartItem[]>("Shoping-cart",[])
 
-    const setEmptyCart = (event: any) => {
+    const setEmptyCart = () => {
         setCartItems([])
     }
     

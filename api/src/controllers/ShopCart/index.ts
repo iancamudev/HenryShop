@@ -7,6 +7,7 @@ import { Shopping } from "../../models/Shopping";
     return newRela;
 
  }
+ 
 export const getAllShopAdmin = async (page: number) => {
    const result = await Shopping.paginate( { page: page })
    return result;
