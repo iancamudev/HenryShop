@@ -13,8 +13,8 @@ const router = Router();
 router.post('/', async (req: Request, res: Response) => {
   const { text, rating, userId, productId} = req.body;
   try {
-   const user = await User.findById(userId);
-   const product = await Product.findById(productId);
+    const user = await User.findById(userId);
+    const product = await Product.findById(productId);
 
     const review = await addNewReview(text, rating, user._id, product._id); 
 

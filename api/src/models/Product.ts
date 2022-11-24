@@ -14,7 +14,11 @@ export const productSchema = new Schema({
   sizes: Array,
   deleted: { type: Boolean, default: false },
   quantity: { type: Number },
-  reviews: [{ info: { type: Schema.Types.ObjectId, ref: 'Review' } }],
+  reviews: [{
+    text: String,
+    rating: Number,
+    user: { type: Schema.Types.ObjectId, ref: 'User' }
+  }],
 });
 
 // modifica el _id de lo que te devuelve la base de datos por id, ademas remueve el __v

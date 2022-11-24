@@ -1,9 +1,10 @@
 import Review from "../../models/Review";
-import {review} from "../../Types";
+import Product from "../../models/Product";
+import User from "../../models/User";
+import { product, review, user } from "../../Types";
 
-export const addNewReview = async (
-  text: string, rating: number, user: object, product: object
-) => {
+export const addNewReview = async (text: string, rating: number, userId: object, productId: object) => {
+
   if (
     !text ||
     !rating || 

@@ -12,7 +12,11 @@ export const userSchema = new Schema({
   birthday: { type: String, required: true },
   isAdmin: { type: Boolean, default: false },
   deleted: { type: Boolean, default: false },
-  reviews: [{ info: { type: Schema.Types.ObjectId, ref: 'Review' } }],
+  reviews: [{
+    text: String,
+    rating: Number,
+    product: { type: Schema.Types.ObjectId, ref: 'Product' }
+  }],
 });
 
 // modifica el _id de lo que te devuelve la base de datos por id, ademas remueve el __v
