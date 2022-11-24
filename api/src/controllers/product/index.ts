@@ -188,11 +188,18 @@ export const getWithfilters = async (
 // ##########################################################
 
 export const getProductById = async (id: String) => {
-  console.log(id);
   if (id.length > 24 || id.length < 24) {
     throw new Error("Id no valido");
   }
-  const result = await Product.findById(id);
+  const result = await Product.findById(id).populate([{
+    path: 'reviews',
+    populate: {
+      path: 'info', populate: {
+        path: 'user product'
+      }
+    }
+  }
+  ])
 
   if (!result) {
     throw new Error("No se encontro el producto con ese id");
@@ -205,14 +212,14 @@ export const getProductById = async (id: String) => {
 
 export const addNewProduct = async (prod: product) => {
   const productFind = await Product.findOne({ name: prod.name });
-  
+
   if (
     !prod ||
     !prod.name ||
     !prod.description ||
     !prod.stock ||
     !prod.price ||
-    !prod.category 
+    !prod.category
   ) {
     throw new Error("Info Missing");
   } else if (productFind) {

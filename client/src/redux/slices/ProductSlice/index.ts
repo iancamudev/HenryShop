@@ -1,6 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 //INTERFACES
+export interface IReview {
+  info: {
+    id: string;
+    rating: number;
+    text: string;
+    user: {
+      username: string;
+    }
+  }
+}
+
 export interface ProductDetails {
   id: string;
   name: string;
@@ -13,6 +24,7 @@ export interface ProductDetails {
   colors: Array<string>;
   sizes: Array<string>;
   quantity: number;
+  reviews: Array<IReview>;
 }
 
 interface ProductState {
@@ -38,6 +50,7 @@ const initialState: ProductState = {
     colors: [""],
     sizes: [""],
     quantity: 0,
+    reviews: []
   },
   productPages: 0,
   loading: false,

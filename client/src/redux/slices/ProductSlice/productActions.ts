@@ -37,7 +37,10 @@ export const getProductsById =
   (id: string | undefined) => (dispatch: AppDispatch) => {
     axios
       .get(`${URL_BACK_DEV}/products/${id}`)
-      .then(({ data }) => dispatch(getProductDetail(data)))
+      .then(({ data }) => {
+        console.log(data)
+        dispatch(getProductDetail(data))
+      })
       .catch((error) => {
         console.error(error);
       });

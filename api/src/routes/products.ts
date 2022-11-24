@@ -28,17 +28,17 @@ routes.get("/admin", async (req: Request, res: Response) => {
     if (name && typeof name === "string") {
 
       const findName = await findByName(name);
-      
-      if(!findName.docs.length){
+
+      if (!findName.docs.length) {
         res.status(200).send("No se encontro el producto con ese nombre");
       }
       else {
         res.status(200).send(findName);
       }
-      
+
     } else {
       const result = await getAllProductsAdmin();
-      if(!result.docs){
+      if (!result.docs) {
         res.status(200).send("No se encontraron productos");
       }
       res.status(200).send(result);
@@ -73,16 +73,16 @@ routes.get("/:id", async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const result = await getProductById(id);
-    console.log(id);
     if (!result) {
-      res
-        .status(200)
+      return res
+        .status(404)
         .json({ error_message: "No se encontro el producto con ese id" });
     }
-    await result.populate('reviews');
-    res.status(200).send(result);
+    console.log('prod: ', result)
+    return res.status(200).send(result);
   } catch (error: any) {
-    res.status(500).json({ error_message: error.message });
+    console.log(error.message)
+    return res.status(500).json({ error_message: error.message });
   }
 });
 
@@ -90,7 +90,7 @@ routes.get("/:id", async (req: Request, res: Response) => {
 routes.post("/", async (req: Request, res: Response) => {
   try {
     const newProduct = req.body;
-    
+
     if (!newProduct) {
       res.status(400).send({ error: "Info Missing" });
     }
@@ -138,10 +138,10 @@ routes.post("/payment", userValidation, async (req: Request, res: Response) => {
     if (decodedToken) {
       user = await User.findOne({ _id: decodedToken.id });
     }
-    if(!user){
+    if (!user) {
       user = await GoogleUser.findOne({ email: decodedToken.email });
     }
-    if(!user){
+    if (!user) {
       user = await GithubUser.findOne({ username: decodedToken.username });
     }
 
@@ -157,7 +157,7 @@ routes.post("/payment", userValidation, async (req: Request, res: Response) => {
     };
 
     const productos = await productAndQuantity(productosForFind);
-    console.log(productos,user);
+    console.log(productos, user);
     if (productos && user) {
       console.log('asssssssss');
       let preference = {

@@ -1,11 +1,14 @@
-import { Schema, model, PaginateModel, Document } from "mongoose";
+import mongoose, { Schema, model, PaginateModel, Document, SchemaTypes } from "mongoose";
+import mongoosePaginate from "mongoose-paginate-v2";
 import { review } from "../Types";
+import { productSchema } from "./Product";
+import { userSchema } from "./User";
 
-const reviewSchema = new Schema({
+export const reviewSchema = new Schema({
   text: { type: String, required: true },
   rating: { type: Number, required: true },
-  user: { type: Schema.Types.ObjectId, ref: 'Users' },
-  product: { type: Schema.Types.ObjectId, ref: 'Products' }
+  userId: { type: Schema.Types.ObjectId, ref: 'User' },
+  productId: { type: Schema.Types.ObjectId, ref: 'Product' },
 })
 
 reviewSchema.set("toJSON", {
@@ -16,6 +19,14 @@ reviewSchema.set("toJSON", {
   },
 });
 
-const Review = model('Reviews', reviewSchema)
+interface ReviewDocument extends Document, review { }
+
+reviewSchema.plugin(mongoosePaginate);
+
+export const Review = model<ReviewDocument, PaginateModel<ReviewDocument>>(
+  "Review",
+  reviewSchema,
+  "reviews"
+);
 
 export default Review;

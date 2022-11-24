@@ -4,6 +4,8 @@ import GoogleUser from "../models/googleUser";
 import GithubUser from "../models/githubUser";
 import Product from "../models/Product";
 import Review from "../models/Review";
+import { addNewReview } from "../controllers/review";
+import { review } from "../Types";
 const userValidation = require("../middlewares/userValidation");
 require("../mongo");
 
@@ -14,19 +16,15 @@ router.post('/', userValidation, async (req: Request, res: Response) => {
   try {
     const user = await User.findById(userId);
     const product = await Product.findById(productId);
-    const review = new Review({
-      text,
-      rating,
-      user: userId,
-      product: productId,
-    });
-    await review.save()
-    user.reviews = [...user.reviews, review._id]
-    await user.save()
-    product.reviews = [...product.reviews, review._id]
-    await product.save()
+
+    const review = await addNewReview(text, rating, user._id, product._id) 
+
+    // await User.findByIdAndUpdate(user._id, { reviews: [...user.reviews, { info: review._id }] })
+    // await Product.findByIdAndUpdate(product._id, { reviews: [...user.reviews, { info: review._id }] })
+
     res.status(200).send(review)
   } catch (e: any) {
+    console.log(e)
     res.status(500).send({ message: e.message })
   }
 });
