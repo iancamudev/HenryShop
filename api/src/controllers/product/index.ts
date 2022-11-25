@@ -248,7 +248,6 @@ export const addNewProduct = async (prod: product) => {
   }
 };
 
-
 export const deleteProduct = async (id: string) => {
   const result = await Product.findOneAndUpdate({ _id: id }, { deleted: true });
 
@@ -258,8 +257,11 @@ export const deleteProduct = async (id: string) => {
   return result;
 };
 
-
 export const changeProperties = async (id: string, body: any) => {
+  const product = await Product.findById(id);
+
+  product.price.push(body.price);
+  body.price = product.price;
 
   const result = await Product.findOneAndUpdate({ _id: id }, body);
   if (!result) {
@@ -270,4 +272,4 @@ export const changeProperties = async (id: string, body: any) => {
     throw new Error("No existe el producto");
   }
   return result;
-}
+};

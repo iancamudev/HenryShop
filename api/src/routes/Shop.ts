@@ -42,12 +42,13 @@ router.post("/", async (req: Request, res: Response) => {
     res.status(400).send({ error: error.message })
   }
 })
-router.get("/adminusers", async (req: Request, res: Response) => {
+
+router.get("/adminusers",  async (req: Request, res: Response)=> {
   try {
     const { page } = req.query
-    var result;
-    var y: number;
-    page ? y = +page : y = 0;
+    let result;
+    let y: number;
+    page ? y = +page : y = 0; 
     page ? result = await getAllShopAdmin(y) : result = await getAllShopAdmin(1);
     res.send(result)
   } catch (error) {

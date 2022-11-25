@@ -26,16 +26,13 @@ routes.get("/admin", async (req: Request, res: Response) => {
   try {
     const { name } = req.query;
     if (name && typeof name === "string") {
-
       const findName = await findByName(name);
 
       if (!findName.docs.length) {
         res.status(200).send("No se encontro el producto con ese nombre");
-      }
-      else {
+      } else {
         res.status(200).send(findName);
       }
-
     } else {
       const result = await getAllProductsAdmin();
       if (!result.docs) {
@@ -78,7 +75,7 @@ routes.get("/:id", async (req: Request, res: Response) => {
         .status(404)
         .json({ error_message: "No se encontro el producto con ese id" });
     }
-    console.log('prod: ', result)
+    await result.populate("reviews");
     return res.status(200).send(result);
   } catch (error: any) {
     console.log(error.message)
@@ -118,7 +115,7 @@ routes.put("/:id", async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const body = req.body;
-    await changeProperties(id, body);
+    const result = await changeProperties(id, body);
     res.status(200).json({ message: "Parámetros cambiados correctamente" });
   } catch (error) {
     console.log(error);
@@ -127,7 +124,7 @@ routes.put("/:id", async (req: Request, res: Response) => {
 
 routes.post("/payment", userValidation, async (req: Request, res: Response) => {
   try {
-    console.log('paymenttttttt');
+    console.log("paymenttttttt");
     const productosForFind = req.body.products;
     let token = req.get("authorization");
     if (token) {
@@ -159,7 +156,7 @@ routes.post("/payment", userValidation, async (req: Request, res: Response) => {
     const productos = await productAndQuantity(productosForFind);
     console.log(productos, user);
     if (productos && user) {
-      console.log('asssssssss');
+      console.log("asssssssss");
       let preference = {
         items: productos.map((el: any) => {
           return {
@@ -170,13 +167,13 @@ routes.post("/payment", userValidation, async (req: Request, res: Response) => {
             description: el.description,
             category_id: "art",
             quantity: el.quantity,
-            unit_price: el.price,
+            unit_price: el.price.at(- 1),
           };
         }),
         back_urls: {
           success: "http://localhost:3000/success",
-          failure: "http://www.failure.com",
-          pending: "http://www.pending.com",
+          failure: "http://localhost:3000/failure",
+          pending: "http://localhost:3000/failure",
         },
         auto_return: "approved",
         binary_mode: true,

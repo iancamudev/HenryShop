@@ -101,6 +101,7 @@ routes.get('/google/callback', passport.authenticate('google',{
 				birthday:null,
 				isAdmin:false,
 				confirmed: true,
+				shopping: []
 			}: null;
 			const result:object | null = typeof newUserObj !== null? addNewGoogleUser((newUserObj as googleUser)): null;
 			res.redirect(`${CLIENT_URL}/googleusers/login/success`);

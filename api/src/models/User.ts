@@ -15,6 +15,7 @@ export const userSchema = new Schema({
   reviews: [{
     review: { type: Schema.Types.ObjectId, ref: 'Review' }
   }],
+  shopping: [{ type: Schema.Types.ObjectId, ref: 'Shopping' }],
 });
 
 // modifica el _id de lo que te devuelve la base de datos por id, ademas remueve el __v

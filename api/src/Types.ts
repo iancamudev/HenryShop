@@ -2,7 +2,7 @@ export interface product {
   name: String;
   rating: Number;
   description: String;
-  price: Number;
+  price: Array<Number>;
   image: string;
   stock: Number;
   category: String;
@@ -20,11 +20,12 @@ export interface user {
   birthday: Date;
   isAdmin: Boolean;
   reviews: Array<object>;
+  shopping: Array<object>;
 }
 
 export interface shopping {
-  userId: string,
-  products: Array<object>
+  userId: string;
+  products: Array<object>;
 }
 
 export interface googleUser {
@@ -34,6 +35,7 @@ export interface googleUser {
   birthday: Date | null;
   isAdmin: Boolean;
   confirmed: Boolean;
+  shopping: Array<object>;
 }
 
 export interface githubUser {
@@ -42,9 +44,10 @@ export interface githubUser {
   birthday: Date | null;
   isAdmin: Boolean;
   confirmed: Boolean;
+  shopping: Array<object>;
 }
 
-export interface category{
+export interface category {
   name: String;
 }
 
@@ -54,3 +57,4 @@ export interface review {
   user: object;
   product: object;
 }
+

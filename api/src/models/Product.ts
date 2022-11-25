@@ -6,7 +6,7 @@ export const productSchema = new Schema({
   name: { type: String, required: true, unique: true },
   rating: Number,
   description: { type: String, required: true },
-  price: { type: Number, required: true },
+  price: { type: Array<Number>, required: true },
   image: { type: String, required: true },
   stock: { type: Number, required: true },
   category: { type: String, required: true },
@@ -28,7 +28,7 @@ productSchema.set("toJSON", {
   },
 });
 
-interface ProductDocument extends Document, product { }
+interface ProductDocument extends Document, product {}
 
 productSchema.plugin(mongoosePaginate);
 
