@@ -32,6 +32,7 @@ import { setUserData } from "./redux/slices/UserSlice/UserActions";
 import AdminPanelUsers from "./componentes/Admin/AdminPanelUsers";
 import PaymentsPanel from "./componentes/Admin/PaymentsPanel/PaymentsPanel";
 import AdminPanelPayments from "./componentes/Admin/AdminPanelPayments";
+import { Failure } from "./componentes/Failure";
 
 
 
@@ -70,6 +71,7 @@ function App() {
             }
           />
           <Route path="/products/:id" element={<DetailProduct />} />
+          
           <Route path="/" element={<ProductCards />} />
           <Route path="/users/confirmation/:token" element={<Confirmation />} />
           <Route
@@ -114,6 +116,7 @@ function App() {
               </Protected>
             }
           />
+          <Route path="/failure" element={<Failure/>}/>
           <Route path="/success" element={<Success />} />
           <Route path="/unauthorized" element={<Unaothorized />} />
         </Routes>
