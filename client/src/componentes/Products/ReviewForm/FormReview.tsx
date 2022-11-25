@@ -20,7 +20,9 @@ const schema = yup
 
 const FormReview = () => {
   const navigate = useNavigate();
-  const { id: productId} = useAppSelector((state) => state.products.productDetail);
+  const { id: productId } = useAppSelector(
+    (state) => state.products.productDetail
+  );
   const [result, setResult] = useState("");
   const [ratingValue, setRatingValue] = useState(1);
 
@@ -47,20 +49,29 @@ const FormReview = () => {
   });
 
   return (
-    <form onSubmit={handlerSubmit}>
-      <h4>Deja tu reseña</h4>
+    <form
+      onSubmit={handlerSubmit}
+      className="flex justify-center items-center flex-col w-10/12 m-auto mt-4 border-2 border-black border-solid rounded-2xl py-4"
+    >
+      <h4 className="mb-4">Deja tu reseña</h4>
       <Typography component="legend">Rating</Typography>
       <Rating
+        className="mb-4"
         name="simple-controlled"
         value={ratingValue}
         onChange={(event, newValue) => {
           if (newValue) setRatingValue(newValue);
         }}
       />
-      <input type={"text"} {...register("text")} />
+      <textarea
+        className="border border-black border-solid rounded-2xl w-11/12 h-24 p-2"
+        {...register("text")}
+      ></textarea>
       {errors.text && <p>{errors.text.message}</p>}
       {result && <p>{result}</p>}
-      <button>Enviar Reseña</button>
+      <button className="bg-yellow duration-300 hover:bg-gray-200 hover:duration-300 p-2 mt-4 font-bold rounded-3xl pl-4 pr-4 border-b-2 border-black">
+        Enviar Reseña
+      </button>
     </form>
   );
 };
