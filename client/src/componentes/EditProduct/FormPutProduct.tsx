@@ -97,40 +97,35 @@ const FormPutProduct = () => {
   let imgUrl: any;
   let imgSrc: any;
   let imgFile: any;
- 
+
   const imagePreview = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    
-    const target =  e.target as HTMLInputElement;
+    const target = e.target as HTMLInputElement;
     imgSrc = target.files?.[0];
-    setFile(imgSrc)
+    setFile(imgSrc);
     console.log(imgSrc);
     let arr: string = "";
-    
-    
-      imgFile =  URL.createObjectURL(imgSrc);
-      arr = imgFile;
-      console.log("hola", imgFile);
-      setImgTemp(arr);
-    
 
+    imgFile = URL.createObjectURL(imgSrc);
+    arr = imgFile;
+    console.log("hola", imgFile);
+    setImgTemp(arr);
   };
-  const submitForm =  (
-    async ({
-      name,
-      rating,
-      description,
-      price,
-      image,
-      stock,
-      category,
-      colors,
-      sizes,
-    }:formData) => {
-      let backData = process.env.REACT_APP_BACKEND_URL;
-      imgUrl =  await uploadImageToFirebaseStorage(file);
-      console.log(imgUrl);
-      if( imgUrl && backData){
-        axios
+  const submitForm = async ({
+    name,
+    rating,
+    description,
+    price,
+    image,
+    stock,
+    category,
+    colors,
+    sizes,
+  }: formData) => {
+    let backData = process.env.REACT_APP_BACKEND_URL;
+    imgUrl = await uploadImageToFirebaseStorage(file);
+    console.log(imgUrl);
+    if (imgUrl && backData) {
+      axios
         .put(`${backData}/products/${id}`, {
           name,
           rating,
@@ -145,12 +140,11 @@ const FormPutProduct = () => {
         .then((res) => {
           console.log(res);
           alert("Se actualizo el producto");
-          navigate("/admin")
+          navigate("/admin");
         })
         .catch((err) => console.error(err));
-       }
-       else if (!imgUrl && backData) {
-        axios
+    } else if (!imgUrl && backData) {
+      axios
         .put(`${backData}/products/${id}`, {
           name,
           rating,
@@ -164,12 +158,11 @@ const FormPutProduct = () => {
         .then((res) => {
           console.log(res);
           alert("Se actualizo el producto");
-          navigate("/admin")
+          navigate("/admin");
         })
         .catch((err) => console.error(err));
-       }
-
-      });
+    }
+  };
 
   return (
     <form
@@ -232,7 +225,7 @@ const FormPutProduct = () => {
             type="text"
             placeholder="Price..."
             className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
-            defaultValue={`${Product.price}`}
+            defaultValue={`${Product.price[Product.price.length - 1]}`}
           />
           *
         </div>
@@ -240,10 +233,9 @@ const FormPutProduct = () => {
           <p className="text-red-600 font-bold">{errors.price.message}</p>
         )}
       </div>
-      
+
       <div className="mb-3.5 w-full">
         <div className="flex justify-center">
-          
           <input
             {...register("image")}
             id="image"
@@ -255,15 +247,29 @@ const FormPutProduct = () => {
           *
         </div>
         <div>
-          {
-            imgTemp ? <div><p> Imagen nueva <img className="h-40 " src={imgTemp}/> </p></div> : <></>
-          }  
-      </div>
+          {imgTemp ? (
+            <div>
+              <p>
+                {" "}
+                Imagen nueva <img className="h-40 " src={imgTemp} />{" "}
+              </p>
+            </div>
+          ) : (
+            <></>
+          )}
+        </div>
         <div>
-          {
-            Product.image ? <div><p> Imagen actual <img className="h-40 " src={Product.image}/> </p></div> : <></>
-          }  
-      </div>
+          {Product.image ? (
+            <div>
+              <p>
+                {" "}
+                Imagen actual <img className="h-40 " src={Product.image} />{" "}
+              </p>
+            </div>
+          ) : (
+            <></>
+          )}
+        </div>
         {errors?.image && (
           <p className="text-red-600 font-bold">{errors.image.message}</p>
         )}
@@ -316,9 +322,7 @@ const FormPutProduct = () => {
                     id="colors"
                     type="checkbox"
                     className="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-blue-200 checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-
                     defaultChecked={Product.colors.includes(color)}
-
                   />
                   <label className="w-5/12">{color}</label>
                 </div>
@@ -343,9 +347,7 @@ const FormPutProduct = () => {
                     id="sizes"
                     type="checkbox"
                     className="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-blue-200 checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-
                     defaultChecked={Product.sizes.includes(size)}
-
                   />
                   <label className="w-5/12">{size}</label>
                 </div>
@@ -366,7 +368,18 @@ const FormPutProduct = () => {
 };
 
 export default FormPutProduct;
-function async(arg0: ({ name, rating, description, price, image, stock, category, colors, sizes, }: formData) => void) {
+function async(
+  arg0: ({
+    name,
+    rating,
+    description,
+    price,
+    image,
+    stock,
+    category,
+    colors,
+    sizes,
+  }: formData) => void
+) {
   throw new Error("Function not implemented.");
 }
-

@@ -26,16 +26,13 @@ routes.get("/admin", async (req: Request, res: Response) => {
   try {
     const { name } = req.query;
     if (name && typeof name === "string") {
-
       const findName = await findByName(name);
 
       if (!findName.docs.length) {
         res.status(200).send("No se encontro el producto con ese nombre");
-      }
-      else {
+      } else {
         res.status(200).send(findName);
       }
-
     } else {
       const result = await getAllProductsAdmin();
       if (!result.docs) {
@@ -74,15 +71,16 @@ routes.get("/:id", async (req: Request, res: Response) => {
     const { id } = req.params;
     const result = await getProductById(id);
     if (!result) {
-      return res
+      res
         .status(404)
         .json({ error_message: "No se encontro el producto con ese id" });
+    }else{
+      await result.populate("reviews");
+      res.status(200).send(result);
     }
-    console.log('prod: ', result)
-    return res.status(200).send(result);
   } catch (error: any) {
     console.log(error.message)
-    return res.status(500).json({ error_message: error.message });
+    res.status(500).json({ error_message: error.message });
   }
 });
 
@@ -118,7 +116,7 @@ routes.put("/:id", async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const body = req.body;
-    await changeProperties(id, body);
+    const result = await changeProperties(id, body);
     res.status(200).json({ message: "Parámetros cambiados correctamente" });
   } catch (error) {
     console.log(error);
@@ -127,7 +125,7 @@ routes.put("/:id", async (req: Request, res: Response) => {
 
 routes.post("/payment", userValidation, async (req: Request, res: Response) => {
   try {
-    console.log('paymenttttttt');
+    console.log("paymenttttttt");
     const productosForFind = req.body.products;
     let token = req.get("authorization");
     if (token) {
@@ -159,7 +157,7 @@ routes.post("/payment", userValidation, async (req: Request, res: Response) => {
     const productos = await productAndQuantity(productosForFind);
     console.log(productos, user);
     if (productos && user) {
-      console.log('asssssssss');
+      console.log("asssssssss");
       let preference = {
         items: productos.map((el: any) => {
           return {

@@ -3,7 +3,7 @@ import Product from "../../models/Product";
 import User from "../../models/User";
 import { product, review, user } from "../../Types";
 
-export const addNewReview = async (text: string, rating: number, userId: object, productId: object) => {
+export const addNewReview = async (text: string, rating: number, user: object, product: object) => {
 
   if (
     !text ||

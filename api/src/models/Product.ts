@@ -6,19 +6,15 @@ export const productSchema = new Schema({
   name: { type: String, required: true, unique: true },
   rating: Number,
   description: { type: String, required: true },
-  price: { type: Number, required: true },
+  price: { type: Array<Number>, required: true },
   image: { type: String, required: true },
   stock: { type: Number, required: true },
-  category: { type: String, required: true },
-  colors: Array,
-  sizes: Array,
+  category: { type: Schema.Types.ObjectId, required: true },
   deleted: { type: Boolean, default: false },
   quantity: { type: Number },
-  reviews: [{
-    text: String,
-    rating: Number,
-    user: { type: Schema.Types.ObjectId, ref: 'User' }
-  }],
+  reviews: [{ type: Schema.Types.ObjectId, ref: "Reviews" }],
+  sizes: Array<object>,
+  colors: Array<object>
 });
 
 // modifica el _id de lo que te devuelve la base de datos por id, ademas remueve el __v
@@ -30,7 +26,7 @@ productSchema.set("toJSON", {
   },
 });
 
-interface ProductDocument extends Document, product { }
+interface ProductDocument extends Document, product {}
 
 productSchema.plugin(mongoosePaginate);
 
