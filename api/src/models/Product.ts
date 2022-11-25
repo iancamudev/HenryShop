@@ -15,9 +15,7 @@ export const productSchema = new Schema({
   deleted: { type: Boolean, default: false },
   quantity: { type: Number },
   reviews: [{
-    text: String,
-    rating: Number,
-    user: { type: Schema.Types.ObjectId, ref: 'User' }
+    review: { type: Schema.Types.ObjectId, ref: 'Review' }
   }],
 });
 

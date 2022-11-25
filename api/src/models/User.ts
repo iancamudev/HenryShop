@@ -13,9 +13,7 @@ export const userSchema = new Schema({
   isAdmin: { type: Boolean, default: false },
   deleted: { type: Boolean, default: false },
   reviews: [{
-    text: String,
-    rating: Number,
-    product: { type: Schema.Types.ObjectId, ref: 'Product' }
+    review: { type: Schema.Types.ObjectId, ref: 'Review' }
   }],
 });
 

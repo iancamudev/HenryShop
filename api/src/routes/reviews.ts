@@ -13,14 +13,7 @@ const router = Router();
 router.post('/', async (req: Request, res: Response) => {
   const { text, rating, userId, productId} = req.body;
   try {
-    const user = await User.findById(userId);
-    const product = await Product.findById(productId);
-
-    const review = await addNewReview(text, rating, user._id, product._id); 
-
-    await User.findByIdAndUpdate(user._id, { reviews: [...user.reviews, { info: review.id }] })
-    await Product.findByIdAndUpdate(product._id, { reviews: [...user.reviews, { info: review.id }] })
-
+    const review = await addNewReview(text, rating, userId, productId); 
     res.status(200).send(review)
   } catch (e: any) {
     console.log(e)
