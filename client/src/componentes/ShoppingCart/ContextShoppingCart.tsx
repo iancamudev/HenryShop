@@ -26,7 +26,7 @@ type ShoppingCartContex = {
     addToCart: (id: string, quantity: number, color: string, variante: string) => void
     cartQuantity: number
     cartItems: CartItem[]
-    setEmptyCart: (event: any) => void
+    setEmptyCart: () => void
 }
 
 const ShoppingCartContex = createContext({} as ShoppingCartContex)
@@ -37,9 +37,12 @@ export function useShoppingCart(){
 export function ShoppingCartProvider({ children }:
 ShoppingCartProviderProps){
     const [isOpen, setIsOPen] = useState(false)
+    //***reiniciar carrito***
+    //const [cartItems, setCartItems] = useState<CartItem[]>([])
+    //**LocalStorage**
     const [cartItems, setCartItems] = useLocalStorage<CartItem[]>("Shoping-cart",[])
 
-    const setEmptyCart = (event: any) => {
+    const setEmptyCart = () => {
         setCartItems([])
     }
     
@@ -111,6 +114,7 @@ ShoppingCartProviderProps){
             }
             })
     }
+    console.log(cartItems)
 
     return (
         <ShoppingCartContex.Provider value={{getItemQuantity, increaseCartQuantity, decreaseCartQuantity, removeFromCart, openCart, closeCart, addToCart, setEmptyCart ,cartItems, cartQuantity}}>

@@ -20,6 +20,7 @@ export interface user {
   birthday: Date;
   isAdmin: Boolean;
   reviews: Array<object>;
+  shopping: Array<object>;
 }
 
 export interface shopping {
@@ -34,6 +35,7 @@ export interface googleUser {
   birthday: Date | null;
   isAdmin: Boolean;
   confirmed: Boolean;
+  shopping: Array<object>;
 }
 
 export interface githubUser {
@@ -42,6 +44,7 @@ export interface githubUser {
   birthday: Date | null;
   isAdmin: Boolean;
   confirmed: Boolean;
+  shopping: Array<object>;
 }
 
 export interface category {
