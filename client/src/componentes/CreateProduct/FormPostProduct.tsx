@@ -1,12 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
 import { uploadImageToFirebaseStorage } from "../../firebase/uploadImageToFirebaseStorage";
-
+import Dropdown from 'react-dropdown';
+import 'react-dropdown/style.css';
+import {getCategories} from "../../redux/slices/ProductSlice/productActions";
+import { useAppDispatch, useAppSelector } from "../../hooks";
 
 const sizes = { XS: "XS", S: "S", M: "M", L: "L", XL: "XL", XXL: "XXL" };
 const colors = { Blanco: "Blanco", Negro: "Negro" };
@@ -64,7 +67,7 @@ const schema = yup
   })
   .required();
 
-const Form = () => {
+const PostForm = () => {
   const {
     register,
     handleSubmit,
@@ -85,6 +88,10 @@ const Form = () => {
     colors: [""],
     sizes: [""],
   };
+
+  const dispatch = useAppDispatch();
+  const categories = useAppSelector((state) => state.products.categoryList?.map(category => category.name));
+
   const [input, setInput] = useState(initialForm);
   
   const [file, setFile] = useState(null);
@@ -121,7 +128,7 @@ const Form = () => {
   }:formData) => {
     let backData = process.env.REACT_APP_BACKEND_URL;
     
-   
+    console.log(category);
     imgUrl =  await uploadImageToFirebaseStorage(file);
 
 
@@ -144,6 +151,11 @@ const Form = () => {
         }
         )
         .catch((err) => console.error(err));
+  }
+
+  const handleCategories = (event:React.ChangeEvent<HTMLSelectElement>) => {
+    if(event.target.value === 'all') return ;
+    setInput({...input, category: event.target.value}); 
   }
 
   return (
@@ -262,14 +274,15 @@ const Form = () => {
 
       <div className="mb-3.5 w-full">
         <div className="flex justify-center">
-          <input
-            {...register("category")}
-            id="category"
-            type="text"
-            placeholder="Category..."
-            className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
-          />
-          *
+          
+          <select  onChange = {handleCategories}>
+            <option value = "all">
+              All
+            </option>
+            {categories?.map(e => {
+              return(<option key = {e} value = {e}>{e}</option>)
+            })}
+          </select>*
         </div>
         {errors?.category && (
           <p className="text-red-600 font-bold">{errors.category.message}</p>
@@ -332,4 +345,4 @@ const Form = () => {
   );
 };
 
-export default Form;
+export default PostForm;

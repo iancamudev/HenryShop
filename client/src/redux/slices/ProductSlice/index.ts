@@ -1,6 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 //INTERFACES
+interface category {
+  id: string;
+  name: string;
+};
+
 export interface IReview {
   info: {
     id: string;
@@ -34,12 +39,14 @@ interface ProductState {
   productPages: Number;
   loading: boolean;
   error: string;
+  categoryList: Array<category>;
 }
 
 //Definimos el estado
 const initialState: ProductState = {
   productList: [],
   carrouselList: [],
+  categoryList: [{id: "", name: ""}],
   productDetail: {
     id: "",
     name: "",
@@ -52,7 +59,7 @@ const initialState: ProductState = {
     colors: [""],
     sizes: [""],
     quantity: 0,
-    reviews: []
+    reviews: [],
   },
   productPages: 0,
   loading: false,
@@ -85,6 +92,9 @@ const ProductSlice = createSlice({
     getBestOffersList(state, action: PayloadAction<Array<Object>>) {
       state.carrouselList = action.payload;
     },
+    getCategoryList(state, action: PayloadAction<Array<category>>){
+      state.categoryList = action.payload;
+    }
   },
 });
 
@@ -97,4 +107,5 @@ export const {
   setError,
   clearProductLsit,
   getBestOffersList,
+  getCategoryList,
 } = ProductSlice.actions;

@@ -9,6 +9,7 @@ import {
   setError,
   clearProductLsit,
   getBestOffersList,
+  getCategoryList,
 } from "./index";
 
 export const URL_BACK_DEV: string = process.env.REACT_APP_BACKEND_URL as string;
@@ -69,3 +70,12 @@ export const getBestOffers = () => (dispatch: AppDispatch) => {
       console.error(error);
     });
 };
+
+export const getCategories = () => (dispatch: AppDispatch) => {
+  axios
+    .get(`${URL_BACK_DEV}/categories`)
+    .then(({ data }) => dispatch(getCategoryList(data)))
+    .catch((error) => {
+      console.error(error);
+    });
+}
