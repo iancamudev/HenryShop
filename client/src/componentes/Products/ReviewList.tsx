@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { IReview } from "../../redux/slices/ProductSlice";
 import RatingStars from "./RatingStars";
+import CheckUserReview from "./ReviewForm/CheckUserReview";
 
 interface ReviewProps {
   reviews: Array<IReview>;
@@ -11,23 +12,27 @@ const ReviewList = ({ reviews }: ReviewProps) => {
     console.log("Estas son las reviews");
     console.log(reviews);
   }, [reviews]);
-  console.log('length de las reviews: ', reviews.length)
-  console.log('las reviews ', reviews)
+  console.log("length de las reviews: ", reviews.length);
+  console.log("las reviews ", reviews);
   if (!reviews.length) return <h3 className="mb-8">Aún no hay reseñas</h3>;
 
   return (
-    <div>
+    <div className="mb-8">
       <h3>Reseñas</h3>
-      {reviews.map(({ review }, index) => (
-        <ReviewCard
-          text={review.text}
-          rating={review.rating}
-          user={review.user.username}
-          flag={index % 2 === 0}
-          key={`review_${index}`}
-        />
-      ))}
       <hr />
+      {reviews.map(({ review }, index) => (
+        <>
+          <ReviewCard
+            text={review.text}
+            rating={review.rating}
+            user={review.user.username}
+            flag={index % 2 === 0}
+            key={`review_${index}`}
+          />
+          <hr />
+        </>
+      ))}
+      <CheckUserReview />
     </div>
   );
 };

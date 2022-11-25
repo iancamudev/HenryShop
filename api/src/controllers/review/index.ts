@@ -2,6 +2,9 @@ import Review from "../../models/Review";
 import Product from "../../models/Product";
 import User from "../../models/User";
 import { product, review, user } from "../../Types";
+import { getProductById } from '../product'
+import { getUserById } from "../user";
+import { removeAllListeners } from "process";
 
 export const addNewReview = async (text: string, rating: number, userId: object, productId: object) => {
   if (
@@ -17,7 +20,17 @@ export const addNewReview = async (text: string, rating: number, userId: object,
 
   await User.findByIdAndUpdate(user._id, { reviews: [...user.reviews, { review: newReview.id }] })
   await Product.findByIdAndUpdate(product._id, { reviews: [...product.reviews, { review: newReview.id }] })
-  
+
   console.log('created ', newReview)
   return newReview;
+}
+
+export const checkUserReviewOnProduct = async (userId: string, productId: string) => {
+  const product = await getProductById(productId);
+  const user = await getUserById(userId);
+  if(!user || !product) throw new Error('Wrong product or user');
+  product.reviews.forEach((rev: any) => {
+    if(rev.review.user._id.toString() == userId)
+      throw new Error('Este usuario ya ha hecho una reseña en este producto')
+  })
 }

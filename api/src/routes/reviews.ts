@@ -4,15 +4,23 @@ import GoogleUser from "../models/googleUser";
 import GithubUser from "../models/githubUser";
 import Product from "../models/Product";
 import Review from "../models/Review";
-import { addNewReview } from "../controllers/review";
+import { addNewReview, checkUserReviewOnProduct } from "../controllers/review";
 const userValidation = require("../middlewares/userValidation");
+const jwt = require("jsonwebtoken");
 require("../mongo");
 
 const router = Router();
 
 router.post('/', async (req: Request, res: Response) => {
-  const { text, rating, userId, productId} = req.body;
+  const { text, rating, productId} = req.body;
   try {
+    let token = req.get("authorization");
+    if (token) {
+      token = token.split(" ")[1];
+    }
+    const decodedToken = jwt.verify(token, process.env.SECRETKEY);
+    const userId = decodedToken.id
+    await checkUserReviewOnProduct(userId, productId)
     const review = await addNewReview(text, rating, userId, productId); 
     res.status(200).send(review)
   } catch (e: any) {
@@ -20,20 +28,6 @@ router.post('/', async (req: Request, res: Response) => {
     res.status(500).send({ message: e.message })
   }
 });
-
-// get a specific review
-router.get('/getreview/:reviewId', async (req: Request, res: Response) => {
-  const { reviewId } = req.params;
-  try {
-    const review = await Product.findById(reviewId);
-    console.log(review)
-    review.populate('user');
-    review.populate('product');
-    res.status(200).send('Review ')
-  } catch (e: any) {
-    res.status(500).send({ message: e.message })
-  }
-})
 
 // get reviews of one product
 router.get('/:productId', async (req: Request, res: Response) => {
