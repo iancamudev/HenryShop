@@ -168,13 +168,13 @@ routes.post("/payment", userValidation, async (req: Request, res: Response) => {
             description: el.description,
             category_id: "art",
             quantity: el.quantity,
-            unit_price: el.price,
+            unit_price: el.price.at(- 1),
           };
         }),
         back_urls: {
           success: "http://localhost:3000/success",
-          failure: "http://www.failure.com",
-          pending: "http://www.pending.com",
+          failure: "http://localhost:3000/failure",
+          pending: "http://localhost:3000/failure",
         },
         auto_return: "approved",
         binary_mode: true,
