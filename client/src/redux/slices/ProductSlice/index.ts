@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 //INTERFACES
 export interface IReview {
-  info: {
+  review: {
     id: string;
     rating: number;
     text: string;

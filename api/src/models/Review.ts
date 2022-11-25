@@ -5,8 +5,8 @@ import { review } from "../Types";
 export const reviewSchema = new Schema({
   text: { type: String, required: true },
   rating: { type: Number, required: true },
-  user: {type: SchemaTypes.ObjectId, ref: "User"},
-  product: {type: SchemaTypes.ObjectId, ref: "Product"}
+  user: {type: SchemaTypes.ObjectId, ref: "Users"},
+  product: {type: SchemaTypes.ObjectId, ref: "Products"}
 })
 
 reviewSchema.set("toJSON", {
