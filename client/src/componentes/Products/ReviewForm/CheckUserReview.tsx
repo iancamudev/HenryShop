@@ -2,11 +2,15 @@ import React from "react";
 import { useAppSelector } from "../../../hooks";
 import FormReview from "./FormReview";
 
-const CheckUserReview = () => {
+interface ICheckUserRewviewProps {
+  reviewed: boolean;
+}
+
+const CheckUserReview = ({reviewed}: ICheckUserRewviewProps) => {
   const { username, confirmed } = useAppSelector((state) => state.user);
 
   // Si está logueado, no muestr nada
-  if (!username) return null;
+  if (!username || reviewed) return null;
 
   // Si no está confirmado, mostrar aviso de que debe confirmar su mail
   if (!confirmed) return <ConfirmWarning />;

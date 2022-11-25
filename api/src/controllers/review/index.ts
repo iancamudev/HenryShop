@@ -21,7 +21,6 @@ export const addNewReview = async (text: string, rating: number, userId: object,
   await User.findByIdAndUpdate(user._id, { reviews: [...user.reviews, { review: newReview.id }] })
   await Product.findByIdAndUpdate(product._id, { reviews: [...product.reviews, { review: newReview.id }] })
 
-  console.log('created ', newReview)
   return newReview;
 }
 
@@ -33,4 +32,13 @@ export const checkUserReviewOnProduct = async (userId: string, productId: string
     if(rev.review.user._id.toString() == userId)
       throw new Error('Este usuario ya ha hecho una reseña en este producto')
   })
+}
+
+export const updateReview = async (reviewId: string, text: string, rating: number) => {
+  const review = await Review.findByIdAndUpdate(reviewId, {
+    rating,
+    text
+  })
+  if(!review) throw new Error('Review no encontrada')
+  return review;
 }
