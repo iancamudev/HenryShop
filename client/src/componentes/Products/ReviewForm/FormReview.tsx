@@ -19,7 +19,6 @@ const schema = yup
   .required();
 
 const FormReview = () => {
-  const navigate = useNavigate();
   const { id: productId } = useAppSelector(
     (state) => state.products.productDetail
   );
@@ -42,8 +41,7 @@ const FormReview = () => {
       rating: ratingValue,
     })
       .then(({ data }) => {
-        console.log(data);
-        alert("Reseña enviada");
+        window.location.reload()
       })
       .catch((e) => setResult(e.response.data.message));
   });
@@ -67,8 +65,8 @@ const FormReview = () => {
         className="border border-black border-solid rounded-2xl w-11/12 h-24 p-2"
         {...register("text")}
       ></textarea>
-      {errors.text && <p>{errors.text.message}</p>}
-      {result && <p>{result}</p>}
+      {errors.text && <p className="w-10/12 py-4 m-auto mt-4 rounded-2xl border-2 border-solid border-red-600 bg-red-300 text-red-600 font-bold">{errors.text.message}</p>}
+      {result && <p className="w-10/12 py-4 m-auto mt-4 rounded-2xl border-2 border-solid border-red-600 bg-red-300 text-red-600 font-bold">{result}</p>}
       <button className="bg-yellow duration-300 hover:bg-gray-200 hover:duration-300 p-2 mt-4 font-bold rounded-3xl pl-4 pr-4 border-b-2 border-black">
         Enviar Reseña
       </button>

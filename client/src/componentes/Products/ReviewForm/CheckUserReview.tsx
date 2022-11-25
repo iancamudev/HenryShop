@@ -11,7 +11,7 @@ const CheckUserReview = () => {
   // Si no está confirmado, mostrar aviso de que debe confirmar su mail
   if (!confirmed) return <ConfirmWarning />;
 
-  return <FormReview />;
+  return <FormReview />
 };
 
 export default CheckUserReview;

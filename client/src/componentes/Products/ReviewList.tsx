@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
+import { useAppSelector } from "../../hooks";
 import { IReview } from "../../redux/slices/ProductSlice";
 import RatingStars from "./RatingStars";
 import CheckUserReview from "./ReviewForm/CheckUserReview";
@@ -8,13 +9,29 @@ interface ReviewProps {
 }
 
 const ReviewList = ({ reviews }: ReviewProps) => {
-  useEffect(() => {
-    console.log("Estas son las reviews");
-    console.log(reviews);
-  }, [reviews]);
-  console.log("length de las reviews: ", reviews.length);
-  console.log("las reviews ", reviews);
+  const { username } = useAppSelector((state) => state.user);
+
   if (!reviews.length) return <h3 className="mb-8">Aún no hay reseñas</h3>;
+
+  let reviewed = false;
+  // ordena las reviews
+  if (username) {
+    const userReview = reviews.filter(({ review }) => {
+      if (review.user.username === username) {
+        reviewed = true;
+        return true;
+      }
+      return false;
+    })[0];
+    if (reviewed) {
+      let sortArr = [...reviews]
+      const index = sortArr.indexOf(userReview);
+      console.log(index)
+      sortArr.splice(index, 1);
+      sortArr.unshift(userReview);
+      reviews = sortArr;
+    }
+  }
 
   return (
     <div className="mb-8">
