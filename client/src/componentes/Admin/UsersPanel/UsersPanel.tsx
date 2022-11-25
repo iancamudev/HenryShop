@@ -8,6 +8,7 @@ import { BiEdit, BiX } from "react-icons/bi";
 import { AiOutlineCheck } from "react-icons/ai"
 import { getAllUsers } from "../../../redux/slices/AdminSlice/adminActions";
 import axiosPutCall from "../../../funciones/axiosPutCall";
+import {UsersCard} from "./UsersCard";
 const UsersPanel = () => {
   let navigate = useNavigate();
   const routeChangeToEdit = (
@@ -25,7 +26,7 @@ const UsersPanel = () => {
   const [currentPage, setCurrentPage] = useState(1);
   useEffect(() => {
     dispatch(getAllUsers(currentPage));
-  }, [currentPage, Users]);
+  }, [currentPage]);
   const Pages = useAppSelector((state) => state.admin.userPages);
   var array: Array<number> = [];
   let id = 1;
@@ -99,38 +100,45 @@ const UsersPanel = () => {
           </tr>
           {Users &&
             Users.map((user) => (
-              <tr className="border border-slate-300 ">
-                <td
-                  className={ user.deleted ? "bg-gray-300 border-black text-white" : "bg-gray-200 border-black"}
+              <UsersCard 
+                username = {user.username} 
+                handleActivate = {handleActivate}
+                handleDelete = {handleDelete}
+                deleted = {user.deleted}
+                id = {user.id}
+              />
+              // <tr className="border border-slate-300 ">
+              //   <td
+              //     className={ user.deleted ? "bg-gray-300 border-black text-white" : "bg-gray-200 border-black"}
   
-                >
-                  {id++}
-                </td>
-                <td
-                  className={ user.deleted ? "bg-gray-300 border-black text-white" : "bg-gray-200 border-black"}
-                >
-                  {<p className="text-xs font-bold">{user.username}</p>}
-                </td>{" "}
-                <td
-                    className={ user.deleted ? "bg-gray-300 border-black text-white" : "bg-gray-200 border-black"}
-                > 
-                 { user.deleted ? <button
-                    onClick={(e) => handleActivate(e)}
-                    value={user.id}
-                    className="  margin-auto mt-2 mb-2 w-12 h-12 p-3 bg-red-500 hover:bg-red-700 text-white font-bold  border border-red-700 rounded hover:duration-500 duration-300"
-                  >
-                    <BiX className="w-6 h-6" />
-                  </button> : <button
-                    onClick={(e) => handleDelete(e)}
-                    value={user.id}
-                    className="margin-auto mt-2 mb-2 w-12 h-12 p-3 bg-green-500 hover:bg-green-700 text-white font-bold  border border-green-700 rounded hover:duration-500 duration-300"
+              //   >
+              //     {id++}
+              //   </td>
+              //   <td
+              //     className={ user.deleted ? "bg-gray-300 border-black text-white" : "bg-gray-200 border-black"}
+              //   >
+              //     {<p className="text-xs font-bold">{user.username}</p>}
+              //   </td>{" "}
+              //   <td
+              //       className={ user.deleted ? "bg-gray-300 border-black text-white" : "bg-gray-200 border-black"}
+              //   > 
+              //    { user.deleted ? <button
+              //       onClick={(e) => handleActivate(e)}
+              //       value={user.id}
+              //       className="  margin-auto mt-2 mb-2 w-12 h-12 p-3 bg-red-500 hover:bg-red-700 text-white font-bold  border border-red-700 rounded hover:duration-500 duration-300"
+              //     >
+              //       <BiX className="w-6 h-6" />
+              //     </button> : <button
+              //       onClick={(e) => handleDelete(e)}
+              //       value={user.id}
+              //       className="margin-auto mt-2 mb-2 w-12 h-12 p-3 bg-green-500 hover:bg-green-700 text-white font-bold  border border-green-700 rounded hover:duration-500 duration-300"
                     
-                  >
-                    <AiOutlineCheck className=" w-4 h-4 ml-1" />
-                  </button> }
+              //     >
+              //       <AiOutlineCheck className=" w-4 h-4 ml-1" />
+              //     </button> }
                   
-                </td>
-              </tr>
+              //   </td>
+              // </tr>
             ))}
         </table>
       </div>
