@@ -6,28 +6,28 @@ import { BiEdit, BiX } from "react-icons/bi";
 
 interface PropsCard {
     username: string,
+    name: string,
     handleActivate(Event:React.MouseEvent<HTMLButtonElement, MouseEvent>): void,
     handleDelete(Event:React.MouseEvent<HTMLButtonElement, MouseEvent>): void,
     deleted: boolean,
     id: string
 }
 
-export const UsersCard = ({username, handleActivate, handleDelete, deleted, id}:PropsCard) => {
+export const UsersCard = ({username, name, handleActivate, handleDelete, deleted, id}:PropsCard) => {
     
     const[activation, setActivation] = useState(deleted);
-    console.log("hola", activation);
+   
     const handleIn =(e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+      
         handleActivate(e);
         activation?setActivation(false): setActivation(true);
-        console.log(activation);
-        console.log("aaa");
+        
     };
 
     const handleOut =(e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         handleDelete(e);
         activation?setActivation(false): setActivation(true);
-        console.log(activation);
-        console.log("bbb");
+        
     };
 
     return (
@@ -42,6 +42,11 @@ export const UsersCard = ({username, handleActivate, handleDelete, deleted, id}:
                   className={ activation ? "bg-gray-300 border-black text-white" : "bg-gray-200 border-black"}
                 >
                   {<p className="text-xs font-bold">{username}</p>}
+                </td>{" "}
+                <td
+                  className={ activation ? "bg-gray-300 border-black text-white" : "bg-gray-200 border-black"}
+                >
+                  {<p className="text-xs font-bold">{name}</p>}
                 </td>{" "}
                 <td
                     className={ activation ? "bg-gray-300 border-black text-white" : "bg-gray-200 border-black"}
