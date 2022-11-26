@@ -37,6 +37,12 @@ export const getUser = async (username: string) => {
   return resultUser;
 };
 
+export const getUserById = async (userId: string) => {
+  let resultUser = null;
+  resultUser = await User.findById(userId);
+  return resultUser;
+};
+
 export const updateEmail = async (id: string) => {
   const result = await User.findOneAndUpdate({ _id: id }, { confirmed: true });
   if (!result) {

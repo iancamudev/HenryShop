@@ -3,7 +3,7 @@ import { user } from "../Types";
 import mongoosePaginate from "mongoose-paginate-v2";
 const bcrypt = require("bcrypt");
 
-const userSchema = new Schema({
+export const userSchema = new Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   confirmed: { type: Boolean, default: false },
@@ -12,7 +12,9 @@ const userSchema = new Schema({
   birthday: { type: String, required: true },
   isAdmin: { type: Boolean, default: false },
   deleted: { type: Boolean, default: false },
-  reviews: [{ type: Schema.Types.ObjectId, ref: 'Reviews' }],
+  reviews: [{
+    review: { type: Schema.Types.ObjectId, ref: 'Review' }
+  }],
   shopping: [{ type: Schema.Types.ObjectId, ref: 'Shopping' }],
 });
 

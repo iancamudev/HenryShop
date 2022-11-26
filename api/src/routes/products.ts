@@ -70,16 +70,16 @@ routes.get("/:id", async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const result = await getProductById(id);
-    console.log(id);
     if (!result) {
-      res
-        .status(200)
+      return res
+        .status(404)
         .json({ error_message: "No se encontro el producto con ese id" });
     }
     await result.populate("reviews");
-    res.status(200).send(result);
+    return res.status(200).send(result);
   } catch (error: any) {
-    res.status(500).json({ error_message: error.message });
+    console.log(error.message)
+    return res.status(500).json({ error_message: error.message });
   }
 });
 
