@@ -7,7 +7,7 @@ interface category {
 };
 
 export interface IReview {
-  info: {
+  review: {
     id: string;
     rating: number;
     text: string;

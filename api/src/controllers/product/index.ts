@@ -186,11 +186,12 @@ export const getProductById = async (id: String) => {
   }
   const result = await Product.findById(id).populate([{
     path: 'reviews',
-    populate: {
-      path: 'info', populate: {
-        path: 'user product'
-      }
-    }
+    populate: [{
+      path: 'review',
+      populate: [{
+        path: 'user'
+      }]
+    }]
   }
   ])
 
