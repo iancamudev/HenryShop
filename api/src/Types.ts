@@ -53,6 +53,8 @@ export interface category {
 
 export interface review {
   text: String;
-  number: Number;
+  rating: Number;
+  user: object;
+  product: object;
 }
 

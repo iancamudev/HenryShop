@@ -22,26 +22,27 @@ const routes = Router();
 
 //TODOS LOS GET
 
+
 routes.get("/admin", async (req: Request, res: Response) => {
   try {
-    const { name } = req.query;
-    if (name && typeof name === "string") {
-      const findName = await findByName(name);
-
-      if (!findName.docs.length) {
-        res.status(200).send("No se encontro el producto con ese nombre");
-      } else {
-        res.status(200).send(findName);
-      }
-    } else {
-      const result = await getAllProductsAdmin();
-      if (!result.docs) {
-        res.status(200).send("No se encontraron productos");
-      }
-      res.status(200).send(result);
-    }
-  } catch (error) {
-    console.log(error);
+    const page: number = Number(req.query.page);
+    const name: string = String(req.query.name);
+    const category: string = String(req.query.category);
+    const order: string = String(req.query.order);
+    const property: string = String(req.query.property);
+    page === 0 ? page + 1 : page;
+    const result: any = await getAllProductsAdmin(
+      page,
+      category,
+      name,
+      property,
+      order
+    );
+    console.log(req.query)
+    if (result) res.status(200).json(result);
+    else res.status(400).json({ error_message: "not found" });
+  } catch (error: any) {
+    res.status(500).json({ error_message: error.message });
   }
 });
 
@@ -70,16 +71,16 @@ routes.get("/:id", async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const result = await getProductById(id);
-    console.log(id);
     if (!result) {
-      res
-        .status(200)
+      return res
+        .status(404)
         .json({ error_message: "No se encontro el producto con ese id" });
     }
     await result.populate("reviews");
-    res.status(200).send(result);
+    return res.status(200).send(result);
   } catch (error: any) {
-    res.status(500).json({ error_message: error.message });
+    console.log(error.message)
+    return res.status(500).json({ error_message: error.message });
   }
 });
 

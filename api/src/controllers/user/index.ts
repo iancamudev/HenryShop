@@ -4,6 +4,8 @@ import { GoogleUser } from "../../models/googleUser";
 import { Shopping } from "../../models/Shopping";
 import { getShop } from "../ShopCart";
 import e from "express";
+import { Query } from "mongoose";
+
 const jwt = require("jsonwebtoken");
 
 export const addNewUser = async (user: user) => {
@@ -28,17 +30,95 @@ export const addNewUser = async (user: user) => {
 const pageSize = 10;
 
 
-export const getAllUser = async (page: number ) => {
+export const getAllUser = async (y:number, username?: string, order?: string, property?: string, ) => {
+ console.log("controler", y, username, order,property)
+ console.log(username.length);
+  //   const resultUsers = await User.paginate( { page: y })
+  // return resultUsers;
+  
+  if(
+    username !== "undefined"  &&
+    order !== "undefined") {
+      const resultName = await User.paginate(
+        {
+          name: new RegExp(`${username}`, "i")
+        }, 
+        {
+          limit: pageSize,
+          page: y,
+          sort: { [`${property}`]: order },
+        }
+        );
 
-    const resultUsers = await User.paginate( { page: page })
-  return resultUsers;
+    return resultName;
+  }
+
+  else if(
+    username !== "undefined" &&
+    order === "undefined") {
+      const resultName = await User.paginate(
+        {
+          name: new RegExp(`${username}`, "i")
+        }, 
+        {
+          limit: pageSize,
+          page: y,
+        }
+        );
+
+    return resultName;
+  }
+
+  else if(
+    username === "undefined"  &&
+    order !== "undefined") {
+      const resultName = await User.paginate(
+        {
+        
+        }, 
+        {
+          limit: pageSize,
+          page: y,
+          sort: {[`${property}`]: order },
+        }
+        );
+
+    return resultName;
+  }
+
+  else if (
+    username === "undefined"&& order === "undefined") {
+      const resultName = await User.paginate({}, 
+        {
+        limit: pageSize,
+        page: y,
+        sort: {[`${property}`]: order },
+    });
+    return resultName;
+  }
+  
+  else {
+    const resultAll = await User.paginate(
+      {
+        
+      },
+      {
+        limit: pageSize,
+        page: y,
+        sort: {[`${property}`]: order },
+      }
+    );
+    return resultAll;
+  }
 };
+
 
 export const getUser = async (username: string) => {
   let resultUser = null;
   resultUser = await User.findOne({ username: username }).exec();
   return resultUser;
 };
+
 
 export const getUserShop = async (username: string) => {
   const user = await User.findOne({username: username});
@@ -70,6 +150,13 @@ export const getDateShop = async (username: string) => {
  
   return shop
 }
+
+export const getUserById = async (userId: string) => {
+  let resultUser = null;
+  resultUser = await User.findById(userId);
+  return resultUser;
+};
+
 
 export const updateEmail = async (id: string) => {
   const result = await User.findOneAndUpdate({ _id: id }, { confirmed: true });
@@ -127,4 +214,9 @@ export const putSwitchUserDelete = async (id: string) => {
 export const deleteUserByID = async (id: string) => {
   const findIdUser = await User.findOneAndUpdate({ _id: id}, {deleted: true})
   return findIdUser
+}
+
+export const userFilters = async ({order}:any) => {
+
+  const result = await User.find({})
 }

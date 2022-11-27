@@ -11,36 +11,36 @@ import { GithubUser } from "../models/githubUser";
 require("../mongo")
 const router = Router();
 
-router.post("/", async (req: Request, res: Response)=>{
-    const userId = req.params.id;
-    const {products} = req.body;  
+router.post("/", async (req: Request, res: Response) => {
+  const userId = req.params.id;
+  const { products } = req.body;
 
-    let token = req.get("authorization");
-    if (token) {
-      token = token.split(" ")[1];
-    }
-    const decodedToken = jwt.verify(token, process.env.SECRETKEY);
-    let user = null;
-    if (decodedToken) {
-      user = await User.findOne({ _id: decodedToken.id });
-    }
-    if(!user){
-      user = await GoogleUser.findOne({ email: decodedToken.email });
-    }
-    if(!user){
-      user = await GithubUser.findOne({ username: decodedToken.username });
-    }
+  let token = req.get("authorization");
+  if (token) {
+    token = token.split(" ")[1];
+  }
+  const decodedToken = jwt.verify(token, process.env.SECRETKEY);
+  let user = null;
+  if (decodedToken) {
+    user = await User.findOne({ _id: decodedToken.id });
+  }
+  if (!user) {
+    user = await GoogleUser.findOne({ email: decodedToken.email });
+  }
+  if (!user) {
+    user = await GithubUser.findOne({ username: decodedToken.username });
+  }
 
-    const prodId = await Product.find({_id: products})
-    try {
-            if(user && prodId){
-                const newRela = await addNewShop(user.id, prodId);
-                console.log(newRela); 
-                res.status(200).send(newRela);
-            }
-    } catch (error: any) {
-        res.status(400).send({error: error.message})
+  const prodId = await Product.find({ _id: products })
+  try {
+    if (user && prodId) {
+      const newRela = await addNewShop(user.id, prodId);
+      console.log(newRela);
+      res.status(200).send(newRela);
     }
+  } catch (error: any) {
+    res.status(400).send({ error: error.message })
+  }
 })
 
 router.get("/adminusers",  async (req: Request, res: Response)=> {

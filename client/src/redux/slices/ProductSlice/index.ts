@@ -1,6 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 //INTERFACES
+export interface IReview {
+  review: {
+    id: string;
+    rating: number;
+    text: string;
+    user: {
+      username: string;
+    }
+  }
+}
+
 export interface ProductDetails {
   id: string;
   name: string;
@@ -13,6 +24,7 @@ export interface ProductDetails {
   colors: Array<string>;
   sizes: Array<string>;
   quantity: number;
+  reviews: Array<IReview>;
 }
 
 interface ProductState {
@@ -22,12 +34,14 @@ interface ProductState {
   productPages: Number;
   loading: boolean;
   error: string;
+  productListAdmin: Array<ProductDetails>
 }
 
 //Definimos el estado
 const initialState: ProductState = {
   productList: [],
   carrouselList: [],
+  productListAdmin:[],
   productDetail: {
     id: "",
     name: "",
@@ -40,8 +54,10 @@ const initialState: ProductState = {
     colors: [""],
     sizes: [""],
     quantity: 0,
+    reviews: [],
   },
   productPages: 0,
+
   loading: false,
   error: "",
 };
@@ -52,6 +68,9 @@ const ProductSlice = createSlice({
   reducers: {
     getProductList(state, action: PayloadAction<Array<ProductDetails>>) {
       state.productList = action.payload;
+    },
+    getProductAdminList(state, action: PayloadAction<Array<ProductDetails>>) {
+      state.productListAdmin = action.payload;
     },
     getProductPages(state, action: PayloadAction<Number>) {
       state.productPages = action.payload;
@@ -69,6 +88,10 @@ const ProductSlice = createSlice({
       state.error = "";
       state.productList = [];
     },
+    clearProductAdminList(state) {
+      state.error = "";
+      state.productListAdmin = [];
+    },
     getBestOffersList(state, action: PayloadAction<Array<Object>>) {
       state.carrouselList = action.payload;
     },
@@ -84,4 +107,6 @@ export const {
   setError,
   clearProductLsit,
   getBestOffersList,
+  getProductAdminList,
+  clearProductAdminList,
 } = ProductSlice.actions;

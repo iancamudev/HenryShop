@@ -5,6 +5,7 @@ import { getProductsById } from "../redux/slices/ProductSlice/productActions";
 import Header from "./Header";
 import { TbPlus, TbMinus } from "react-icons/tb";
 import { useShoppingCart } from "./ShoppingCart/ContextShoppingCart";
+import ReviewList from "./Products/ReviewList";
 
 export const DetailProduct: React.FunctionComponent = () => {
   const producto = useAppSelector((state) => state.products.productDetail);
@@ -13,9 +14,17 @@ export const DetailProduct: React.FunctionComponent = () => {
   const dispatch = useAppDispatch();
   const [quantity, setQuantity] = useState(1);
   const [value, setValue] = useState(1);
-  const {addToCart} = useShoppingCart()
-  const [color, setColor] = useState(Products.find(i => i.id === id)?.colors ? Products.find(i => i.id === id)?.colors[0] as string : "")
-  const [variante, setVariante] = useState(Products.find(i => i.id === id)?.sizes ? Products.find(i => i.id === id)?.sizes[0] as string : "")
+  const { addToCart } = useShoppingCart();
+  const [color, setColor] = useState(
+    Products.find((i) => i.id === id)?.colors
+      ? (Products.find((i) => i.id === id)?.colors[0] as string)
+      : ""
+  );
+  const [variante, setVariante] = useState(
+    Products.find((i) => i.id === id)?.sizes
+      ? (Products.find((i) => i.id === id)?.sizes[0] as string)
+      : ""
+  );
 
   useEffect(() => {
     dispatch(getProductsById(String(id)));
@@ -32,21 +41,21 @@ export const DetailProduct: React.FunctionComponent = () => {
       setQuantity(quantity - 1);
     }
   };
-  function getItemColor(e: any){
+  function getItemColor(e: any) {
     e.preventDefault();
     setColor(e.target.value);
-    console.log(e.target.value)
-}
-function getItemVariant(e: any){
+    console.log(e.target.value);
+  }
+  function getItemVariant(e: any) {
     e.preventDefault();
     setVariante(e.target.value);
-}
-function setAll(e: any){
+  }
+  function setAll(e: any) {
     e.preventDefault();
     addToCart(id!, quantity, color, variante);
-    console.log(color)
-    setQuantity(1)
-}
+    console.log(color);
+    setQuantity(1);
+  }
   return (
     <>
       <Header />
@@ -89,7 +98,11 @@ function setAll(e: any){
             <div className="border-r-2 p-4 border-black">
               <div className="mt-9 mb-4 p-2">
                 <p className="text-xl font-bold mb-3">Variante</p>
-                <select className="bg-yellow font-bold p-2" name="sizes" onChange={getItemVariant}>
+                <select
+                  className="bg-yellow font-bold p-2"
+                  name="sizes"
+                  onChange={getItemVariant}
+                >
                   {producto.sizes &&
                     producto.sizes.map((el) => {
                       return (
@@ -104,10 +117,14 @@ function setAll(e: any){
                 </select>
               </div>
             </div>
-            <div >
+            <div>
               <div className="mt-9 mb-4 p-2">
                 <p className="text-xl font-bold mb-3">Color</p>
-                <select className="bg-yellow font-bold p-2" name="sizes" onChange={getItemColor}>
+                <select
+                  className="bg-yellow font-bold p-2"
+                  name="sizes"
+                  onChange={getItemColor}
+                >
                   {producto.colors &&
                     producto.colors.map((el) => {
                       return (
@@ -124,7 +141,10 @@ function setAll(e: any){
             </div>
           </div>
           <div className="mt-2 mb-6 text-center ml-8">
-            <button className="bg-yellow duration-300 hover:bg-gray-200 hover:duration-300 p-2 mt-4 font-bold rounded-3xl pl-4 pr-4 border-b-2 border-black" onClick={setAll}>
+            <button
+              className="bg-yellow duration-300 hover:bg-gray-200 hover:duration-300 p-2 mt-4 font-bold rounded-3xl pl-4 pr-4 border-b-2 border-black"
+              onClick={setAll}
+            >
               Agregar a carrito
             </button>
           </div>
@@ -140,6 +160,7 @@ function setAll(e: any){
           </p>
           <hr />
         </div>
+        <ReviewList reviews={producto.reviews} />
       </div>
     </>
   );

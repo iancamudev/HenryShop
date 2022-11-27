@@ -34,6 +34,7 @@ import AdminPanelUsers from "./componentes/Admin/AdminPanelUsers";
 import PaymentsPanel from "./componentes/Admin/PaymentsPanel/PaymentsPanel";
 import AdminPanelPayments from "./componentes/Admin/AdminPanelPayments";
 import { Failure } from "./componentes/Failure";
+import { AboutUs } from "./componentes/AboutUs";
 
 
 
@@ -117,6 +118,7 @@ function App() {
               </Protected>
             }
           />
+          <Route path="/aboutus" element={<AboutUs/>}/>
           <Route path="/failure" element={<Failure/>}/>
           <Route path="/success" element={<Success />} />
           <Route path="/unauthorized" element={<Unaothorized />} />
