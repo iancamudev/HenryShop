@@ -12,7 +12,7 @@ export const userSchema = new Schema({
   birthday: { type: String, required: true },
   isAdmin: { type: Boolean, default: false },
   deleted: { type: Boolean, default: false },
-  reviews: [{ type: Schema.Types.ObjectId, ref: 'Reviews' }],
+  reviews: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
   shopping: [{ type: Schema.Types.ObjectId, ref: 'Shopping' }],
 });
 

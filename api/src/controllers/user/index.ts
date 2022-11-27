@@ -33,7 +33,7 @@ export const getAllUser = async (page: number ) => {
 
 export const getUser = async (username: string) => {
   let resultUser = null;
-  resultUser = await User.findOne({ username: username }).exec();
+  resultUser = await User.findOne({ username: username });
   return resultUser;
 };
 

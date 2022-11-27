@@ -34,13 +34,14 @@ export const getWithfilters = async (
   property?: string,
   order?: string
 ) => {
+  const catObj = await Category.findOne({name: category});
+  const catId = catObj? catObj._id: "undefined";
   if (
-    category === "undefined" &&
+    catId === "undefined" &&
     name !== "undefined" &&
     property !== "undefined" &&
     order !== "undefined"
   ) {
-    console.log("1");
     const resultName = await Product.paginate(
       {
         name: new RegExp(`${name}`, "i"),
@@ -54,15 +55,14 @@ export const getWithfilters = async (
     );
     return resultName;
   } else if (
-    category !== "undefined" &&
+    catId !== "undefined" &&
     name === "undefined" &&
     property !== "undefined" &&
     order !== "undefined"
   ) {
-    console.log("2");
     const resultCategory = await Product.paginate(
       {
-        category: new RegExp(`${category}`, "i"),
+        category: new RegExp(`${catId}`, "i"),
         deleted: false,
       },
       {
@@ -73,12 +73,11 @@ export const getWithfilters = async (
     );
     return resultCategory;
   } else if (
-    category === "undefined" &&
+    catId === "undefined" &&
     name === "undefined" &&
     property !== "undefined" &&
     order !== "undefined"
   ) {
-    console.log("3");
     const resultCategory = await Product.paginate(
       {
         deleted: false,
@@ -91,14 +90,13 @@ export const getWithfilters = async (
     );
     return resultCategory;
   } else if (
-    category !== "undefined" &&
+    catId !== "undefined" &&
     name !== "undefined" &&
     (property === "undefined" || order === "undefined")
   ) {
-    console.log("4");
     const resultCategory = await Product.paginate(
       {
-        category: new RegExp(`${category}`, "i"),
+        category: new RegExp(`${catId}`, "i"),
         name: new RegExp(`${name}`, "i"),
         deleted: false,
       },
@@ -109,19 +107,17 @@ export const getWithfilters = async (
     );
     return resultCategory;
   } else if (
-    category === "undefined" &&
+    catId === "undefined" &&
     name === "undefined" &&
     (property === "undefined" || order === "undefined")
   ) {
-    console.log("5");
     const resultCategory = getAllProducts(page);
     return resultCategory;
   } else if (
-    category === "undefined" &&
+    catId === "undefined" &&
     name !== "undefined" &&
     (property === "undefined" || order === "undefined")
   ) {
-    console.log("6");
     const resultCategory = await Product.paginate(
       {
         name: new RegExp(`${name}`, "i"),
@@ -134,14 +130,13 @@ export const getWithfilters = async (
     );
     return resultCategory;
   } else if (
-    category !== "undefined" &&
+    catId !== "undefined" &&
     name === "undefined" &&
     (property === "undefined" || order === "undefined")
   ) {
-    console.log("7");
     const resultCategory = await Product.paginate(
       {
-        category: new RegExp(`${category}`, "i"),
+        category: new RegExp(`${catId}`, "i"),
         deleted: false,
       },
       {
@@ -151,11 +146,10 @@ export const getWithfilters = async (
     );
     return resultCategory;
   } else if (
-    category === "undefined" &&
+    catId === "undefined" &&
     name !== "undefined" &&
     (property === "undefined" || order === "undefined")
   ) {
-    console.log("8");
     const resultCategory = await Product.paginate(
       {
         name: new RegExp(`${name}`, "i"),
@@ -168,11 +162,9 @@ export const getWithfilters = async (
     );
     return resultCategory;
   } else {
-    console.log("9");
-    console.log("entre3");
     const resultAll = await Product.paginate(
       {
-        category: new RegExp(`${category}`, "i"),
+        category: new RegExp(`${catId}`, "i"),
         name: new RegExp(`${name}`, "i"),
         deleted: false,
       },

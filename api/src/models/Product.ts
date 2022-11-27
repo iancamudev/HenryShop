@@ -11,7 +11,7 @@ export const productSchema = new Schema({
   stock: { type: Number, required: true },
   category: { type: Schema.Types.ObjectId, required: true },
   deleted: { type: Boolean, default: false },
-  reviews: [{ type: Schema.Types.ObjectId, ref: "Reviews" }],
+  reviews: [{ type: Schema.Types.ObjectId, ref: "Review" }],
   variantName: String,
   variants: Array<variant>
 });
