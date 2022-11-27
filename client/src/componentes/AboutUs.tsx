@@ -42,6 +42,14 @@ export const AboutUs = () => {
     return (
         <div className="flex flex-wrap items-center justify-center">
             <Header/>
+            <div className="bg-black flex flex-col border border-black text-yellow p-10 m-10	">
+                <h3>HenryShop es un e-commerce creado por un grupo de alumnos del Bootcamp Soyhenry, que facilita merchandising oficial de la misma, nuestro objetivo es que una persona pueda realizar una compra de manera rapida, sencilla y segura.</h3>
+                <h2>Este proyecto fue creado con las siguientes tecnologías: React/Redux/ReduxToolkits, typescript, Tailwind, mongoDb/mongoose </h2>
+                <p>Esto es parte del proyecto final del Bootcamp SoyHenry, por lo cual todo lo que este relacionado con el stock, los pagos, etc es ficticio</p>
+            </div>
+             <div>
+                <p>Developers</p>
+             </div>
             { nojotro.map((e) => {
                 return (
                     <div className="flex flex-col border border-black bg-yellow shadow-lg mr-10 ml-10 mt-16 mb-6 delay-75 hover:bg-yellow hover:scale-105 hover:duration-300  duration-300 rounded-md hover:cursor-pointer">

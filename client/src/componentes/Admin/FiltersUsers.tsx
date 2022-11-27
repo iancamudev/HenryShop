@@ -2,6 +2,7 @@ import React from "react";
 import { object } from "yup";
 import { useAppDispatch, useAppSelector  } from "../../hooks";
 import { setFiltersActionUsers } from "../../redux/slices/AdminSlice/adminActions";
+import { getAllProductsAdmin } from "../../redux/slices/ProductSlice/productActions";
 
 
 const FiltersUsers = () => {
@@ -9,7 +10,9 @@ const FiltersUsers = () => {
   const filters = useAppSelector((state) => state.admin.filters);
   const page = useAppSelector((state) => state.admin.userPages)
 
-  const changeHandler = (e: any) => {
+  
+
+  const changeHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     e.preventDefault()
     const name = e.currentTarget.id;
     const value = e.currentTarget.selectedOptions[0].value;
@@ -50,6 +53,7 @@ const FiltersUsers = () => {
           </option>
         </select>
       </div>
+      
     </div>
   );
 };

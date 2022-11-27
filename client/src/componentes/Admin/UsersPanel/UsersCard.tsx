@@ -5,6 +5,7 @@ import { AiOutlineCheck } from "react-icons/ai";
 import { BiEdit, BiX } from "react-icons/bi";
 
 interface PropsCard {
+    pageId: any,
     username: string,
     name: string,
     handleActivate(Event:React.MouseEvent<HTMLButtonElement, MouseEvent>): void,
@@ -13,7 +14,7 @@ interface PropsCard {
     id: string
 }
 
-export const UsersCard = ({username, name, handleActivate, handleDelete, deleted, id}:PropsCard) => {
+export const UsersCard = ({username, name, handleActivate, handleDelete, deleted, id, pageId}:PropsCard) => {
     
     const[activation, setActivation] = useState(deleted);
    
@@ -35,9 +36,10 @@ export const UsersCard = ({username, name, handleActivate, handleDelete, deleted
             <tr className="border border-slate-300 ">
                 <td
                   className={ activation ? "bg-gray-300 border-black text-white" : "bg-gray-200 border-black"}
-  
+                  
                 >
-                </td>
+                  {<p className="text-xs font-bold">{pageId}</p>}
+                </td>{" "}
                 <td
                   className={ activation ? "bg-gray-300 border-black text-white" : "bg-gray-200 border-black"}
                 >
