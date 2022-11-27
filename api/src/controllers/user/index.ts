@@ -1,6 +1,9 @@
 import { user } from "../../Types";
 import { User } from "../../models/User";
 import { GoogleUser } from "../../models/googleUser";
+import { Shopping } from "../../models/Shopping";
+import { getShop } from "../ShopCart";
+import e from "express";
 const jwt = require("jsonwebtoken");
 
 export const addNewUser = async (user: user) => {
@@ -36,6 +39,44 @@ export const getUser = async (username: string) => {
   resultUser = await User.findOne({ username: username }).exec();
   return resultUser;
 };
+
+export const getUserShop = async (username: string) => {
+  const user = await User.findOne({username: username});
+  const ids = user.shopping.map((id) => id.toString())
+  const shop = await Promise.all(ids.map(async el =>  {
+    
+      const result = await getShop(el)
+      
+      const newResult = result.products.map((e) => [{...e, idShop: result._id}] )
+      
+      return newResult
+     
+  }))
+  /*const shopF = await Promise.all(shop.map(async el => {
+    return (
+      await el.products
+    )
+  })) */
+
+  
+   const shopF = shop.flat(2) 
+    
+  
+  return shopF
+
+  /*var shop = []
+  if(ids[0]){ 
+  for (let i=0; i<ids.length; i++){
+    shop[i] = await getShop(ids[i])
+    
+   }
+   console.log(shop)
+   return shop
+   
+  } else {
+    throw new Error("No hay ventas");
+  }*/
+}
 
 export const updateEmail = async (id: string) => {
   const result = await User.findOneAndUpdate({ _id: id }, { confirmed: true });

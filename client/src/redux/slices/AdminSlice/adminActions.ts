@@ -52,6 +52,13 @@ export const getAllPayments = (page: number | null) => (dispatch: AppDispatch) =
     })
 
 }  
+export const getUserByUsername = (username: string | undefined) =>  (dispatch: AppDispatch) => {
+    let url;
+    url = `${URL_BACK_DEV}/users/admin/${username}`
+    axios.get(url).then(({ data }) => {
+        dispatch(getUsersList(data))
+    })
+};
 
 // export const getProductsById =
 //   (id: string | undefined) => (dispatch: AppDispatch) => {

@@ -4,6 +4,7 @@ import ProductSlice from "../redux/slices/ProductSlice/index";
 import AdminSlice from "./slices/AdminSlice";
 import FiltersSlice from "./slices/FiltersSlice";
 import UserSlice from "./slices/UserSlice";
+import ShoppingSlice from "./slices/ShoppingSlice";
 
 const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ const store = configureStore({
     filterState: FiltersSlice,
     user: UserSlice,
     admin: AdminSlice,
+    shopping: ShoppingSlice
   },
 });
 

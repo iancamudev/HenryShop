@@ -1,5 +1,5 @@
 import { Router, Request, Response } from "express";
-import { addNewShop, getAllShopAdmin } from "../controllers/ShopCart";
+import { addNewShop, getAllShopAdmin, getShop } from "../controllers/ShopCart";
 import { Product } from "../models/Product";
 import { Shopping } from "../models/Shopping";
 import User from "../models/User";
@@ -55,5 +55,19 @@ router.get("/adminusers",  async (req: Request, res: Response)=> {
     res.status(400).send(error)
   }
 })
+
+router.get("/:id", async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+    const result = await getShop(id);
+    result !== null
+      ? res.status(200).json(result)
+      : res.status(404).json({
+        error_message: "No se ha encontrado compra",
+      });
+  } catch (error: any) {
+    res.status(500).json({ error_message: error.message });
+  }
+});
 
 export default router;

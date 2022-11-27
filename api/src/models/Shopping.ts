@@ -4,7 +4,8 @@ import { shopping } from "../Types";
 
 export const shoppingSchema = new Schema({
     userId: {type: SchemaTypes.ObjectId, ref: "User"},
-    products: Array<{type: Schema.Types.ObjectId, ref: "Product"}>
+    products: Array<{type: Schema.Types.ObjectId, ref: "Product"}>,
+    time : { type : Date, default: Date.now }
   });
 
 shoppingSchema.set("toJSON", {

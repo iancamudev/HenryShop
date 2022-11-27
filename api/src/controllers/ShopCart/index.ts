@@ -12,3 +12,9 @@ export const getAllShopAdmin = async (page: number) => {
    const result = await Shopping.paginate( { page: page })
    return result;
 }
+
+export const getShop = async (id: string) => {
+   let resultUser = null;
+   resultUser = await Shopping.findOne({ _id: id }).exec();
+   return resultUser;
+ };
