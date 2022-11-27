@@ -1,7 +1,11 @@
 import { user } from "../../Types";
 import { User } from "../../models/User";
 import { GoogleUser } from "../../models/googleUser";
+import { Shopping } from "../../models/Shopping";
+import { getShop } from "../ShopCart";
+import e from "express";
 import { Query } from "mongoose";
+
 const jwt = require("jsonwebtoken");
 
 export const addNewUser = async (user: user) => {
@@ -115,11 +119,44 @@ export const getUser = async (username: string) => {
   return resultUser;
 };
 
+
+export const getUserShop = async (username: string) => {
+  const user = await User.findOne({username: username});
+  const ids = user.shopping.map((id) => id.toString())
+  const shop = await Promise.all(ids.map(async el =>  {
+    
+      const result = await getShop(el)
+      
+      const newResult = result.products.map((e) => [{...e, idShop: result._id}] )
+      
+      return newResult
+     
+  }))
+  
+   const shopF = shop.flat(2) 
+    
+  return shopF
+
+}
+
+export const getDateShop = async (username: string) => {
+  const user = await User.findOne({username: username});
+  const ids = user.shopping.map((id) => id.toString())
+  const shop = await Promise.all(ids.map(async el =>  {
+    
+      return await getShop(el)
+     
+  }))
+ 
+  return shop
+}
+
 export const getUserById = async (userId: string) => {
   let resultUser = null;
   resultUser = await User.findById(userId);
   return resultUser;
 };
+
 
 export const updateEmail = async (id: string) => {
   const result = await User.findOneAndUpdate({ _id: id }, { confirmed: true });

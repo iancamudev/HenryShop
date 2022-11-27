@@ -205,11 +205,17 @@ const Header = () => {
               </div>
             )}
             {username ? (
+              <div><Link to="/shopping">
+              <h5 className="pl-2 hover:pl-4 hover:delay-300 duration-300 font-bold hover:cursor-pointer">
+                  Mis compras
+              </h5>
+              </Link>
               <Link to="/User">
-                <h5 className="pl-2 hover:pl-4 hover:delay-300 duration-300 font-bold hover:cursor-pointer">
+                <h5 className="pl-2 pt-3 hover:pl-4 hover:delay-300 duration-300 font-bold hover:cursor-pointer">
                   Ir al Perfil
                 </h5>
               </Link>
+              </div>
             ) : null}
             <Link to="/">
               <h5 className="pl-2 mt-4 hover:pl-4 hover:delay-300 duration-300 font-bold hover:cursor-pointer">

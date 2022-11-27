@@ -5,13 +5,15 @@ import {
   collapseTextChangeRangesAcrossMultipleVersions,
   isPlusToken,
 } from "typescript";
-import { addNewShop } from "../controllers/ShopCart";
+import { addNewShop, getShop } from "../controllers/ShopCart";
 import {
   addNewUser,
   compareUsernames,
   deleteUserByID,
   getAllUser,
+  getDateShop,
   getUser,
+  getUserShop,
   putSwitchUserDelete,
   updateEmail,
   updateUser,
@@ -66,7 +68,7 @@ router.get("/getuser/:username", async (req: Request, res: Response) => {
   try {
     const { username } = req.params;
     const user = await getUser(username);
-    if (!user) throw new Error();
+    if (!user) throw new Error("");
     await user.populate('reviews')
     console.log(user)
     res.status(200).send(user);
@@ -174,7 +176,7 @@ router.get("/admin/:username", async (req: Request, res: Response) => {
     const username = req.params.username;
     const result = await getUser(username);
     result !== null
-      ? res.status(200).json(result)
+      ? res.status(200).json([result])
       : res.status(404).json({
         error_message: "Ningún usuario encontrado con ese username",
       });
@@ -299,9 +301,9 @@ router.post("/shopping", userValidation, async (req: Request, res: Response) => 
       let el: any;
       for (el of ArrObj) {
         let p = await Product.findOne({ _id: el.id });
-        let copia: any = { ...p };
+      
         arr.push({ id: p.id, name: p.name, rating: p.rating, description: p.description, 
-          price: p.price, total_Price: p.price[p.price.length - 1].valueOf() * el.quantity, image: p.image,
+          price: p.price.at(-1), total_Price: p.price[p.price.length - 1].valueOf() * el.quantity, image: p.image,
           category: p.category, quantity: el.quantity, color: el.color, variante: el.variante });
       }
       return arr;
@@ -321,6 +323,36 @@ router.post("/shopping", userValidation, async (req: Request, res: Response) => 
     res.status(401).send({ error });
   }
 });
+
+
+router.get("/shopping/:username", async (req: Request, res: Response) => {
+  try {
+    const username = req.params.username;
+    const result = await getUserShop(username);
+    result !== null
+      ? res.status(200).json(result)
+      : res.status(404).json({
+        error_message: "Ningún usuario encontrado con ese username",
+      });
+  } catch (error: any) {
+    res.status(500).json({ error_message: error.message });
+  }
+});
+
+router.get("/shopdate/:username", async (req: Request, res: Response) => {
+  try {
+    const username = req.params.username;
+    const result = await getDateShop(username);
+    result !== null
+      ? res.status(200).json(result)
+      : res.status(404).json({
+        error_message: "Ningún usuario encontrado con ese username",
+      });
+  } catch (error: any) {
+    res.status(500).json({ error_message: error.message });
+  }
+});
+
 
 
 

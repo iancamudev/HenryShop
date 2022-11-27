@@ -21,6 +21,7 @@ const ProductCards = () => {
   }
 
   if (error) return <h1>{error}</h1>;
+  console.log(productList)
 
   return (
     <div className="flex flex-col items-center">

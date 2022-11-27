@@ -7,6 +7,7 @@ import Register from "./componentes/Register";
 import CreateProduct from "./componentes/CreateProduct";
 import Home from "./componentes/Home";
 import { DetailProduct } from "./componentes/DetailProduct";
+import ShoppingCards from "./componentes/User/ShoppingInfo/CardsShop";
 import ProductCards from "./componentes/ProductCards";
 import EditProduct from "./componentes/EditProduct";
 import AdminPanel from "./componentes/Admin/AdminPanel";
@@ -72,7 +73,7 @@ function App() {
             }
           />
           <Route path="/products/:id" element={<DetailProduct />} />
-          
+          <Route path="/shopping" element={<ShoppingCards />} />
           <Route path="/" element={<ProductCards />} />
           <Route path="/users/confirmation/:token" element={<Confirmation />} />
           <Route
