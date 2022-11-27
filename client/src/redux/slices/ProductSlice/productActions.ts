@@ -9,6 +9,7 @@ import {
   setError,
   clearProductLsit,
   getBestOffersList,
+  getCategoryList,
   getProductAdminList,
   clearProductAdminList,
 } from "./index";
@@ -108,3 +109,12 @@ export const getBestOffers = () => (dispatch: AppDispatch) => {
       console.error(error);
     });
 };
+
+export const getCategories = () => (dispatch: AppDispatch) => {
+  axios
+    .get(`${URL_BACK_DEV}/categories`)
+    .then(({ data }) => dispatch(getCategoryList(data)))
+    .catch((error) => {
+      console.error(error);
+    });
+}

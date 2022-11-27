@@ -1,14 +1,26 @@
+export interface variant {
+  quantity: Number;
+  value: String;
+}
+
+export interface review {
+  text: String;
+  rating: Number;
+  user: object;
+  product: object;
+}
+
 export interface product {
   name: String;
   rating: Number;
   description: String;
   price: Array<Number>;
-  image: string;
+  image: String;
   stock: Number;
-  category: String;
-  colors: Array<string>;
-  sizes: Array<string>;
-  reviews: Array<object>;
+  category: object;
+  variants: Array<variant>;
+  variantName: String;
+  reviews: Array<review>;
 }
 
 export interface user {
@@ -51,10 +63,4 @@ export interface category {
   name: String;
 }
 
-export interface review {
-  text: String;
-  rating: Number;
-  user: object;
-  product: object;
-}
 

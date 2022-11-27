@@ -1,5 +1,6 @@
 import { product } from "../../Types";
 import { Product } from "../../models/Product";
+import { Category } from "../../models/Category"
 
 const pageSize = 5;
 
@@ -203,13 +204,14 @@ export const getWithfilters = async (
   property?: string,
   order?: string
 ) => {
+  const catObj = await Category.findOne({name: category});
+  const catId = catObj? catObj._id: "undefined";
   if (
-    category === "undefined" &&
+    catId === "undefined" &&
     name !== "undefined" &&
     property !== "undefined" &&
     order !== "undefined"
   ) {
-    console.log("1");
     const resultName = await Product.paginate(
       {
         name: new RegExp(`${name}`, "i"),
@@ -223,15 +225,14 @@ export const getWithfilters = async (
     );
     return resultName;
   } else if (
-    category !== "undefined" &&
+    catId !== "undefined" &&
     name === "undefined" &&
     property !== "undefined" &&
     order !== "undefined"
   ) {
-    console.log("2");
     const resultCategory = await Product.paginate(
       {
-        category: new RegExp(`${category}`, "i"),
+        category: new RegExp(`${catId}`, "i"),
         deleted: false,
       },
       {
@@ -242,12 +243,11 @@ export const getWithfilters = async (
     );
     return resultCategory;
   } else if (
-    category === "undefined" &&
+    catId === "undefined" &&
     name === "undefined" &&
     property !== "undefined" &&
     order !== "undefined"
   ) {
-    console.log("3");
     const resultCategory = await Product.paginate(
       {
         deleted: false,
@@ -260,14 +260,13 @@ export const getWithfilters = async (
     );
     return resultCategory;
   } else if (
-    category !== "undefined" &&
+    catId !== "undefined" &&
     name !== "undefined" &&
     (property === "undefined" || order === "undefined")
   ) {
-    console.log("4");
     const resultCategory = await Product.paginate(
       {
-        category: new RegExp(`${category}`, "i"),
+        category: new RegExp(`${catId}`, "i"),
         name: new RegExp(`${name}`, "i"),
         deleted: false,
       },
@@ -278,19 +277,17 @@ export const getWithfilters = async (
     );
     return resultCategory;
   } else if (
-    category === "undefined" &&
+    catId === "undefined" &&
     name === "undefined" &&
     (property === "undefined" || order === "undefined")
   ) {
-    console.log("5");
     const resultCategory = getAllProducts(page);
     return resultCategory;
   } else if (
-    category === "undefined" &&
+    catId === "undefined" &&
     name !== "undefined" &&
     (property === "undefined" || order === "undefined")
   ) {
-    console.log("6");
     const resultCategory = await Product.paginate(
       {
         name: new RegExp(`${name}`, "i"),
@@ -303,14 +300,13 @@ export const getWithfilters = async (
     );
     return resultCategory;
   } else if (
-    category !== "undefined" &&
+    catId !== "undefined" &&
     name === "undefined" &&
     (property === "undefined" || order === "undefined")
   ) {
-    console.log("7");
     const resultCategory = await Product.paginate(
       {
-        category: new RegExp(`${category}`, "i"),
+        category: new RegExp(`${catId}`, "i"),
         deleted: false,
       },
       {
@@ -320,11 +316,10 @@ export const getWithfilters = async (
     );
     return resultCategory;
   } else if (
-    category === "undefined" &&
+    catId === "undefined" &&
     name !== "undefined" &&
     (property === "undefined" || order === "undefined")
   ) {
-    console.log("8");
     const resultCategory = await Product.paginate(
       {
         name: new RegExp(`${name}`, "i"),
@@ -337,11 +332,9 @@ export const getWithfilters = async (
     );
     return resultCategory;
   } else {
-    console.log("9");
-    console.log("entre3");
     const resultAll = await Product.paginate(
       {
-        category: new RegExp(`${category}`, "i"),
+        category: new RegExp(`${catId}`, "i"),
         name: new RegExp(`${name}`, "i"),
         deleted: false,
       },
@@ -383,7 +376,8 @@ export const getProductById = async (id: String) => {
 
 export const addNewProduct = async (prod: product) => {
   const productFind = await Product.findOne({ name: prod.name });
-
+  const categoryFind = await Category.findOne( {name: prod.category} );
+  const categoryId:any = categoryFind._id; 
   if (
     !prod ||
     !prod.name ||
@@ -396,25 +390,22 @@ export const addNewProduct = async (prod: product) => {
   } else if (productFind) {
     throw new Error("Product already exist");
   } else if (!productFind) {
-    const newProduct = new Product({
-      name: prod.name,
-      description: prod.description,
-      price: prod.price,
-      rating: prod.rating,
-      image: prod.image,
-      stock: prod.stock,
-      category: prod.category,
-      colors: prod.colors,
-      sizes: prod.sizes,
-      deleted: false,
-    });
-
-    newProduct
-      .save()
-      .then((result: any) => {
-        return result;
-      })
-      .catch((error: any) => new Error(error));
+    try{
+      const newProduct = await Product.create({
+        name: prod.name,
+        description: prod.description,
+        price: prod.price,
+        rating: prod.rating,
+        image: prod.image,
+        stock: prod.stock,
+        category: categoryId,
+        variants: prod.variants,
+        variantName: prod.variantName,
+        deleted: false,
+      });
+    }catch(error:any){
+      throw error.message;
+    }
   }
 };
 

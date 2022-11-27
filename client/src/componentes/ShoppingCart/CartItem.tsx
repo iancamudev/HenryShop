@@ -7,11 +7,10 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 type CartItemProps = {
   id: string;
   quantity: number;
-  color: string;
   variante: string;
 };
 
-export function CartItem({id, quantity, color, variante}: CartItemProps) {
+export function CartItem({id, quantity, variante}: CartItemProps) {
     const Products = useAppSelector((state) => state.products.productList);
     const { increaseCartQuantity, decreaseCartQuantity, removeFromCart } = useShoppingCart()
     const prod = Products.find(i => i.id ===id)
@@ -28,7 +27,6 @@ export function CartItem({id, quantity, color, variante}: CartItemProps) {
             <div className="font-medium flex w-full justify-between">
               <div>
                 <div className="text-lg">Variante: {variante}</div>
-                <div className="font-medium text-lg">Color: {color}</div>
               </div>
               <div className="text-2xl py-2 px-4 font-semibold">
                 ${(prod?.price[prod.price.length - 1] as number) * quantity}
@@ -40,7 +38,7 @@ export function CartItem({id, quantity, color, variante}: CartItemProps) {
               <Button
                 className="w-9 py-1 px-3 rounded-xl  bg-gray-600 text-white text-xl"
                 onClick={() =>
-                  decreaseCartQuantity(prod?.id as string, color, variante)
+                  decreaseCartQuantity(prod?.id as string, variante)
                 }
               >
                 -
@@ -51,7 +49,7 @@ export function CartItem({id, quantity, color, variante}: CartItemProps) {
               <Button
                 className="w-9 py-1 px-3 rounded-xl bg-gray-600 text-white text-xl"
                 onClick={() =>
-                  increaseCartQuantity(prod?.id as string, color, variante)
+                  increaseCartQuantity(prod?.id as string, variante)
                 }
               >
                 +
@@ -62,7 +60,7 @@ export function CartItem({id, quantity, color, variante}: CartItemProps) {
         <div className="pt-10 m-0 px-0">
           <button
             style={{ width: "80px" }}
-            onClick={() => removeFromCart(prod?.id as string, color, variante)}
+            onClick={() => removeFromCart(prod?.id as string, variante)}
           >
             <DeleteOutlineIcon fontSize="large" />
           </button>

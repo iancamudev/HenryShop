@@ -17,7 +17,6 @@ const UserSlice = createSlice({
   initialState,
   reducers: {
     setData(state, action: PayloadAction<IUserState>) {
-      console.log(action.payload);
       state.username = action.payload.username;
       state.token = action.payload.token;
       state.confirmed = action.payload.confirmed;

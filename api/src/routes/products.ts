@@ -72,15 +72,16 @@ routes.get("/:id", async (req: Request, res: Response) => {
     const { id } = req.params;
     const result = await getProductById(id);
     if (!result) {
-      return res
+      res
         .status(404)
         .json({ error_message: "No se encontro el producto con ese id" });
+    }else{
+      await result.populate("reviews");
+      res.status(200).send(result);
     }
-    await result.populate("reviews");
-    return res.status(200).send(result);
   } catch (error: any) {
     console.log(error.message)
-    return res.status(500).json({ error_message: error.message });
+    res.status(500).json({ error_message: error.message });
   }
 });
 
@@ -88,7 +89,6 @@ routes.get("/:id", async (req: Request, res: Response) => {
 routes.post("/", async (req: Request, res: Response) => {
   try {
     const newProduct = req.body;
-
     if (!newProduct) {
       res.status(400).send({ error: "Info Missing" });
     }
@@ -99,33 +99,8 @@ routes.post("/", async (req: Request, res: Response) => {
   }
 });
 
-//DELETE
-routes.delete("/:id", async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const del = await deleteProduct(id);
-    console.log(del);
-    res.status(200).json({ message: "Producto eliminado" });
-  } catch (error) {
-    console.log(error);
-  }
-});
-
-//PUT
-routes.put("/:id", async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const body = req.body;
-    const result = await changeProperties(id, body);
-    res.status(200).json({ message: "Parámetros cambiados correctamente" });
-  } catch (error) {
-    console.log(error);
-  }
-});
-
 routes.post("/payment", userValidation, async (req: Request, res: Response) => {
   try {
-    console.log("paymenttttttt");
     const productosForFind = req.body.products;
     let token = req.get("authorization");
     if (token) {
@@ -193,4 +168,30 @@ routes.post("/payment", userValidation, async (req: Request, res: Response) => {
     res.status(401).send({ error });
   }
 });
+
+//DELETE
+routes.delete("/:id", async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const del = await deleteProduct(id);
+    console.log(del);
+    res.status(200).json({ message: "Producto eliminado" });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+//PUT
+routes.put("/:id", async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const body = req.body;
+    const result = await changeProperties(id, body);
+    res.status(200).json({ message: "Parámetros cambiados correctamente" });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+
 export default routes;

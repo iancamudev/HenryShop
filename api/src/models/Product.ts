@@ -1,6 +1,6 @@
 import { Schema, model, PaginateModel, Document } from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
-import { product } from "../Types";
+import { product, variant } from "../Types";
 
 export const productSchema = new Schema({
   name: { type: String, required: true, unique: true },
@@ -9,14 +9,11 @@ export const productSchema = new Schema({
   price: { type: Array<Number>, required: true },
   image: { type: String, required: true },
   stock: { type: Number, required: true },
-  category: { type: String, required: true },
-  colors: Array,
-  sizes: Array,
+  category: { type: Schema.Types.ObjectId, required: true },
   deleted: { type: Boolean, default: false },
-  quantity: { type: Number },
-  reviews: [{
-    review: { type: Schema.Types.ObjectId, ref: 'Review' }
-  }],
+  reviews: [{ type: Schema.Types.ObjectId, ref: "Review" }],
+  variantName: String,
+  variants: Array<variant>
 });
 
 // modifica el _id de lo que te devuelve la base de datos por id, ademas remueve el __v

@@ -43,7 +43,7 @@ router.post("/", async (req: Request, res: Response) => {
   }
 })
 
-router.get("/adminusers",  async (req: Request, res: Response)=> {
+router.get("/adminusers", async (req: Request, res: Response) => {
   try {
     const { page } = req.query
     let result;

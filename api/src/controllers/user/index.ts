@@ -115,7 +115,7 @@ export const getAllUser = async (y:number, username?: string, order?: string, pr
 
 export const getUser = async (username: string) => {
   let resultUser = null;
-  resultUser = await User.findOne({ username: username }).exec();
+  resultUser = await User.findOne({ username: username });
   return resultUser;
 };
 

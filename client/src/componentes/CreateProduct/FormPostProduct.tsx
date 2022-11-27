@@ -1,26 +1,34 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
 import { uploadImageToFirebaseStorage } from "../../firebase/uploadImageToFirebaseStorage";
+import Dropdown from 'react-dropdown';
+import 'react-dropdown/style.css';
+import {getCategories} from "../../redux/slices/ProductSlice/productActions";
+import { useAppDispatch, useAppSelector } from "../../hooks";
+import ListDisplayer from "../ListDisplayer";
 
-
-const sizes = { XS: "XS", S: "S", M: "M", L: "L", XL: "XL", XXL: "XXL" };
+const variants = { XS: "XS", S: "S", M: "M", L: "L", XL: "XL", XXL: "XXL" };
 const colors = { Blanco: "Blanco", Negro: "Negro" };
 interface formData {
   name: string;
   rating: number;
   description: string;
   price: number;
-  // image: string;
   image: string;
   stock: number;
   category: string;
-  colors: Array<string>;
-  sizes: Array<string>;
+  colors: Array<object>;
+  variants: Array<object>;
+}
+
+interface variant{
+  value:string;
+  quantity:number;
 }
 
 const schema = yup
@@ -55,16 +63,26 @@ const schema = yup
     category: yup.string().required("Recuerda agregar la categoría"),
     colors: yup
       .array()
-      .of(yup.string().oneOf(Object.values(colors)))
+      .of(yup.object().shape(
+          {
+            quantity: yup.number(),
+            value: yup.string()
+          }
+        ))
       .nullable(),
-    sizes: yup
+    variants: yup
       .array()
-      .of(yup.string().oneOf(Object.values(sizes)))
+      .of(yup.object().shape(
+          {
+            quantity: yup.number(),
+            value: yup.string()
+          }
+        ))
       .nullable(),
   })
   .required();
 
-const Form = () => {
+const PostForm = () => {
   const {
     register,
     handleSubmit,
@@ -78,13 +96,59 @@ const Form = () => {
     rating: -1,
     description: "",
     price: -1,
-    // image: "",
     image: "",
     stock: -1,
     category: "",
-    colors: [""],
-    sizes: [""],
+    colors: [{}],
+    variants: [{}],
   };
+
+  const [variantsInput, setVariantsInput] = useState<variant[]>([]);
+  const [variantsError, setvariantsError] = useState('');
+  const [variantName, setVariantName] = useState('');
+
+  const [newVariant, setNewVariant] = useState<string>('');
+
+
+  const handleVariants = (value:variant) => {
+    let variantsInputCopy:variant[] = typeof variantsInput !== 'string'? variantsInput: [{value: "", quantity: 0}];
+    if(variantsInput.includes(value)){
+      variantsInputCopy.every((filter, index) => {
+        if(filter === value){
+          setVariantsInput(current => variantsInputCopy.filter(element => element !== value ));
+          return false;
+        }
+        return true
+      });
+    }else{
+      variantsInputCopy = [...variantsInputCopy, value];
+      setVariantsInput(variantsInputCopy);
+    }
+  };
+
+
+  const handleNewVariant = (event:any) => {
+    event.preventDefault();
+    const variantToAdd = newVariant.split('|');
+    if(variantToAdd.length === 2 && !isNaN(Number(variantToAdd[1]))) {
+      const variantToObject:variant = {
+        value:variantToAdd[0],
+        quantity:Number(variantToAdd[1])
+      } 
+      if(!variantsInput.map(e => e.value).includes(variantToObject.value)){
+        handleVariants(variantToObject);
+        setNewVariant('');
+      }else{
+        console.log("valor ya ingresado");
+      }
+    }else{
+      console.log('valor ingresado no valido');
+    }
+  }
+
+  const dispatch = useAppDispatch();
+  const categories = useAppSelector((state) => state.products.categoryList?.map(category => category.name));
+
   const [input, setInput] = useState(initialForm);
   
   const [file, setFile] = useState(null);
@@ -117,11 +181,8 @@ const Form = () => {
     stock,
     category,
     colors,
-    sizes,
   }:formData) => {
     let backData = process.env.REACT_APP_BACKEND_URL;
-    
-   
     imgUrl =  await uploadImageToFirebaseStorage(file);
 
 
@@ -136,7 +197,9 @@ const Form = () => {
           stock,
           category,
           colors,
-          sizes,
+          variants: variantsInput,
+          variantName,
+
         })
         .then((res) => {
           alert("Producto creado correctamente");
@@ -145,6 +208,15 @@ const Form = () => {
         )
         .catch((err) => console.error(err));
   }
+
+  const handleCategories = (event:React.ChangeEvent<HTMLSelectElement>) => {
+    if(event.target.value === 'all') return ;
+    setInput({...input, category: event.target.value}); 
+  }
+
+  useEffect(() => {
+    dispatch(getCategories());
+  }, []);
 
   return (
     <form
@@ -262,14 +334,15 @@ const Form = () => {
 
       <div className="mb-3.5 w-full">
         <div className="flex justify-center">
-          <input
-            {...register("category")}
-            id="category"
-            type="text"
-            placeholder="Category..."
-            className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
-          />
-          *
+          
+          <select {...register('category')} onChange = {handleCategories}>
+            <option value = "all">
+              All
+            </option >
+            {categories?.map(category => {
+              return(<option key = {category} value = {category}>{category}</option>)
+            })}
+          </select>*
         </div>
         {errors?.category && (
           <p className="text-red-600 font-bold">{errors.category.message}</p>
@@ -277,51 +350,12 @@ const Form = () => {
       </div>
 
       <div className="my-5 border border-black border-solid w-full rounded-2xl pl-2 py-1">
-        Selecciona los colores
+        Selecciona las tallas
         <div className="my-2 flex justify-center">
-          {Object.values(colors).map((color) => {
-            return (
-              <label key={color} htmlFor={color}>
-                <div className="mx-5 ">
-                  <input
-                    value={color}
-                    {...register("colors")}
-                    id="colors"
-                    type="checkbox"
-                    className="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-blue-200 checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-                  />
-                  <label className="w-5/12">{color}</label>
-                </div>
-              </label>
-            );
-          })}
-          {errors?.colors && (
-            <p className="text-red-600 font-bold">{errors.colors.message}</p>
-          )}
-        </div>
-      </div>
-      <div className="my-5 border border-black border-solid w-full rounded-2xl pl-2 py-1">
-        Selecciona la talla
-        <div className="my-2 flex justify-center">
-          {Object.values(sizes).map((size) => {
-            return (
-              <label key={size} htmlFor={size}>
-                <div className="mx-5 ">
-                  <input
-                    value={size}
-                    {...register("sizes")}
-                    id="sizes"
-                    type="checkbox"
-                    className="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-blue-200 checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-                  />
-                  <label className="w-5/12">{size}</label>
-                </div>
-              </label>
-            );
-          })}
-          {errors?.sizes && (
-            <p className="text-red-600 font-bold">{errors.sizes.message}</p>
-          )}
+          <input name = "variant" value = {variantName} placeholder="Coloca el nombre del conjunto de variantes" onChange = {(event)=> setVariantName(event.target.value)}/>
+          <ListDisplayer elements = {variantsInput} setState = {handleVariants} name = "Variantes agregadas"/>
+          <input name="variantes" onChange = {(event) => setNewVariant(event.target.value)} value = {newVariant}/>
+          <button className="bg-[#d9d9d9] w-full py-2 rounded-2xl font-bold my-1.5 mb-8" onClick = {handleNewVariant}>Agregar</button>
         </div>
       </div>
       <span>* Campos obligatorios</span>
@@ -332,4 +366,4 @@ const Form = () => {
   );
 };
 
-export default Form;
+export default PostForm;
