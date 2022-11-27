@@ -98,6 +98,7 @@ const UsersPanel = () => {
             </th>
             
             <th></th>
+            <th></th>
             <th>
               Page:
               <select
@@ -111,6 +112,7 @@ const UsersPanel = () => {
               </select>
               <button onClick={(e) => handleClick(e)}>f5</button>
             </th>
+            
           </tr>
           <tr className="border border-black bg-slate-900	text-white rounded-xl ">
             <th className="border border-black font-normal p-2 pl-4 pr-4">ID</th>

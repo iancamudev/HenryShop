@@ -54,7 +54,7 @@ const ProductsPanel = () => {
   };
   return (
     <div className="flex justify-center items-center max-w-xs">
-      <div className=" mt-8 mb-8 flex flex-col justify-center shadow">
+      <div className=" mt-8 mb-8 flex flex-col bg-slate-900 justify-center shadow">
         <FiltersProductsAdmin/>
         <SearchBarProducts/>
         <table className="shadow-2xl ">
@@ -67,6 +67,7 @@ const ProductsPanel = () => {
                 ADD
               </button>
             </th>
+            <th></th>
             <th></th>
             <th>
               Page:
