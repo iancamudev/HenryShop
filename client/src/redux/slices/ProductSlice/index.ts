@@ -6,6 +6,11 @@ interface category {
   name: string;
 };
 
+export interface variant {
+  quantity: number;
+  value: string;
+}
+
 export interface IReview {
   review: {
     id: string;
@@ -26,9 +31,8 @@ export interface ProductDetails {
   image: string;
   stock: number;
   category: string;
-  colors: Array<string>;
-  sizes: Array<string>;
-  quantity: number;
+  variants:Array<variant>;
+  variantName: string;
   reviews: Array<IReview>;
 }
 
@@ -56,9 +60,8 @@ const initialState: ProductState = {
     image: "",
     stock: 0,
     category: "",
-    colors: [""],
-    sizes: [""],
-    quantity: 0,
+    variants:[],
+    variantName:"",
     reviews: [],
   },
   productPages: 0,

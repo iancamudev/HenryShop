@@ -15,14 +15,9 @@ export const DetailProduct: React.FunctionComponent = () => {
   const [quantity, setQuantity] = useState(1);
   const [value, setValue] = useState(1);
   const { addToCart } = useShoppingCart();
-  const [color, setColor] = useState(
-    Products.find((i) => i.id === id)?.colors
-      ? (Products.find((i) => i.id === id)?.colors[0] as string)
-      : ""
-  );
   const [variante, setVariante] = useState(
-    Products.find((i) => i.id === id)?.sizes
-      ? (Products.find((i) => i.id === id)?.sizes[0] as string)
+    Products.find((i) => i.id === id)?.variants
+      ? (Products.find((i) => i.id === id)?.variants[0].value as string)
       : ""
   );
 
@@ -41,19 +36,13 @@ export const DetailProduct: React.FunctionComponent = () => {
       setQuantity(quantity - 1);
     }
   };
-  function getItemColor(e: any) {
-    e.preventDefault();
-    setColor(e.target.value);
-    console.log(e.target.value);
-  }
   function getItemVariant(e: any) {
     e.preventDefault();
     setVariante(e.target.value);
   }
   function setAll(e: any) {
     e.preventDefault();
-    addToCart(id!, quantity, color, variante);
-    console.log(color);
+    addToCart(id!,quantity,variante);
     setQuantity(1);
   }
   return (
@@ -100,39 +89,17 @@ export const DetailProduct: React.FunctionComponent = () => {
                 <p className="text-xl font-bold mb-3">Variante</p>
                 <select
                   className="bg-yellow font-bold p-2"
-                  name="sizes"
+                  name="variants"
                   onChange={getItemVariant}
                 >
-                  {producto.sizes &&
-                    producto.sizes.map((el) => {
+                  {producto.variants &&
+                    producto.variants.map((el) => {
                       return (
                         <option
-                          key={el}
+                          key={el.value}
                           className="font-bold hover:bg-black hover:text-yellow p-2"
                         >
-                          {el}
-                        </option>
-                      );
-                    })}
-                </select>
-              </div>
-            </div>
-            <div>
-              <div className="mt-9 mb-4 p-2">
-                <p className="text-xl font-bold mb-3">Color</p>
-                <select
-                  className="bg-yellow font-bold p-2"
-                  name="sizes"
-                  onChange={getItemColor}
-                >
-                  {producto.colors &&
-                    producto.colors.map((el) => {
-                      return (
-                        <option
-                          key={el}
-                          className="font-bold hover:bg-black hover:text-yellow p-2"
-                        >
-                          {el}
+                          {el.value}
                         </option>
                       );
                     })}
@@ -152,11 +119,8 @@ export const DetailProduct: React.FunctionComponent = () => {
           <p className="text-left ml-4 mt-6 font-bold">Descripción:</p>
           <p className="text-left ml-4">{producto.description}</p>
           <p className="text-left ml-4 mt-2 font-bold">Caracteristicas:</p>
-          <p className="text-left ml-4">
-            Colors: {producto.colors && producto.colors.join(", ")}
-          </p>
           <p className="text-left ml-4 mb-2">
-            Sizes: {producto.sizes && producto.sizes.join(", ")}
+            Sizes: {producto.variants && producto.variants.join(", ")}
           </p>
           <hr />
         </div>

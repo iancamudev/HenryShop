@@ -13,14 +13,9 @@ interface CardProps {
 const ProductCard: React.FC<CardProps> = ({ product }: CardProps) => {
   const Products = useAppSelector((state) => state.products.productList);
   const { addToCart, openCart } = useShoppingCart();
-  const [color, setColor] = useState(
-    Products.find((i) => i.id === product.id)?.colors
-      ? (Products.find((i) => i.id === product.id)?.colors[0] as string)
-      : ""
-  );
   const [variante, setVariante] = useState(
-    Products.find((i) => i.id === product.id)?.sizes
-      ? (Products.find((i) => i.id === product.id)?.sizes[0] as string)
+    Products.find((i) => i.id === product.id)?.variants
+      ? (Products.find((i) => i.id === product.id)?.variants[0].value as string)
       : ""
   );
   const [quantity, setQuantity] = useState(1);
@@ -37,18 +32,13 @@ const ProductCard: React.FC<CardProps> = ({ product }: CardProps) => {
     e.preventDefault();
     setQuantity(quantity + 1);
   }
-  function getItemColor(e: any) {
-    e.preventDefault();
-    setColor(e.target.value);
-  }
-
   function getItemVariant(e: any) {
     e.preventDefault();
     setVariante(e.target.value);
   }
   function setAll(e: any) {
     e.preventDefault();
-    addToCart(product.id, quantity, color, variante);
+    addToCart(product.id, quantity, variante);
     setQuantity(1);
     openCart();
     /*const input = document.getElementById("val") as HTMLInputElement || null;
@@ -120,33 +110,16 @@ const ProductCard: React.FC<CardProps> = ({ product }: CardProps) => {
                         <div className="inline-flex space-x-10 space-y-0">
                           <div>
                             <label className="block text-sm font-medium text-black">
-                              Color
-                            </label>
-                            <select
-                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-1.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                              onChange={getItemColor}
-                            >
-                              {product?.colors.map((i) => {
-                                return (
-                                  <option key={i} value={i}>
-                                    {i}
-                                  </option>
-                                );
-                              })}
-                            </select>
-                          </div>
-                          <div>
-                            <label className="block text-sm font-medium text-black">
                               Variante
                             </label>
                             <select
                               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block py-1.5 px-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                               onChange={getItemVariant}
                             >
-                              {product.sizes?.map((i) => {
+                              {product.variants?.map((i) => {
                                 return (
-                                  <option key={i} value={i}>
-                                    {i}
+                                  <option key={i.value} value={i.value}>
+                                    {i.value}
                                   </option>
                                 );
                               })}

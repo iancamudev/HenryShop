@@ -12,7 +12,6 @@ type ShoppingCartProviderProps = {
 type CartItem = {
     id: string
     quantity: number
-    color: string
     variante: string
 }
 
@@ -20,10 +19,10 @@ type ShoppingCartContex = {
     openCart: () => void
     closeCart: () => void
     getItemQuantity: (id: string) => number
-    increaseCartQuantity: (id: string, color: string, variante: string) => void
-    decreaseCartQuantity: (id: string, color: string, variante: string) => void
-    removeFromCart: (id: string, color: string, variante: string) => void
-    addToCart: (id: string, quantity: number, color: string, variante: string) => void
+    increaseCartQuantity: (id: string, variante: string) => void
+    decreaseCartQuantity: (id: string, variante: string) => void
+    removeFromCart: (id: string, variante: string) => void
+    addToCart: (id: string, quantity: number,  variante: string) => void
     cartQuantity: number
     cartItems: CartItem[]
     setEmptyCart: () => void
@@ -58,11 +57,11 @@ ShoppingCartProviderProps){
     }
 
 
-    function increaseCartQuantity(id: string, color: string, variante: string){
+    function increaseCartQuantity(id: string, variante: string){
         setCartItems(currItems =>{
-            if(currItems.find(item => item.id === id && item.color === color && item.variante === variante)){
+            if(currItems.find(item => item.id === id && item.variante === variante)){
                 return currItems.map(item=>{
-                    if(item.id === id && item.color === color && item.variante === variante){
+                    if(item.id === id && item.variante === variante){
                         return { ...item, quantity: item.quantity + 1}
                     } else {
                         return item
@@ -73,13 +72,13 @@ ShoppingCartProviderProps){
             }
         })
     }
-        function decreaseCartQuantity(id: string, color: string, variante: string){
+        function decreaseCartQuantity(id: string, variante: string){
         setCartItems(currItems =>{
-            if(currItems.find(item => item.id === id && item.color === color && item.variante === variante)?.quantity === 1){
+            if(currItems.find(item => item.id === id && item.variante === variante)?.quantity === 1){
                 return currItems
             }else{
                 return currItems.map(item=>{
-                    if(item.id === id && item.color === color){
+                    if(item.id === id){
                         return { ...item, quantity: item.quantity - 1}
                     } else {
                         return item
@@ -88,27 +87,27 @@ ShoppingCartProviderProps){
             }
         })
     }
-    function addToCart(id: string, quantity: number, color: string, variante: string){
+    function addToCart(id: string, quantity: number, variante: string){
         setCartItems(currItems =>{
-            if(currItems.find(item => item.id === id && item.color === color && item.variante === variante)){
+            if(currItems.find(item => item.id === id && item.variante === variante)){
                 return currItems.map(item=>{
-                    if(item.id === id && item.color === color && item.variante === variante){
+                    if(item.id === id && item.variante === variante){
                         return { ...item, quantity: item.quantity + quantity}
                     } else {
                         return item
                     }
                 })
             } else{
-                return [...currItems, { id, quantity, color, variante }]
+                return [...currItems, { id, quantity, variante }]
             }})
     }
 
     
 
-    function removeFromCart(id: string, color: string, variante: string){
+    function removeFromCart(id: string, variante: string){
         setCartItems(currItems =>{
-            if(currItems.find(item => item.id === id && item.color === color && item.variante === variante)){
-                return currItems.filter(item => !(item.id === id && item.color === color && item.variante === variante))
+            if(currItems.find(item => item.id === id && item.variante === variante)){
+                return currItems.filter(item => !(item.id === id && item.variante === variante))
             } else {
                 return [...currItems]
             }

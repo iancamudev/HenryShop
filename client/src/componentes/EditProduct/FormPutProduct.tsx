@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks";
 import { useNavigate, useParams } from "react-router-dom";
 import { uploadImageToFirebaseStorage } from "../../firebase/uploadImageToFirebaseStorage";
 
-const sizes = { XS: "XS", S: "S", M: "M", L: "L", XL: "XL", XXL: "XXL" };
+const variants = { XS: "XS", S: "S", M: "M", L: "L", XL: "XL", XXL: "XXL" };
 const colors = { Blanco: "Blanco", Negro: "Negro" };
 interface formData {
   name: string;
@@ -20,7 +20,7 @@ interface formData {
   stock: number;
   category: string;
   colors: Array<string>;
-  sizes: Array<string>;
+  variants: Array<string>;
 }
 
 const schema = yup
@@ -54,9 +54,9 @@ const schema = yup
       .array()
       .of(yup.string().oneOf(Object.values(colors)))
       .nullable(),
-    sizes: yup
+    variants: yup
       .array()
-      .of(yup.string().oneOf(Object.values(sizes)))
+      .of(yup.string().oneOf(Object.values(variants)))
       .nullable(),
   })
   .required();
@@ -88,7 +88,7 @@ const FormPutProduct = () => {
     stock: 0,
     category: "",
     colors: [""],
-    sizes: [""],
+    variants: [""],
   };
   const [input, setInput] = useState(initialForm);
   const [imgTemp, setImgTemp] = useState("");
@@ -119,7 +119,7 @@ const FormPutProduct = () => {
     stock,
     category,
     colors,
-    sizes,
+    variants,
   }: formData) => {
     let backData = process.env.REACT_APP_BACKEND_URL;
     imgUrl = await uploadImageToFirebaseStorage(file);
@@ -135,7 +135,7 @@ const FormPutProduct = () => {
           stock,
           category,
           colors,
-          sizes,
+          variants,
         })
         .then((res) => {
           console.log(res);
@@ -153,7 +153,7 @@ const FormPutProduct = () => {
           stock,
           category,
           colors,
-          sizes,
+          variants,
         })
         .then((res) => {
           console.log(res);
@@ -308,57 +308,6 @@ const FormPutProduct = () => {
           <p className="text-red-600 font-bold">{errors.category.message}</p>
         )}
       </div>
-
-      <div className="my-5 border border-black border-solid w-full rounded-2xl pl-2 py-1">
-        Selecciona los colores
-        <div className="my-2 flex justify-center">
-          {Object.values(colors).map((color) => {
-            return (
-              <label key={color} htmlFor={color}>
-                <div className="mx-5 ">
-                  <input
-                    value={color}
-                    {...register("colors")}
-                    id="colors"
-                    type="checkbox"
-                    className="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-blue-200 checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-                    defaultChecked={Product.colors.includes(color)}
-                  />
-                  <label className="w-5/12">{color}</label>
-                </div>
-              </label>
-            );
-          })}
-          {errors?.colors && (
-            <p className="text-red-600 font-bold">{errors.colors.message}</p>
-          )}
-        </div>
-      </div>
-      <div className="my-5 border border-black border-solid w-full rounded-2xl pl-2 py-1">
-        Selecciona la talla
-        <div className="my-2 flex justify-center">
-          {Object.values(sizes).map((size) => {
-            return (
-              <label key={size} htmlFor={size}>
-                <div className="mx-5 ">
-                  <input
-                    value={size}
-                    {...register("sizes")}
-                    id="sizes"
-                    type="checkbox"
-                    className="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-blue-200 checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-                    defaultChecked={Product.sizes.includes(size)}
-                  />
-                  <label className="w-5/12">{size}</label>
-                </div>
-              </label>
-            );
-          })}
-          {errors?.sizes && (
-            <p className="text-red-600 font-bold">{errors.sizes.message}</p>
-          )}
-        </div>
-      </div>
       <span>* Campos obligatorios</span>
       <button className="my-5 bg-[#d9d9d9] w-full py-2 rounded-2xl font-bold my-1.5">
         Editar producto
@@ -378,7 +327,7 @@ function async(
     stock,
     category,
     colors,
-    sizes,
+    variants,
   }: formData) => void
 ) {
   throw new Error("Function not implemented.");
