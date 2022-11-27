@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { SetStateAction, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
-import { getAllProducts } from "../../../redux/slices/ProductSlice/productActions";
+import { getAllProducts, getAllProductsAdmin } from "../../../redux/slices/ProductSlice/productActions";
 import { URL_BACK_DEV } from "../../../redux/slices/ProductSlice/productActions";
 import { BiEdit, BiX } from "react-icons/bi";
 import { AiOutlineCheck } from "react-icons/ai"
@@ -11,6 +11,7 @@ import axiosPutCall from "../../../funciones/axiosPutCall";
 import {UsersCard} from "./UsersCard";
 import SearchBarUsers from "../SearchBarUsers";
 import FiltersUsers from "../FiltersUsers";
+import { Filters } from "../../../redux/slices/FiltersSlice";
 const UsersPanel = () => {
   let navigate = useNavigate();
   const routeChangeToEdit = (
@@ -27,12 +28,13 @@ const UsersPanel = () => {
 
   const dispatch = useAppDispatch();
   const Users = useAppSelector((state) => state.admin.usersList);
-  const filters = useAppSelector((state) => state.admin.filters )
+  const filters: Filters = useAppSelector((state) => state.admin.filters ) as Filters
   const [currentPage, setCurrentPage] = useState(1);
+  const [recharge, setRecharge] = useState("");
   useEffect(() => {
     dispatch(getAllUsers(currentPage, filters));
   }, [currentPage]);
-  const Pages = useAppSelector((state) => state.admin.userPages);
+  const Pages: number = useAppSelector((state) => state.admin.userPages) as number;
   var array: Array<number> = [];
   let id = 1;
   for (let i = 1; i <= Pages; i++) {
@@ -73,6 +75,17 @@ const UsersPanel = () => {
     event.preventDefault();
     await axiosPutCall(`/users/admin/users/${event.currentTarget.value}`, {})
   }
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
+    setCurrentPage(1);
+    setRecharge("Hola");
+    dispatch(getAllUsers(currentPage, {...filters,
+      username: "",
+      property: "",
+      order: "",
+    }))
+  }
   
   return (
     <div className="flex justify-center items-center max-w-xs">
@@ -96,30 +109,33 @@ const UsersPanel = () => {
                     <option value={pagina}> {pagina}</option>
                   ))}
               </select>
+              <button onClick={(e) => handleClick(e)}>f5</button>
             </th>
           </tr>
           <tr className="border border-black bg-slate-900	text-white rounded-xl ">
-            <th className="border border-black font-normal p-2 pl-4 pr-4">
-              ID
-            </th>
+            <th className="border border-black font-normal p-2 pl-4 pr-4">ID</th>
             <th className="border border-black font-normal p-2">Username</th>
             <th className="border border-black font-normal p-2">name</th>
             <th className="border border-black font-normal p-2 pl-4 pr-4">
               Status
             </th>
           </tr>
+         
           {Users &&
             Users.map((user) => (
+              
               <UsersCard 
+                pageId = {id++}
                 username = {user.username} 
                 name={user.name}
                 handleActivate = {handleActivate}
                 handleDelete = {handleDelete}
                 deleted = {user.deleted}
                 id = {user.id}
+
               />
-              
-            ))}
+             
+            )) }
         </table>
       </div>
     </div>

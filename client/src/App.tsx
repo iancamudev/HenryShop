@@ -7,6 +7,7 @@ import Register from "./componentes/Register";
 import CreateProduct from "./componentes/CreateProduct";
 import Home from "./componentes/Home";
 import { DetailProduct } from "./componentes/DetailProduct";
+import ShoppingCards from "./componentes/User/ShoppingInfo/CardsShop";
 import ProductCards from "./componentes/ProductCards";
 import EditProduct from "./componentes/EditProduct";
 import AdminPanel from "./componentes/Admin/AdminPanel";
@@ -33,6 +34,7 @@ import AdminPanelUsers from "./componentes/Admin/AdminPanelUsers";
 import PaymentsPanel from "./componentes/Admin/PaymentsPanel/PaymentsPanel";
 import AdminPanelPayments from "./componentes/Admin/AdminPanelPayments";
 import { Failure } from "./componentes/Failure";
+import { AboutUs } from "./componentes/AboutUs";
 
 
 
@@ -71,7 +73,7 @@ function App() {
             }
           />
           <Route path="/products/:id" element={<DetailProduct />} />
-          
+          <Route path="/shopping" element={<ShoppingCards />} />
           <Route path="/" element={<ProductCards />} />
           <Route path="/users/confirmation/:token" element={<Confirmation />} />
           <Route
@@ -116,6 +118,7 @@ function App() {
               </Protected>
             }
           />
+          <Route path="/aboutus" element={<AboutUs/>}/>
           <Route path="/failure" element={<Failure/>}/>
           <Route path="/success" element={<Success />} />
           <Route path="/unauthorized" element={<Unaothorized />} />

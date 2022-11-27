@@ -12,6 +12,7 @@ export interface AdminUserDetail {
     birthday: string;
     deleted: boolean;
     id: string;
+    shopping: Array<object>
   }
 export interface Payments {
   userId: string;
@@ -39,7 +40,8 @@ const initialState: AdminUserState = {
     password: "",
     birthday: "",
     deleted: false,
-    id: ""
+    id: "",
+    shopping: [],
   },
   userPages: 0,
   payments: [],

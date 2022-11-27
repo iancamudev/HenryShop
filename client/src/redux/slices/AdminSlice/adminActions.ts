@@ -10,36 +10,9 @@ export const URL_BACK_DEV: string = process.env.REACT_APP_BACKEND_URL as string;
 
 
 
-// export const getAllProducts =
-//   (page?: number | null, filters?: Filters) => (dispatch: AppDispatch) => {
-//     let url = `${URL_BACK_DEV}/products${page ? `?page=${page}` : "?page="}${
-//       filters?.name.length ? `&name=${filters.name}` : "&name="
-//     }${
-//       filters?.category.length ? `&category=${filters.category}` : "&category="
-//     }${
-//       filters?.property.length && !filters?.order.length
-//         ? `&property=${filters.property}&order=desc`
-//         : ""
-//     }${
-//       filters?.property.length && filters?.order.length
-//         ? `&property=${filters.property}&order=${filters.order}`
-//         : ""
-//     }`;
 
-//     axios
-//       .get(url)
-//       .then(({ data }) => {
-//         dispatch(getProductList(data.docs));
-//         dispatch(getProductPages(data.totalPages));
-//       })
-//       .catch((error) => {
-//         console.error(error);
-//       });
-//   };
 export const getAllUsers = (page?: number | null, filters?: any) =>  (dispatch: AppDispatch) => {
     
-    //   = `${URL_BACK_DEV}/users/admin/allusers?page=${page}`   = `${URL_BACK_DEV}/users/admin/allusers`
-
     dispatch(setLoading(true));
     dispatch(clearUsersList());
     let url = `${URL_BACK_DEV}/users/admin/allusers?page=${page}&username=${filters?.username}&property=name&order=${filters?.order}`;
@@ -77,6 +50,13 @@ export const getAllPayments = (page: number | null) => (dispatch: AppDispatch) =
     })
 
 }  
+export const getUserByUsername = (username: string | undefined) =>  (dispatch: AppDispatch) => {
+    let url;
+    url = `${URL_BACK_DEV}/users/admin/${username}`
+    axios.get(url).then(({ data }) => {
+        dispatch(getUsersList(data))
+    })
+};
 
 // export const getProductsById =
 //   (id: string | undefined) => (dispatch: AppDispatch) => {

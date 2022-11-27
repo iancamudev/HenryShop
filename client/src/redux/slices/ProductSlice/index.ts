@@ -44,6 +44,7 @@ interface ProductState {
   loading: boolean;
   error: string;
   categoryList: Array<category>;
+  productListAdmin: Array<ProductDetails>
 }
 
 //Definimos el estado
@@ -51,6 +52,7 @@ const initialState: ProductState = {
   productList: [],
   carrouselList: [],
   categoryList: [{id: "", name: ""}],
+  productListAdmin:[],
   productDetail: {
     id: "",
     name: "",
@@ -65,6 +67,7 @@ const initialState: ProductState = {
     reviews: [],
   },
   productPages: 0,
+
   loading: false,
   error: "",
 };
@@ -75,6 +78,9 @@ const ProductSlice = createSlice({
   reducers: {
     getProductList(state, action: PayloadAction<Array<ProductDetails>>) {
       state.productList = action.payload;
+    },
+    getProductAdminList(state, action: PayloadAction<Array<ProductDetails>>) {
+      state.productListAdmin = action.payload;
     },
     getProductPages(state, action: PayloadAction<Number>) {
       state.productPages = action.payload;
@@ -91,6 +97,10 @@ const ProductSlice = createSlice({
     clearProductLsit(state) {
       state.error = "";
       state.productList = [];
+    },
+    clearProductAdminList(state) {
+      state.error = "";
+      state.productListAdmin = [];
     },
     getBestOffersList(state, action: PayloadAction<Array<Object>>) {
       state.carrouselList = action.payload;
@@ -111,4 +121,6 @@ export const {
   clearProductLsit,
   getBestOffersList,
   getCategoryList,
+  getProductAdminList,
+  clearProductAdminList,
 } = ProductSlice.actions;
