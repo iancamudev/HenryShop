@@ -5,8 +5,14 @@ import { shopping } from "../Types";
 export const shoppingSchema = new Schema({
     userId: {type: SchemaTypes.ObjectId, ref: "User"},
     products: Array<{type: Schema.Types.ObjectId, ref: "Product"}>,
-    time : { type : Date, default: Date.now }
-  });
+  }, { timestamps: true });
+  /*shoppingSchema.virtual('fecha')
+  .set(function(fecha) {
+    this.time = new Date(fecha);
+  })
+  .get(function(){
+    return this.time.toISOString().substring(0,10);
+  });*/
 
 shoppingSchema.set("toJSON", {
     transform: (_document, returnedObject) => {

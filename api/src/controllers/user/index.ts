@@ -52,30 +52,23 @@ export const getUserShop = async (username: string) => {
       return newResult
      
   }))
-  /*const shopF = await Promise.all(shop.map(async el => {
-    return (
-      await el.products
-    )
-  })) */
-
   
    const shopF = shop.flat(2) 
     
-  
   return shopF
 
-  /*var shop = []
-  if(ids[0]){ 
-  for (let i=0; i<ids.length; i++){
-    shop[i] = await getShop(ids[i])
+}
+
+export const getDateShop = async (username: string) => {
+  const user = await User.findOne({username: username});
+  const ids = user.shopping.map((id) => id.toString())
+  const shop = await Promise.all(ids.map(async el =>  {
     
-   }
-   console.log(shop)
-   return shop
-   
-  } else {
-    throw new Error("No hay ventas");
-  }*/
+      return await getShop(el)
+     
+  }))
+ 
+  return shop
 }
 
 export const updateEmail = async (id: string) => {

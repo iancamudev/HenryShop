@@ -2,6 +2,11 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 //INTERFACES
 
+export interface DateShop {
+    id: string;
+    createdAt: string;
+}
+
 export interface ShoppingDetails {
     color: string;
     name: string;
@@ -15,7 +20,9 @@ export interface ShoppingDetails {
 
 interface ShoppingState {
   shoppingDetail: ShoppingDetails;
-  shoppingList: Array<ShoppingDetails>
+  shoppingList: Array<ShoppingDetails>;
+  dateShop: DateShop;
+  shoppingDate: Array<DateShop>
 }
 
 //Definimos el estado
@@ -31,6 +38,12 @@ const initialState: ShoppingState = {
           variante: "",
           idShop: "",
   },
+    shoppingDate: [],
+    dateShop: {
+    id: "",
+    createdAt: ""
+    }
+
 };
 
 //PORCION DE ESTADO GLOBAL
@@ -44,6 +57,12 @@ const ShoppingSlice = createSlice({
     getShoppingDetail(state, action: PayloadAction<ShoppingDetails>) {
       state.shoppingDetail = action.payload;
     },
+    getShoppingDate(state, action: PayloadAction<Array<DateShop>>) {
+      state.shoppingDate = action.payload;
+    },
+    getDateShop(state, action: PayloadAction<DateShop>) {
+      state.dateShop = action.payload;
+    },
   },
 });
 
@@ -51,5 +70,7 @@ export default ShoppingSlice.reducer;
 export const {
   getShoppingList,
   getShoppingDetail,
+  getShoppingDate,
+  getDateShop
   
 } = ShoppingSlice.actions;

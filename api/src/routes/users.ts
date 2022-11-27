@@ -11,6 +11,7 @@ import {
   compareUsernames,
   deleteUserByID,
   getAllUser,
+  getDateShop,
   getUser,
   getUserShop,
   putSwitchUserDelete,
@@ -306,6 +307,20 @@ router.get("/shopping/:username", async (req: Request, res: Response) => {
   try {
     const username = req.params.username;
     const result = await getUserShop(username);
+    result !== null
+      ? res.status(200).json(result)
+      : res.status(404).json({
+        error_message: "Ningún usuario encontrado con ese username",
+      });
+  } catch (error: any) {
+    res.status(500).json({ error_message: error.message });
+  }
+});
+
+router.get("/shopdate/:username", async (req: Request, res: Response) => {
+  try {
+    const username = req.params.username;
+    const result = await getDateShop(username);
     result !== null
       ? res.status(200).json(result)
       : res.status(404).json({

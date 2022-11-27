@@ -1,23 +1,24 @@
-
 import React, { useEffect } from "react";
 import CardShop from "./CardShop"
-import { getAllShoppingByUser } from "../../../redux/slices/ShoppingSlice/shoppingActions";
+import { getAllShoppingByUser, getDateShopping } from "../../../redux/slices/ShoppingSlice/shoppingActions";
 import { getUserByUsername } from "../../../redux/slices/AdminSlice/adminActions";
 import { setUserData } from "../../../redux/slices/UserSlice/UserActions";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { useParams } from "react-router-dom";
-
-// const gifLoading = require("../assets/gifLoading.gif");
 
 const ShoppingCards = () => {
   const dispatch = useAppDispatch();
   const { shoppingList } = useAppSelector(
     (state) => state.shopping
   );
-  const userList = useAppSelector(
-    (state) => state.admin.usersList
+  const { usersList } = useAppSelector(
+    (state) => state.admin
+  )
+  const { shoppingDate } = useAppSelector(
+    (state) => state.shopping
   )
   const username = useAppSelector((state) => state.user.username)
+
   useEffect(() => {
     dispatch(getAllShoppingByUser(String(username)));
   }, [dispatch, username]);
@@ -25,16 +26,16 @@ const ShoppingCards = () => {
   useEffect(() => {
     dispatch(getUserByUsername(String(username)));
   }, [dispatch, username]);
-  const shopsByUser = userList[0].shopping
+
+  useEffect(() => {
+    dispatch(getDateShopping(String(username)));
+  }, [dispatch, username]);
+
+  const shopsByUser = usersList.map(e => e.shopping).flat()
   const total = shopsByUser.map(e => {
     return shoppingList.filter(a => a.idShop === e.toString())
    })
-   console.log(total)  
-  const totalPrice = total.map(el => el.reduce(function (acc, obj){ return acc + obj.total_Price}, 0))
-
-
-  //shoppingList: array info de cada compra con su idshop
-  //shopsByUser: idshop de cada compra
+       
   return (
     <div className="flex w-full bg-white">
       <div>

@@ -39,7 +39,7 @@ const initialState: AdminUserState = {
     birthday: "",
     deleted: false,
     id: "",
-    shopping: []
+    shopping: [],
   },
   userPages: 0,
   payments: [],

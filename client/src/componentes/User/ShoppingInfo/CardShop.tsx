@@ -10,12 +10,7 @@ interface CardShop {
   products: ShoppingDetails;
   }
   
-  const ShoppingCards = ({ products } : CardShop) => {
-
-  const { username } = useParams();
-  const dispatch = useAppDispatch();
-  
-  
+  const ShoppingCards = ({ products } : CardShop) => {  
   
   return (
       <div>
