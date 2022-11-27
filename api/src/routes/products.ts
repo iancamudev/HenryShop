@@ -88,7 +88,6 @@ routes.get("/:id", async (req: Request, res: Response) => {
 routes.post("/", async (req: Request, res: Response) => {
   try {
     const newProduct = req.body;
-
     if (!newProduct) {
       res.status(400).send({ error: "Info Missing" });
     }
@@ -99,33 +98,8 @@ routes.post("/", async (req: Request, res: Response) => {
   }
 });
 
-//DELETE
-routes.delete("/:id", async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const del = await deleteProduct(id);
-    console.log(del);
-    res.status(200).json({ message: "Producto eliminado" });
-  } catch (error) {
-    console.log(error);
-  }
-});
-
-//PUT
-routes.put("/:id", async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const body = req.body;
-    const result = await changeProperties(id, body);
-    res.status(200).json({ message: "Parámetros cambiados correctamente" });
-  } catch (error) {
-    console.log(error);
-  }
-});
-
 routes.post("/payment", userValidation, async (req: Request, res: Response) => {
   try {
-    console.log("paymenttttttt");
     const productosForFind = req.body.products;
     let token = req.get("authorization");
     if (token) {
@@ -193,4 +167,30 @@ routes.post("/payment", userValidation, async (req: Request, res: Response) => {
     res.status(401).send({ error });
   }
 });
+
+//DELETE
+routes.delete("/:id", async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const del = await deleteProduct(id);
+    console.log(del);
+    res.status(200).json({ message: "Producto eliminado" });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+//PUT
+routes.put("/:id", async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const body = req.body;
+    const result = await changeProperties(id, body);
+    res.status(200).json({ message: "Parámetros cambiados correctamente" });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+
 export default routes;
