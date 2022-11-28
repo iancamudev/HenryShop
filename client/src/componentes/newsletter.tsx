@@ -1,41 +1,71 @@
+import { yupResolver } from '@hookform/resolvers/yup';
 import axios from 'axios';
-import React, { FormEvent, useState } from 'react'
+import React, { useState } from 'react'
+import { useForm } from 'react-hook-form';
 import { RiMailAddFill } from 'react-icons/ri'
+import * as yup from "yup";
+
+interface formData {
+    email: string;
+}
+
+const schema = yup.object().shape({
+    email: yup.string().email().required("Debes agregar un email"),
+});
 
 const NewsLetter = () => {
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<formData>({
+        resolver: yupResolver(schema),
+    });
+
+    const initialForm: formData = {
+        email: "",
+    };
+
 
     let bEnd = process.env.REACT_APP_BACKEND_URL;
 
-    const [email, setEmail] = useState('')
+    const [email, setEmail] = useState(initialForm)
 
-    const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setEmail(e.target.value);
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setEmail({ ...email, [e.target.name]: e.target.value });
     }
 
-    const submitHandler = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
+
+
+    const submitCall = ({
+        email,
+    }: formData) => {
 
         axios.post(`${bEnd}/newsletter`, { email })
         alert('Gracias por suscribirte, Email agregado a la newsletter')
 
-        setEmail('')
+
     }
 
     return (
         <form
-            onSubmit={submitHandler}
+            onSubmit={handleSubmit(submitCall)}
             className="flex flex-row rounded-md shadow-lg  bg-white border-0 border-b-2 border-black border-solid"
         >
 
             <input
-                type="email"
-                onChange={changeHandler}
-                value={email}
+                {...register("email")}
+                onChange={onChange}
+                id="email"
+                type="text"
                 placeholder="Suscríbete..."
                 className="text-base text-gray-900 m-2 ml-4 mr-0 w-36"
             >
 
             </input>
+            {errors?.email && (
+                <p className="text-red-500 text-xs italic">{errors.email.message}</p>
+            )}
             <button
                 type='submit'
                 className="text-base text-gray-900 pl-3 pr-4 hover:bg-gray-200 rounded-br-md rounded-tr-md"
@@ -49,4 +79,4 @@ const NewsLetter = () => {
     )
 }
 
-export default NewsLetter
+export default NewsLetter;
