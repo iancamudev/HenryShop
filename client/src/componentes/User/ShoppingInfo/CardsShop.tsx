@@ -5,6 +5,7 @@ import { getUserByUsername } from "../../../redux/slices/AdminSlice/adminActions
 import { setUserData } from "../../../redux/slices/UserSlice/UserActions";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const ShoppingCards = () => {
   const dispatch = useAppDispatch();
@@ -35,19 +36,27 @@ const ShoppingCards = () => {
   const total = shopsByUser.map(e => {
     return shoppingList.filter(a => a.idShop === e.toString())
    })
-       
+  console.log(total)
   return (
-    <div className="flex w-full bg-white">
+    <div >
+      <div className="flex justify-end">
+      <Link to={"/"}><button className="flex justify-end  mt-5 bg-slate-400 hover:bg-slate-700 text-white font-bold py-2 px-4 rounded">HOME</button></Link>
+      </div>
+    <div className="flex w-full justify-center">
       <div>
       {
           total.length ? (
             total.map((producto, index) => 
-              <div key={index} className = "mx-10 my-3   w-[76rem] border border-black rounded-xl">
-                <div className = "bg-slate-200 h-20 rounded-t-xl">
-                <div> Pedido realizado
+              <div key={index} className = "my-3 w-[55rem] border border--slate-500 rounded-xl shadow-lg">
+                <div className = "flex justify-between bg-slate-200 h-20 rounded-t-xl">
+                <div className = "flex w-2/3 bg-slate-400 rounded-tl-xl">
+                  <div className="px-20 pt-4"> FECHA DE PEDIDO: <p>{shoppingDate.map(e => e.id === producto[0].idShop 
+                  ? e.createdAt.substring(0,10)
+                  : "" )}</p>
                 </div>
-                <div> Total: {producto.reduce((acc, obj) => { return acc + obj.total_Price}, 0)}
-                </div>
+                <div className="pl-10 pt-4 "> TOTAL DE COMPRA: <p>ARS {producto.reduce((acc, obj) => { return acc + obj.total_Price}, 0)}</p>
+                </div></div>
+                <div className="px-10 pt-4 bg-yellow rounded-tr-xl" > PEDIDO N° <p> {producto[0]?.idShop}</p></div>
 
 
                 </div>
@@ -64,6 +73,7 @@ const ShoppingCards = () => {
             </div>
           )}
       </div>
+    </div>
     </div>
   );
 };
