@@ -99,6 +99,21 @@ const ProductSlice = createSlice({
     clearProductLsit(state) {
       state.error = "";
       state.productList = [];
+    },clearProductDetail(state) {
+      state.error = "";
+      state.productDetail = {
+        id: "",
+        name: "",
+        rating: -1,
+        description: "",
+        price: [],
+        image: "",
+        stock: 0,
+        category: "",
+        variants:[],
+        variantName:"",
+        reviews: [],
+      };
     },
     clearProductAdminList(state) {
       state.error = "";
@@ -129,4 +144,5 @@ export const {
   getProductAdminList,
   clearProductAdminList,
   setCarrouselLoading,
+  clearProductDetail
 } = ProductSlice.actions;

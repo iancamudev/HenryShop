@@ -87,6 +87,7 @@ export const getProductsById =
       .get(`${URL_BACK_DEV}/products/${id}`)
       .then(({ data }) => {
         console.log(data)
+       
         dispatch(getProductDetail(data))
       })
       .catch((error) => {

@@ -46,18 +46,16 @@ const ReviewList = ({ reviews }: ReviewProps) => {
       {reviews.map(({ review }, index) => {
         const editPermit = review.user.username === username;
         return (
-          <>
+          
             <ReviewCard
               text={review.text}
               rating={review.rating}
               user={review.user.username}
               flag={index % 2 === 0}
-              key={`review_${index}`}
+              key={review.id}
               editPermit={editPermit}
               reviewId={review.id}
-            />
-            <hr />
-          </>
+            />          
         );
       })}
       <CheckUserReview reviewed={reviewed} />
@@ -89,13 +87,15 @@ const ReviewCard = ({
 
   if (editReview)
     return (
-      <div>
+      <div >
+
         <FormReview
           text={text}
           rating={rating}
           putRute={true}
           reviewId={reviewId}
         />
+
         <button
           onClick={() => setEditReview(false)}
           className="bg-gray-400 duration-300 hover:bg-gray-200 hover:duration-300 p-2 mt-4 font-bold rounded-3xl pl-4 pr-4 border-b-2 border-black"
@@ -106,7 +106,9 @@ const ReviewCard = ({
     );
 
   return (
-    <div className={`${flag ? bgColor : ""} w-full py-6`}>
+    <div className={`${
+        flag ? bgColor : ""
+      } w-full py-6 border-t border-b border-slate-300 border-solid`}>
       <div className="flex justify-around mb-4">
         <p className="font-bold">{editPermit ? "Tu reseña" : user}</p>
         <RatingStars value={rating} read_only={true} />
