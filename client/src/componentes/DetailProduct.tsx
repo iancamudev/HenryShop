@@ -6,6 +6,7 @@ import Header from "./Header";
 import { TbPlus, TbMinus } from "react-icons/tb";
 import { useShoppingCart } from "./ShoppingCart/ContextShoppingCart";
 import ReviewList from "./Products/ReviewList";
+import { Rating } from "@mui/material";
 
 export const DetailProduct: React.FunctionComponent = () => {
   const producto = useAppSelector((state) => state.products.productDetail);
@@ -59,7 +60,18 @@ export const DetailProduct: React.FunctionComponent = () => {
             <h2 className="mt-4">{producto.name}🚀</h2>
           </div>
           <div className="mt-2 mb-8">
-            <h4 className="text-left ml-4">Rating: {producto.rating}</h4>
+            <h4 className="text-left ml-4">
+              Rating:{" "}
+              {producto.rating ? (
+                <Rating
+                  defaultValue={producto.rating}
+                  precision={0.5}
+                  readOnly
+                />
+              ) : (
+                "Todavía no hay reseñas"
+              )}
+            </h4>
             <h3 className="text-left ml-4 font-bold mb-4 mr-4">
               ${producto.price}
             </h3>

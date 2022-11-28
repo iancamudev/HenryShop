@@ -33,6 +33,7 @@ productSchema.set('toJSON', { virtuals: true })
 productSchema.set('toObject', { virtuals: true })
 
 productSchema.virtual('rating').get(function () {
+  if(!this.reviews.length) return 0
   const sumRatings = this.reviews.reduce((acc, rev) => {
     const aux = rev.review as unknown as elTipo;
     const rat = aux.rating as number
