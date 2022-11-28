@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { FaLeaf } from "react-icons/fa";
 
 //INTERFACES
 interface category {
@@ -104,6 +105,7 @@ const ProductSlice = createSlice({
     },clearProductDetail(state) {
       state.error = "";
       state.productDetail = {
+        deleted: false,
         id: "",
         name: "",
         rating: -1,
