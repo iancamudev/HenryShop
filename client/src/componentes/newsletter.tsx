@@ -10,7 +10,7 @@ interface formData {
 }
 
 const schema = yup.object().shape({
-    email: yup.string().email().required("Debes agregar un email"),
+    email: yup.string().email("Ingresa un Email válido").required("Debes agregar un email"),
 });
 
 const NewsLetter = () => {
