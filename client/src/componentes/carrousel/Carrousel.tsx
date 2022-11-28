@@ -37,7 +37,7 @@ function Carrousel(args: any) {
   if (carrouselLoading) {
     return <Loading />;
   }
-  if(!carrouselLoading && productLength === 0)
+  if(!carrouselLoading || productLength === 0)
     return <h4 className="w-10/12 mt-4 font-bold max-w-[550px]">No hay ofertas o no se han podido cargar</h4>
 
   return (
@@ -51,7 +51,7 @@ function Carrousel(args: any) {
         </button>
         {bestProducts?.map((e: any, index: any) => {
           return (
-            <div className="flex flex-row justify-center items-center">
+            <div className="flex flex-row justify-center items-center" key={`bestProd_${index}`}>
               {currentImg === index && (
                 <div className="flex flex-col items-center">
                   <div className="bg-yellow rounded-md w-fit pl-4 pr-4 font-bold text-lg absolute border-b-2 border-solid border-black">
@@ -97,6 +97,7 @@ function Carrousel(args: any) {
                   ? "h-2 w-auto rounded-xl flex-auto bg-yellow border-b-2 border-solid border-black duration-300"
                   : "h-2 w-auto rounded-xl flex-auto bg-gray-300 duration-300"
               }
+              key={`product_${index}`}
             ></div>
           );
         })}
