@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { FaLeaf } from "react-icons/fa";
 
 //INTERFACES
 interface category {
@@ -23,6 +24,7 @@ export interface IReview {
 }
 
 export interface ProductDetails {
+  deleted: any;
   id: string;
   name: string;
   rating: number;
@@ -67,6 +69,7 @@ const initialState: ProductState = {
     variants:[],
     variantName:"",
     reviews: [],
+    deleted: false,
   },
   productPages: 0,
 
@@ -102,6 +105,7 @@ const ProductSlice = createSlice({
     },clearProductDetail(state) {
       state.error = "";
       state.productDetail = {
+        deleted: false,
         id: "",
         name: "",
         rating: -1,

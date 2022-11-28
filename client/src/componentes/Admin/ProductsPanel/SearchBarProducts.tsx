@@ -25,7 +25,7 @@ const SearchBarProducts = () => {
   return (
     <form
       onSubmit={submitHandler}
-      className="flex flex-row mb-0 rounded-md shadow-lg  bg-white border-0 border-b-2 border-black border-solid"
+      className="flex flex-row mb-0 shadow-lg  bg-white border-0 border-b-2 border-black border-solid"
     >
       <input
         type="text"
