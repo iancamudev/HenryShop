@@ -8,12 +8,13 @@ import githubUserRouter from "./githubUsers";
 import newsLetterRouter from "./newsletter";
 import reviewsRouter from './reviews';
 import carrousel from "./carrousel";
-
+import refundRoute from "./refund"
 const route = Router();
 
 route.use("/products", productsRouter);
 route.use("/users", userRouter);
 route.use("/shop", userShop)
+route.use("/refund", refundRoute);
 route.use("/categories", categoryRouter);
 route.use("/googleusers", googleUserRouter);
 route.use("/githubusers", githubUserRouter);
