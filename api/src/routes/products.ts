@@ -38,7 +38,6 @@ routes.get("/admin", async (req: Request, res: Response) => {
       property,
       order
     );
-    console.log(req.query)
     if (result) res.status(200).json(result);
     else res.status(400).json({ error_message: "not found" });
   } catch (error: any) {
@@ -133,7 +132,6 @@ routes.post("/payment", userValidation, async (req: Request, res: Response) => {
     const productos = await productAndQuantity(productosForFind);
     console.log(productos, user);
     if (productos && user) {
-      console.log("asssssssss");
       let preference = {
         items: productos.map((el: any) => {
           return {

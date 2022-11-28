@@ -21,9 +21,9 @@ export const getAllProductsAdmin = (page?: number | null, filters?: Filters) => 
   dispatch(setLoading(true));
   dispatch(clearProductAdminList());
   let url = `${URL_BACK_DEV}/products/admin${page ? `?page=${page}` : "?page="}${
-    filters?.name.length ? `&name=${filters.name}` : "&name="
+    filters?.name.length ? `&name=${filters.name}` : ""
   }${
-    filters?.category.length ? `&category=${filters.category}` : "&category="
+    filters?.category.length ? `&category=${filters.category}` : ""
   }${
     filters?.property.length && !filters?.order.length
       ? `&property=${filters.property}&order=desc`
@@ -58,9 +58,9 @@ export const getAllProducts =
     dispatch(setLoading(true));
     dispatch(clearProductLsit());
     let url = `${URL_BACK_DEV}/products${page ? `?page=${page}` : "?page="}${
-      filters?.name.length ? `&name=${filters.name}` : "&name="
+      filters?.name.length ? `&name=${filters.name}` : ""
     }${
-      filters?.category.length ? `&category=${filters.category}` : "&category="
+      filters?.category.length ? `&category=${filters.category}` : ""
     }${
       filters?.property.length && !filters?.order.length
         ? `&property=${filters.property}&order=desc`
