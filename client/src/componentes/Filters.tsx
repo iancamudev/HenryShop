@@ -38,7 +38,7 @@ const Filters = () => {
     <div className="flex flex-row items-center justify-center gap-4 w-full  mt-6  flex-wrap bg-gray-200 pt-2 pb-2">
       <div className=" h-auto bg-white  rounded-3xl h-12 flex flex-row gap-2 w-auto flex flex-row ">
         {filters &&
-          filtersClean().map((el) => (
+          filtersClean().map((el) =>(
             <button
               className="m-2 p-1 pl-2 pr-2 rounded-2xl border border-solid border-black text-sm  duration-300 hover:duration-300 hover:bg-gray-200 border-opacity-50 "
               name={el.name}
@@ -50,9 +50,7 @@ const Filters = () => {
               {el.value === "rating" && "Rating"}
               {el.value === "asc" && "Ascendente"}
               {el.value === "desc" && "Descendente"}
-              {el.value === "Mate" && "Mates"}
-              {el.value === "Gorra" && "Gorras"}
-              {el.value === "Remera" && "Remeras"}
+              {el.name === "category" && el.value}
             </button>
           ))}
       </div>
@@ -94,56 +92,6 @@ const Filters = () => {
           </option>
         </select>
       </div>
-
-      {/* <div className="flex flex-col items-start  w-96">
-        <h5>Ordenar por:</h5>
-        <div className="flex flex-row gap-4 text-sm p-1  mt-2 justify-start">
-          <p className="p-1">Propiedad:</p>
-
-          <button
-            className="p-1 pr-2 pl-2 border-b-2 border-black border-solid rounded-2xl bg-gray-200"
-            id="property"
-            value="Rating"
-            name="rating"
-            onClick={clickHandler}
-          >
-            Rating
-          </button>
-
-          <button
-            className="p-1 pr-2 pl-2 border-b-2 border-black border-solid rounded-2xl bg-gray-200"
-            id="property"
-            value="Precio"
-            name="price"
-            onClick={clickHandler}
-          >
-            Precio
-          </button>
-        </div>
-        <div className="flex flex-row gap-4 text-sm  p-1  mt-2 items-start">
-          <p className="p-1">Orden:</p>
-
-          <button
-            className="p-1 pr-2 pl-2 border-b-2 border-black border-solid rounded-2xl bg-gray-200"
-            id="order"
-            value="Descendente"
-            name="desc"
-            onClick={clickHandler}
-          >
-            Descendente
-          </button>
-
-          <button
-            className="p-1 pr-2 pl-2 border-b-2 border-black border-solid rounded-2xl bg-gray-200"
-            id="order"
-            value="Ascendente"
-            name="asc"
-            onClick={clickHandler}
-          >
-            Ascendente
-          </button>
-        </div>
-      </div> */}
     </div>
   );
 };
