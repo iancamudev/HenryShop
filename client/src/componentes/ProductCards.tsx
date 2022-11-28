@@ -20,7 +20,7 @@ const ProductCards = () => {
     return <Loading />;
   }
 
-  if (error) return <h1>{error}</h1>;
+  if (error) return <h3 className="lg:w-6/12">{error}</h3>;
   console.log(productList)
 
   return (

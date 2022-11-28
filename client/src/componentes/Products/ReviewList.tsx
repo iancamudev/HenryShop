@@ -12,8 +12,6 @@ interface ReviewProps {
 const ReviewList = ({ reviews }: ReviewProps) => {
   const { username } = useAppSelector((state) => state.user);
 
-  if (!reviews.length) return <h3 className="mb-8">Aún no hay reseñas</h3>;
-
   let reviewed = false;
   // ordena las reviews
   if (username) {
@@ -33,8 +31,16 @@ const ReviewList = ({ reviews }: ReviewProps) => {
     }
   }
 
+  if (!reviews.length)
+    return (
+      <div className="mb-8 w-full lg:w-8/12">
+        <h3 className="mb-8">Aún no hay reseñas</h3>
+        <CheckUserReview reviewed={reviewed} />
+      </div>
+    );
+
   return (
-    <div className="mb-8">
+    <div className="mb-8 w-full lg:w-8/12">
       <h3>Reseñas</h3>
       <hr />
       {reviews.map(({ review }, index) => {
@@ -76,7 +82,7 @@ const ReviewCard = ({
   rating,
   flag,
   editPermit,
-  reviewId
+  reviewId,
 }: ReviewCardProps) => {
   const bgColor = "bg-white";
   const [editReview, setEditReview] = useState(false);
@@ -84,7 +90,12 @@ const ReviewCard = ({
   if (editReview)
     return (
       <div>
-        <FormReview text={text} rating={rating} putRute={true} reviewId={reviewId} />
+        <FormReview
+          text={text}
+          rating={rating}
+          putRute={true}
+          reviewId={reviewId}
+        />
         <button
           onClick={() => setEditReview(false)}
           className="bg-gray-400 duration-300 hover:bg-gray-200 hover:duration-300 p-2 mt-4 font-bold rounded-3xl pl-4 pr-4 border-b-2 border-black"
