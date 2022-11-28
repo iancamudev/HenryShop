@@ -11,7 +11,9 @@ export const getAllProductsAdmin = async (
   property?: string,
   order?: string
 ) => {
-  console.log( page, category, name, property, order);
+  console.log(category, name);
+  const catObj = await Category.findOne({name: category});
+  const catId = catObj? catObj._id: "undefined";
   if (
     category === "undefined" &&
     name !== "undefined" &&
@@ -39,7 +41,7 @@ export const getAllProductsAdmin = async (
     
     const resultCategory = await Product.paginate(
       {
-        category: {name : new RegExp(`${category}`, "i")},
+        category: catObj,
       },
       {
         limit: pageSize,
@@ -73,7 +75,7 @@ export const getAllProductsAdmin = async (
     
     const resultCategory = await Product.paginate(
       {
-        category: {name : new RegExp(`${category}`, "i")},
+        category: catObj,
         name: new RegExp(`${name}`, "i"),
       },
       {
@@ -119,7 +121,7 @@ export const getAllProductsAdmin = async (
   ) {
     const resultCategory = await Product.paginate(
       {
-        category: {name : new RegExp(`${category}`, "i")},
+        category: catObj,
       },
       {
         limit: pageSize,
@@ -165,7 +167,7 @@ export const getAllProductsAdmin = async (
   else {
     const resultAll = await Product.paginate(
       {
-        category:{name : new RegExp(`${category}`, "i")},
+        category:catObj,
         name: new RegExp(`${name}`, "i"),
       },
       {
@@ -204,6 +206,7 @@ export const getWithfilters = async (
   property?: string,
   order?: string
 ) => {
+  console.log(category, name);
   const catObj = await Category.findOne({name: category});
   const catId = catObj? catObj._id: "undefined";
   console.log(catId);
