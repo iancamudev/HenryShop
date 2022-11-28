@@ -148,8 +148,8 @@ const UsersPanel = () => {
 //   );
 // };
 return (
-  <div className="flex justify-center items-center max-w-xs">
-    <div className=" mt-8 mb-8 flex flex-col justify-center shadow">
+  <div className="flex justify-center items-center xl:w-10/12">
+    <div className=" mt-8 mb-8 flex flex-col justify-center shadow xl:w-10/12">
       <FiltersUsers/>
       <SearchBarUsers/>
       <table className="shadow-2xl ">

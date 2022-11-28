@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { AppDispatch } from "../../store";
 import { Filters } from "../FiltersSlice";
 import { setError, setLoading } from "../ProductSlice";
-import { getUsersList, getUsersPages, getPayments, getPaymentsPages, setFiltersUsers, clearUsersList } from "./index";
+import { getUsersList, getUsersPages, getPayments, getPaymentsPages, setFiltersUsers, clearUsersList, getPaymentDetail } from "./index";
 
 export const URL_BACK_DEV: string = process.env.REACT_APP_BACKEND_URL as string;
 
@@ -57,7 +57,14 @@ export const getUserByUsername = (username: string | undefined) =>  (dispatch: A
         dispatch(getUsersList(data))
     })
 };
-
+export const getPaymentById = (id: string | undefined) => (dispatch: AppDispatch) => {
+  let url;
+  url = `${URL_BACK_DEV}/shop/${id}`
+  axios.get(url).then(({ data }) => {
+      dispatch(getPaymentDetail(data))
+      console.log( data )
+  })
+}
 // export const getProductsById =
 //   (id: string | undefined) => (dispatch: AppDispatch) => {
 //     axios
