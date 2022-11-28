@@ -209,6 +209,7 @@ export const getWithfilters = async (
   console.log(category, name);
   const catObj = await Category.findOne({name: category});
   const catId = catObj? catObj._id: "undefined";
+  console.log(catId);
   if (
     catId === "undefined" &&
     name !== "undefined" &&
