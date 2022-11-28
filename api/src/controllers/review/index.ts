@@ -18,7 +18,6 @@ export const addNewReview = async (text: string, rating: number, userId: object,
   const user = await User.findById(userId);
   const product = await Product.findById(productId);
   const newReview = await Review.create({ text, rating, user: userId, product: productId })
-
   await User.findByIdAndUpdate(user._id, { reviews: [...user.reviews, { review: newReview.id }] })
   await Product.findByIdAndUpdate(product._id, { reviews: [...product.reviews, { review: newReview.id }] })
 

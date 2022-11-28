@@ -20,7 +20,7 @@ shape({
       product_name:yup.string().min(3, "Ingresar un nombre valido").max(100).required("El nombre del producto es necesario"),
       reason: yup.string().min(5, "el motivo tiene que tener al menos dos palabras").max(1000).required("El motivo de devolución es necesario"),
       customer_email: yup.string().email().required("El email de la compra es necesario"),
-      quantity: yup.number().min(1).required("Ingrese la cantidad a devolver"),
+      quantity: yup.number().typeError("La cantidad minima es de 1").min(1).required("Ingrese la cantidad a devolver"),
 });
 export const Refunds = () => {
    const navigate = useNavigate();
@@ -67,11 +67,11 @@ export const Refunds = () => {
     return (
         <form
           onSubmit={handleSubmit(submitCall)}
-          className="flex justify-center flex-col items-center w-9/12 m-auto"
+          className="flex justify-center flex-col w-2/3 items-center max-w-[600px] m-auto"
         >
           <div className="mb-3.5 w-full">
           <div className="flex justify-center">
-          <input {...register("buyer_name")} id="buyername" type="text" className="border border-black border-solid w-full rounded-2xl pl-2 py-1"  placeholder="Nombre del comprador"/>
+          <input {...register("buyer_name")} id="buyername" type="text" className="border border-black border-solid w-full rounded-2xl pl-2 py-1"  placeholder="Nombre y Apellido"/>
           </div>
           {errors?.buyer_name && <p className="text-red-600 font-bold">{errors.buyer_name.message}</p>}
           </div>  
@@ -99,7 +99,7 @@ export const Refunds = () => {
 
           <div className="mb-3.5 w-full">
           <div className="flex justify-center">
-          <input {...register("quantity")} id="quantity" type="number" defaultValue={0} className="border border-black border-solid w-full rounded-2xl pl-2 py-1" placeholder="quantity"/>
+          <input {...register("quantity")} id="quantity" type="number" defaultValue={1} className="border border-black border-solid w-full rounded-2xl pl-2 py-1" placeholder="quantity"/>
           </div>
           {errors?.quantity && <p className="text-red-600 font-bold">{errors.quantity.message}</p>} 
           </div>

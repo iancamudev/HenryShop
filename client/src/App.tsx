@@ -39,6 +39,7 @@ import { Refunds } from "./componentes/refunds/Refunds";
 import { FormCreated } from "./componentes/refunds/FormCreated";
 
 
+import DefaultPage from "./componentes/DefaultPage";
 
 function App() {
   const { username } = useAppSelector((state) => state.user);
@@ -108,10 +109,22 @@ function App() {
               </Protected>
             }
           />
-            <Route  path='/admin/payments' element={<Protected>
-              <AdminPanelPayments/></Protected>}/>
-            <Route  path='/admin/users' element={<Protected>
-              <AdminPanelUsers/></Protected>}/>
+          <Route
+            path="/admin/payments"
+            element={
+              <Protected>
+                <AdminPanelPayments />
+              </Protected>
+            }
+          />
+          <Route
+            path="/admin/users"
+            element={
+              <Protected>
+                <AdminPanelUsers />
+              </Protected>
+            }
+          />
           <Route
             path="/admin/:id"
             element={
@@ -122,10 +135,19 @@ function App() {
           />
           <Route path="/formcreated" element={<FormCreated/>}/>
           <Route path="/refunds/:id" element={<Refunds/>} />
-          <Route path="/aboutus" element={<AboutUs/>}/>
-          <Route path="/failure" element={<Failure/>}/>
+          <Route path="/aboutus" element={<AboutUs />} />
+          <Route path="/failure" element={<Failure />} />
           <Route path="/success" element={<Success />} />
           <Route path="/unauthorized" element={<Unaothorized />} />
+          <Route
+            path="*"
+            element={
+              <>
+                <Header />
+                <DefaultPage />
+              </>
+            }
+          />
         </Routes>
       </div>
     </ShoppingCartProvider>

@@ -11,7 +11,9 @@ export const getAllProductsAdmin = async (
   property?: string,
   order?: string
 ) => {
-  console.log( page, category, name, property, order);
+  console.log(category, name);
+  const catObj = await Category.findOne({name: category});
+  const catId = catObj? catObj._id: "undefined";
   if (
     category === "undefined" &&
     name !== "undefined" &&
@@ -39,7 +41,7 @@ export const getAllProductsAdmin = async (
     
     const resultCategory = await Product.paginate(
       {
-        category: new RegExp(`${category}`, "i"),
+        category: catObj,
       },
       {
         limit: pageSize,
@@ -73,7 +75,7 @@ export const getAllProductsAdmin = async (
     
     const resultCategory = await Product.paginate(
       {
-        category: new RegExp(`${category}`, "i"),
+        category: catObj,
         name: new RegExp(`${name}`, "i"),
       },
       {
@@ -119,7 +121,7 @@ export const getAllProductsAdmin = async (
   ) {
     const resultCategory = await Product.paginate(
       {
-        category: new RegExp(`${category}`, "i"),
+        category: catObj,
       },
       {
         limit: pageSize,
@@ -165,7 +167,7 @@ export const getAllProductsAdmin = async (
   else {
     const resultAll = await Product.paginate(
       {
-        category: new RegExp(`${category}`, "i"),
+        category:catObj,
         name: new RegExp(`${name}`, "i"),
       },
       {
@@ -204,8 +206,10 @@ export const getWithfilters = async (
   property?: string,
   order?: string
 ) => {
+  console.log(category, name);
   const catObj = await Category.findOne({name: category});
   const catId = catObj? catObj._id: "undefined";
+  console.log(catId);
   if (
     catId === "undefined" &&
     name !== "undefined" &&
@@ -232,7 +236,7 @@ export const getWithfilters = async (
   ) {
     const resultCategory = await Product.paginate(
       {
-        category: new RegExp(`${catId}`, "i"),
+        category: catId,
         deleted: false,
       },
       {
@@ -266,7 +270,7 @@ export const getWithfilters = async (
   ) {
     const resultCategory = await Product.paginate(
       {
-        category: new RegExp(`${catId}`, "i"),
+        category: catId,
         name: new RegExp(`${name}`, "i"),
         deleted: false,
       },
@@ -306,7 +310,7 @@ export const getWithfilters = async (
   ) {
     const resultCategory = await Product.paginate(
       {
-        category: new RegExp(`${catId}`, "i"),
+        category: catId,
         deleted: false,
       },
       {
@@ -334,7 +338,7 @@ export const getWithfilters = async (
   } else {
     const resultAll = await Product.paginate(
       {
-        category: new RegExp(`${catId}`, "i"),
+        category: catId,
         name: new RegExp(`${name}`, "i"),
         deleted: false,
       },
@@ -382,7 +386,6 @@ export const addNewProduct = async (prod: product) => {
     !prod ||
     !prod.name ||
     !prod.description ||
-    !prod.stock ||
     !prod.price ||
     !prod.category
   ) {
@@ -395,9 +398,7 @@ export const addNewProduct = async (prod: product) => {
         name: prod.name,
         description: prod.description,
         price: prod.price,
-        rating: prod.rating,
         image: prod.image,
-        stock: prod.stock,
         category: categoryId,
         variants: prod.variants,
         variantName: prod.variantName,
@@ -420,11 +421,13 @@ export const deleteProduct = async (id: string) => {
 
 export const changeProperties = async (id: string, body: any) => {
   const product = await Product.findById(id);
+  const categoryFind = await Category.findOne( {name: body.category} );
+  const categoryId:any = categoryFind._id; 
 
   product.price.push(body.price);
   body.price = product.price;
 
-  const result = await Product.findOneAndUpdate({ _id: id }, body);
+  const result = await Product.findOneAndUpdate({ _id: id }, {...body, category: categoryId});
   if (!result) {
     throw new Error("No existe el producto");
   }

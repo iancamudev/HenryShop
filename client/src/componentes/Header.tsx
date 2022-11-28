@@ -19,6 +19,7 @@ import {
 import axios from "axios";
 import axiosGetCall from "../funciones/axiosGetCall";
 import NewsLetter from "./newsletter";
+import HeaderLink from './HeaderLink';
 
 interface userMod {
   birthday: string;
@@ -37,6 +38,7 @@ const Header = () => {
 
   const [deploy, setDeploy] = useState(false);
   const [categoryDeploy, setCategoryDeploy] = useState(false);
+  const [categories, setCategories] = useState([{id:'', name:''}]);
   const dispatch = useAppDispatch();
   const filters = useAppSelector((state) => state.filterState.filters);
   const { username } = useAppSelector((state) => state.user);
@@ -76,12 +78,20 @@ const Header = () => {
     setUserProps(result.data);
   };
 
+  const getCategories = async () => {
+    const result = await axios.get( 
+      `${REACT_APP_BACKEND_URL}/categories`
+    );
+    setCategories(result.data);
+  }
+
   useEffect(() => {
     const session = getObjectSession();
     getUser();
     if (session) {
       dispatch(setUserData());
     }
+    getCategories();
   }, []);
 
   
@@ -230,36 +240,20 @@ const Header = () => {
             </h5>
             {categoryDeploy && (
               <div className="animate-open-menu origin-top">
-                <h6
-                  className="pl-4 hover:pl-6 duration-300 hover:duration-300 hover:cursor-pointer"
-                  onClick={() => {
-                    dispatch(
-                      setFiltersAction({ ...filters, category: "Gorra" })
-                    );
-                  }}
-                >
-                  Gorras
-                </h6>
-                <h6
-                  onClick={() => {
-                    dispatch(
-                      setFiltersAction({ ...filters, category: "Mate" })
-                    );
-                  }}
-                  className="pl-4 hover:pl-6 duration-300 hover:duration-300 hover:cursor-pointer"
-                >
-                  Mates
-                </h6>
-                <h6
-                  onClick={() => {
-                    dispatch(
-                      setFiltersAction({ ...filters, category: "Remera" })
-                    );
-                  }}
-                  className="pl-4 hover:pl-6 duration-300 hover:duration-300 hover:cursor-pointer"
-                >
-                  Remeras
-                </h6>
+                {
+                  categories.length?categories.map(category => {
+                    return(
+                      <HeaderLink 
+                        name={category.name}
+                        callback = {()=>{
+                          dispatch(
+                            setFiltersAction({ ...filters, category: category.name })
+                          );
+                        }} 
+                      />
+                    )
+                  }):null
+                }
               </div>
             )}
             <h5 className=" hover:delay-300 pl-2 hover:pl-4 duration-300 font-bold mt-4  hover:cursor-pointer">
