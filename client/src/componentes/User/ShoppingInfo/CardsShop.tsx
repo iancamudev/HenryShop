@@ -2,10 +2,7 @@ import React, { useEffect } from "react";
 import CardShop from "./CardShop"
 import { getAllShoppingByUser, getDateShopping } from "../../../redux/slices/ShoppingSlice/shoppingActions";
 import { getUserByUsername } from "../../../redux/slices/AdminSlice/adminActions";
-import { setUserData } from "../../../redux/slices/UserSlice/UserActions";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
-import { useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
 import Header from "../../Header";
 
 const ShoppingCards = () => {
