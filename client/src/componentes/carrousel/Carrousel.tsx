@@ -12,6 +12,7 @@ function Carrousel(args: any) {
   const bestProducts: any = useAppSelector(
     (state) => state.products.carrouselList
   );
+  const { carrouselLoading } = useAppSelector((state) => state.products);
   const dispatch = useAppDispatch();
 
   const [currentImg, setCurrentImg] = useState(0);
@@ -33,9 +34,12 @@ function Carrousel(args: any) {
   const prevImg = () => {
     setCurrentImg(currentImg === 0 ? productLength - 1 : currentImg - 1);
   };
-  if (productLength === 0) {
+  if (carrouselLoading) {
     return <Loading />;
   }
+  if(!carrouselLoading && productLength === 0)
+    return <h4 className="w-10/12 mt-4 font-bold max-w-[550px]">No hay ofertas o no se han podido cargar</h4>
+
   return (
     <div className="flex flex-col bg-gray-800 w-full h-auto justify-center items-center">
       <div className="flex flex-row justify-center items-center  pb-4 pt-6">
