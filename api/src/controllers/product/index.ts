@@ -398,7 +398,6 @@ export const addNewProduct = async (prod: product) => {
         name: prod.name,
         description: prod.description,
         price: prod.price,
-        rating: prod.rating,
         image: prod.image,
         category: categoryId,
         variants: prod.variants,
@@ -419,14 +418,24 @@ export const deleteProduct = async (id: string) => {
   }
   return result;
 };
+export const activateProduct = async (id: string) => {
+  const result = await Product.findOneAndUpdate({ _id: id }, { deleted: false });
+
+  if (!result) {
+    throw new Error("No se puede activar el producto");
+  }
+  return result;
+};
 
 export const changeProperties = async (id: string, body: any) => {
   const product = await Product.findById(id);
+  const categoryFind = await Category.findOne( {name: body.category} );
+  const categoryId:any = categoryFind._id; 
 
   product.price.push(body.price);
   body.price = product.price;
 
-  const result = await Product.findOneAndUpdate({ _id: id }, body);
+  const result = await Product.findOneAndUpdate({ _id: id }, {...body, category: categoryId});
   if (!result) {
     throw new Error("No existe el producto");
   }

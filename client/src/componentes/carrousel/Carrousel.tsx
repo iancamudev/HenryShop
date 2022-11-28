@@ -21,24 +21,37 @@ function Carrousel(args: any) {
     dispatch(getBestOffers());
   }, [dispatch]);
 
+  const nextImg = () => {
+    clearInterval(myInterval);
+    setCurrentImg(currentImg === productLength - 1 ? 0 : currentImg + 1);
+  };
+
+  let myInterval: any;
+
   useEffect(() => {
-    setTimeout(() => {
-      nextImg();
-    }, 5000);
+    myInterval = setInterval(nextImg, 5000);
   }, [currentImg]);
 
   const productLength = bestProducts?.length;
-  const nextImg = () => {
-    setCurrentImg(currentImg === productLength - 1 ? 0 : currentImg + 1);
-  };
+
   const prevImg = () => {
+    clearInterval(myInterval);
     setCurrentImg(currentImg === 0 ? productLength - 1 : currentImg - 1);
+  };
+
+  const touchEndHandler = (e: any) => {
+    let x = e.changedTouches[0].clientX;
+    if (x < window.innerWidth / 2) {
+      nextImg();
+    } else {
+      prevImg();
+    }
   };
   if (carrouselLoading) {
     return <Loading />;
   }
-  if(!carrouselLoading || productLength === 0)
-    return <h4 className="w-10/12 mt-4 font-bold max-w-[550px]">No hay ofertas o no se han podido cargar</h4>
+  if (!carrouselLoading && productLength === 0) return null;
+  // return <h4 className="w-10/12 mt-4 font-bold max-w-[550px]">No hay ofertas o no se han podido cargar</h4>
 
   return (
     <div className="flex flex-col bg-gray-800 w-full h-auto justify-center items-center">
@@ -51,13 +64,19 @@ function Carrousel(args: any) {
         </button>
         {bestProducts?.map((e: any, index: any) => {
           return (
-            <div className="flex flex-row justify-center items-center" key={`bestProd_${index}`}>
+            <div
+              className="flex flex-row justify-center items-center"
+              key={`bestProd_${index}`}
+            >
               {currentImg === index && (
-                <div className="flex flex-col items-center">
-                  <div className="bg-yellow rounded-md w-fit pl-4 pr-4 font-bold text-lg absolute border-b-2 border-solid border-black">
+                <div
+                  className="flex flex-col items-center min-h-[408px]"
+                  onTouchEnd={touchEndHandler}
+                >
+                  <div className="select-none bg-yellow rounded-md w-fit pl-4 pr-4 font-bold text-lg absolute border-b-2 border-solid border-black">
                     {e.discount}% OFF
                   </div>
-                  <div className="px-5 bg-white w-72 rounded-3xl mt-4 p-2 hover:bg-gray-400 duration-300 hover:duration-300 cursor-pointer">
+                  <div className="min-h-[380px] px-5 bg-white w-72 rounded-3xl mt-4 p-2 hover:bg-gray-400 duration-300 hover:duration-300 cursor-pointer">
                     <Link to={`/products/${e.product.id}`}>
                       <img
                         key={index}

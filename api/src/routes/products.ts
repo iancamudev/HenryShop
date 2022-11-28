@@ -7,6 +7,7 @@ import {
   changeProperties,
   getWithfilters,
   findByName,
+  activateProduct,
 } from "../controllers/product/index";
 import { Product } from "../models/Product";
 import User from "../models/User";
@@ -179,7 +180,16 @@ routes.delete("/:id", async (req: Request, res: Response) => {
     console.log(error);
   }
 });
-
+routes.put("/activate/:id", async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const del = await activateProduct(id);
+    console.log(del);
+    res.status(200).json({ message: "Producto activado" });
+  } catch (error) {
+    console.log(error);
+  }
+});
 //PUT
 routes.put("/:id", async (req: Request, res: Response) => {
   try {
