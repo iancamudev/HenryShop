@@ -16,6 +16,7 @@ export interface ShoppingDetails {
     image: string;
     variante: string;
     idShop: string;
+    description: string;
 }
 
 interface ShoppingState {
@@ -37,6 +38,7 @@ const initialState: ShoppingState = {
           image: "",
           variante: "",
           idShop: "",
+          description: "",
   },
     shoppingDate: [],
     dateShop: {
