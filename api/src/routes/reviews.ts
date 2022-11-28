@@ -6,12 +6,13 @@ import Product from "../models/Product";
 import Review from "../models/Review";
 import { addNewReview, checkUserReviewOnProduct, updateReview } from "../controllers/review";
 const userValidation = require("../middlewares/userValidation");
+const userDidBuyValidation = require('../middlewares/userDidBuyValidation');
 const jwt = require("jsonwebtoken");
 require("../mongo");
 
 const router = Router();
 
-router.post('/', async (req: Request, res: Response) => {
+router.post('/', userDidBuyValidation, async (req: Request, res: Response) => {
   const { text, rating, productId } = req.body;
   try {
     let token = req.get("authorization");
@@ -40,7 +41,7 @@ router.get('/:productId', async (req: Request, res: Response) => {
   }
 })
 
-router.put('/:reviewId', userValidation, async (req: Request, res: Response) => {
+router.put('/:reviewId', userValidation, userDidBuyValidation, async (req: Request, res: Response) => {
   const { text, rating } = req.body;
   const { reviewId } = req.params;
   try {
