@@ -35,6 +35,8 @@ import PaymentsPanel from "./componentes/Admin/PaymentsPanel/PaymentsPanel";
 import AdminPanelPayments from "./componentes/Admin/AdminPanelPayments";
 import { Failure } from "./componentes/Failure";
 import { AboutUs } from "./componentes/AboutUs";
+import { Refunds } from "./componentes/refunds/Refunds";
+import { FormCreated } from "./componentes/refunds/FormCreated";
 
 
 
@@ -118,6 +120,8 @@ function App() {
               </Protected>
             }
           />
+          <Route path="/formcreated" element={<FormCreated/>}/>
+          <Route path="/refunds/:id" element={<Refunds/>} />
           <Route path="/aboutus" element={<AboutUs/>}/>
           <Route path="/failure" element={<Failure/>}/>
           <Route path="/success" element={<Success />} />
