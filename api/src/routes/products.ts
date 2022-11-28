@@ -77,6 +77,7 @@ routes.get("/:id", async (req: Request, res: Response) => {
         .json({ error_message: "No se encontro el producto con ese id" });
     }else{
       await result.populate("reviews");
+      console.log('producto ',result)
       res.status(200).send(result);
     }
   } catch (error: any) {
