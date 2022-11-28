@@ -17,7 +17,6 @@ interface formData {
   description: string;
   price: number;
   image: string;
-  stock: number;
   category: string;
   colors: Array<string>;
   variants: Array<string>;
@@ -44,11 +43,6 @@ const schema = yup
       .min(0, "requiere un precio igual o superior a 0")
       .required("No olvides agregar el precio del prodcuto"),
     image: yup.string().required("Agrega un enlace de tu imagen"),
-    stock: yup
-      .number()
-      .typeError("Debes agregar el stock del producto")
-      .min(0, "el valor mínimo debe ser cero")
-      .required(),
     category: yup.string().required("Recuerda agregar la categoría"),
     colors: yup
       .array()
@@ -85,7 +79,6 @@ const FormPutProduct = () => {
     description: "",
     price: 0,
     image: "",
-    stock: 0,
     category: "",
     colors: [""],
     variants: [""],
@@ -116,7 +109,6 @@ const FormPutProduct = () => {
     description,
     price,
     image,
-    stock,
     category,
     colors,
     variants,
@@ -132,7 +124,6 @@ const FormPutProduct = () => {
           description,
           price,
           image: imgUrl,
-          stock,
           category,
           colors,
           variants,
@@ -150,7 +141,6 @@ const FormPutProduct = () => {
           rating,
           description,
           price,
-          stock,
           category,
           colors,
           variants,
@@ -278,23 +268,6 @@ const FormPutProduct = () => {
       <div className="mb-3.5 w-full">
         <div className="flex justify-center">
           <input
-            {...register("stock")}
-            id="stock"
-            type="text"
-            placeholder="Stock..."
-            className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
-            defaultValue={`${Product.stock}`}
-          />
-          *
-        </div>
-        {errors?.stock && (
-          <p className="text-red-600 font-bold">{errors.stock.message}</p>
-        )}
-      </div>
-
-      <div className="mb-3.5 w-full">
-        <div className="flex justify-center">
-          <input
             {...register("category")}
             id="category"
             type="text"
@@ -324,7 +297,6 @@ function async(
     description,
     price,
     image,
-    stock,
     category,
     colors,
     variants,

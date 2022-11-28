@@ -20,7 +20,6 @@ interface formData {
   description: string;
   price: number;
   image: string;
-  stock: number;
   category: string;
   colors: Array<object>;
   variants: Array<object>;
@@ -55,11 +54,6 @@ const schema = yup
     image: yup.mixed().test("required", "Debe subir una imagen", (value) => {
       return value && value.length;
     }),
-    stock: yup
-      .number()
-      .typeError("Debes agregar el stock del producto")
-      .min(0, "el valor mínimo debe ser cero")
-      .required(),
     category: yup.string().required("Recuerda agregar la categoría"),
     colors: yup
       .array()
@@ -97,7 +91,6 @@ const PostForm = () => {
     description: "",
     price: -1,
     image: "",
-    stock: -1,
     category: "",
     colors: [{}],
     variants: [{}],
@@ -178,7 +171,6 @@ const PostForm = () => {
     rating,
     description,
     price,
-    stock,
     category,
     colors,
   }:formData) => {
@@ -194,7 +186,6 @@ const PostForm = () => {
           description,
           price,
           image: imgUrl,
-          stock,
           category,
           colors,
           variants: variantsInput,
@@ -313,22 +304,6 @@ const PostForm = () => {
         } 
         {errors.image && (
           <p className="text-red-600 font-bold">{errors.image.message}</p>
-        )}
-      </div>
-
-      <div className="mb-3.5 w-full">
-        <div className="flex justify-center">
-          <input
-            {...register("stock")}
-            id="stock"
-            type="text"
-            placeholder="Stock..."
-            className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
-          />
-          *
-        </div>
-        {errors?.stock && (
-          <p className="text-red-600 font-bold">{errors.stock.message}</p>
         )}
       </div>
 

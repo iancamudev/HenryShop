@@ -8,7 +8,6 @@ export const productSchema = new Schema({
   description: { type: String, required: true },
   price: { type: Array<Number>, required: true },
   image: { type: String, required: true },
-  stock: { type: Number, required: true },
   category: { type: Schema.Types.ObjectId, required: true },
   deleted: { type: Boolean, default: false },
   reviews: [{ type: Schema.Types.ObjectId, ref: "Review" }],

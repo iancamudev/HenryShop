@@ -382,7 +382,6 @@ export const addNewProduct = async (prod: product) => {
     !prod ||
     !prod.name ||
     !prod.description ||
-    !prod.stock ||
     !prod.price ||
     !prod.category
   ) {
@@ -397,7 +396,6 @@ export const addNewProduct = async (prod: product) => {
         price: prod.price,
         rating: prod.rating,
         image: prod.image,
-        stock: prod.stock,
         category: categoryId,
         variants: prod.variants,
         variantName: prod.variantName,
