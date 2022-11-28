@@ -39,7 +39,7 @@ export const getAllProductsAdmin = async (
     
     const resultCategory = await Product.paginate(
       {
-        category: new RegExp(`${category}`, "i"),
+        category: {name : new RegExp(`${category}`, "i")},
       },
       {
         limit: pageSize,
@@ -73,7 +73,7 @@ export const getAllProductsAdmin = async (
     
     const resultCategory = await Product.paginate(
       {
-        category: new RegExp(`${category}`, "i"),
+        category: {name : new RegExp(`${category}`, "i")},
         name: new RegExp(`${name}`, "i"),
       },
       {
@@ -119,7 +119,7 @@ export const getAllProductsAdmin = async (
   ) {
     const resultCategory = await Product.paginate(
       {
-        category: new RegExp(`${category}`, "i"),
+        category: {name : new RegExp(`${category}`, "i")},
       },
       {
         limit: pageSize,
@@ -165,7 +165,7 @@ export const getAllProductsAdmin = async (
   else {
     const resultAll = await Product.paginate(
       {
-        category: new RegExp(`${category}`, "i"),
+        category:{name : new RegExp(`${category}`, "i")},
         name: new RegExp(`${name}`, "i"),
       },
       {
@@ -206,6 +206,7 @@ export const getWithfilters = async (
 ) => {
   const catObj = await Category.findOne({name: category});
   const catId = catObj? catObj._id: "undefined";
+  console.log(catId);
   if (
     catId === "undefined" &&
     name !== "undefined" &&
@@ -232,7 +233,7 @@ export const getWithfilters = async (
   ) {
     const resultCategory = await Product.paginate(
       {
-        category: new RegExp(`${catId}`, "i"),
+        category: catId,
         deleted: false,
       },
       {
@@ -266,7 +267,7 @@ export const getWithfilters = async (
   ) {
     const resultCategory = await Product.paginate(
       {
-        category: new RegExp(`${catId}`, "i"),
+        category: catId,
         name: new RegExp(`${name}`, "i"),
         deleted: false,
       },
@@ -306,7 +307,7 @@ export const getWithfilters = async (
   ) {
     const resultCategory = await Product.paginate(
       {
-        category: new RegExp(`${catId}`, "i"),
+        category: catId,
         deleted: false,
       },
       {
@@ -334,7 +335,7 @@ export const getWithfilters = async (
   } else {
     const resultAll = await Product.paginate(
       {
-        category: new RegExp(`${catId}`, "i"),
+        category: catId,
         name: new RegExp(`${name}`, "i"),
         deleted: false,
       },

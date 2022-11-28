@@ -97,7 +97,7 @@ const PostForm = () => {
   };
 
   const [variantsInput, setVariantsInput] = useState<variant[]>([]);
-  const [variantsError, setvariantsError] = useState('');
+  const [variantsError, setVariantsError] = useState('');
   const [variantName, setVariantName] = useState('');
 
   const [newVariant, setNewVariant] = useState<string>('');
@@ -131,11 +131,12 @@ const PostForm = () => {
       if(!variantsInput.map(e => e.value).includes(variantToObject.value)){
         handleVariants(variantToObject);
         setNewVariant('');
+        setVariantsError('');
       }else{
-        console.log("valor ya ingresado");
+        setVariantsError("Valor ya ingresado");
       }
     }else{
-      console.log('valor ingresado no valido');
+      setVariantsError('Valor ingresado no valido');
     }
   }
 
@@ -156,13 +157,9 @@ const PostForm = () => {
     imgSrc = target.files?.[0];
     setFile(imgSrc)
     let arr: string = "";
-    
-    
-      imgFile =  URL.createObjectURL(imgSrc);
-      arr = imgFile;
-      setInput((prev) => ({ ...prev, image: arr }));
-    
-
+    imgFile =  URL.createObjectURL(imgSrc);
+    arr = imgFile;
+    setInput((prev) => ({ ...prev, image: arr }));
   };
   
 
@@ -311,7 +308,7 @@ const PostForm = () => {
         <div className="flex justify-center">
           
           <select {...register('category')} onChange = {handleCategories}>
-            <option value = "all">
+            <option value = "">
               All
             </option >
             {categories?.map(category => {
@@ -325,13 +322,14 @@ const PostForm = () => {
       </div>
 
       <div className="my-5 border border-black border-solid w-full rounded-2xl pl-2 py-1">
-        Selecciona las tallas
+        Variantes del producto
         <div className="my-2 flex justify-center">
           <input name = "variant" value = {variantName} placeholder="Coloca el nombre del conjunto de variantes" onChange = {(event)=> setVariantName(event.target.value)}/>
           <ListDisplayer elements = {variantsInput} setState = {handleVariants} name = "Variantes agregadas"/>
           <input name="variantes" onChange = {(event) => setNewVariant(event.target.value)} value = {newVariant}/>
           <button className="bg-[#d9d9d9] w-full py-2 rounded-2xl font-bold my-1.5 mb-8" onClick = {handleNewVariant}>Agregar</button>
         </div>
+        {variantsError.length?(<p className="text-red-600 font-bold">{variantsError}</p>):null}
       </div>
       <span>* Campos obligatorios</span>
       <button className="bg-[#d9d9d9] w-full py-2 rounded-2xl font-bold my-1.5 mb-8">

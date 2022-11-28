@@ -44,10 +44,6 @@ const schema = yup
       .required("No olvides agregar el precio del prodcuto"),
     image: yup.string().required("Agrega un enlace de tu imagen"),
     category: yup.string().required("Recuerda agregar la categoría"),
-    colors: yup
-      .array()
-      .of(yup.string().oneOf(Object.values(colors)))
-      .nullable(),
     variants: yup
       .array()
       .of(yup.string().oneOf(Object.values(variants)))
@@ -60,9 +56,6 @@ const schema = yup
 const FormPutProduct = () => {
   const dispatch = useAppDispatch();
   const { id } = useParams();
-  useEffect(() => {
-    dispatch(getProductsById(id));
-  }, [dispatch, id]);
   const Product = useAppSelector((state) => state.products.productDetail);
   console.log(Product);
   const navigate = useNavigate();
@@ -154,6 +147,10 @@ const FormPutProduct = () => {
     }
   };
 
+  useEffect(() => {
+    dispatch(getProductsById(id));
+  }, [dispatch, id]);
+  
   return (
     <form
       onSubmit={handleSubmit(submitForm)}
