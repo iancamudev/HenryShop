@@ -419,6 +419,14 @@ export const deleteProduct = async (id: string) => {
   }
   return result;
 };
+export const activateProduct = async (id: string) => {
+  const result = await Product.findOneAndUpdate({ _id: id }, { deleted: false });
+
+  if (!result) {
+    throw new Error("No se puede activar el producto");
+  }
+  return result;
+};
 
 export const changeProperties = async (id: string, body: any) => {
   const product = await Product.findById(id);

@@ -73,7 +73,7 @@ export const DetailProduct: React.FunctionComponent = () => {
               )}
             </h4>
             <h3 className="text-left ml-4 font-bold mb-4 mr-4">
-              ${producto.price}
+              ${producto.price[producto.price.length-1]}
             </h3>
             <hr />
             <div className="flex items-center justify-center gap-4">

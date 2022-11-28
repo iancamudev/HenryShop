@@ -36,6 +36,7 @@ import AdminPanelPayments from "./componentes/Admin/AdminPanelPayments";
 import { Failure } from "./componentes/Failure";
 import { AboutUs } from "./componentes/AboutUs";
 import DefaultPage from "./componentes/DefaultPage";
+import PaymentsDetail from "./componentes/Admin/PaymentsDetail";
 
 function App() {
   const { username } = useAppSelector((state) => state.user);
@@ -102,6 +103,14 @@ function App() {
             element={
               <Protected>
                 <AdminPanel />
+              </Protected>
+            }
+          />
+          <Route
+            path="/admin/payments/:id"
+            element={
+              <Protected>
+                <PaymentsDetail />
               </Protected>
             }
           />
