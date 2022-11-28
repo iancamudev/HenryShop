@@ -22,7 +22,7 @@ const ShoppingCards = () => {
   const username = useAppSelector((state) => state.user.username)
 
   useEffect(() => {
-    dispatch(getAllShoppingByUser(String (username)));
+    dispatch(getAllShoppingByUser(String(username)));
   }, [dispatch, username]);
 
   useEffect(() => {
