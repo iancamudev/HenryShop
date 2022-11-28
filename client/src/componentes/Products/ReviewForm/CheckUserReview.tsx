@@ -1,16 +1,18 @@
-import React from "react";
+import React, { useEffect } from "react";
+import axiosPostCall from "../../../funciones/axiosPostCall";
 import { useAppSelector } from "../../../hooks";
 import FormReview from "./FormReview";
 
 interface ICheckUserRewviewProps {
   reviewed: boolean;
+  buyed: boolean
 }
 
-const CheckUserReview = ({reviewed}: ICheckUserRewviewProps) => {
+const CheckUserReview = ({reviewed, buyed}: ICheckUserRewviewProps) => {
   const { username, confirmed } = useAppSelector((state) => state.user);
 
   // Si está logueado, no muestr nada
-  if (!username || reviewed) return null;
+  if (!username || !buyed || reviewed) return null;
 
   // Si no está confirmado, mostrar aviso de que debe confirmar su mail
   if (!confirmed) return <ConfirmWarning />;

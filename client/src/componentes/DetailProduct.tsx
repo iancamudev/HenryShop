@@ -19,7 +19,7 @@ export const DetailProduct: React.FunctionComponent = () => {
   const { addToCart } = useShoppingCart();
   const [variante, setVariante] = useState(
     Products.find((i) => i.id === id)?.variants
-      ? (Products.find((i) => i.id === id)?.variants[0].value as string)
+      ? (Products.find((i) => i.id === id)?.variants[0]?.value as string)
       : ""
   );
 

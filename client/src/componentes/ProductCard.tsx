@@ -15,7 +15,7 @@ const ProductCard: React.FC<CardProps> = ({ product }: CardProps) => {
   const { addToCart, openCart } = useShoppingCart();
   const [variante, setVariante] = useState(
     Products.find((i) => i.id === product.id)?.variants
-      ? (Products.find((i) => i.id === product.id)?.variants[0].value as string)
+      ? (Products.find((i) => i.id === product.id)?.variants[0]?.value as string)
       : ""
   );
   const [quantity, setQuantity] = useState(1);
