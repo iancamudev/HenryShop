@@ -18,6 +18,7 @@ const NewsLetter = () => {
         register,
         handleSubmit,
         formState: { errors },
+        reset,
     } = useForm<formData>({
         resolver: yupResolver(schema),
     });
@@ -37,12 +38,14 @@ const NewsLetter = () => {
 
 
 
+
     const submitCall = ({
         email,
     }: formData) => {
 
         axios.post(`${bEnd}/newsletter`, { email })
         alert('Gracias por suscribirte, Email agregado a la newsletter')
+        reset();
 
 
     }
