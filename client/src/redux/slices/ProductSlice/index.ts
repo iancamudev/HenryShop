@@ -40,6 +40,7 @@ interface ProductState {
   productList: Array<ProductDetails>;
   productDetail: ProductDetails;
   carrouselList: Array<Object>;
+  carrouselLoading: boolean;
   productPages: Number;
   loading: boolean;
   error: string;
@@ -51,6 +52,7 @@ interface ProductState {
 const initialState: ProductState = {
   productList: [],
   carrouselList: [],
+  carrouselLoading: false,
   categoryList: [{id: "", name: ""}],
   productListAdmin:[],
   productDetail: {
@@ -105,6 +107,9 @@ const ProductSlice = createSlice({
     getBestOffersList(state, action: PayloadAction<Array<Object>>) {
       state.carrouselList = action.payload;
     },
+    setCarrouselLoading(state, action: PayloadAction<boolean>) {
+      state.carrouselLoading = action.payload;
+    },
     getCategoryList(state, action: PayloadAction<Array<category>>){
       state.categoryList = action.payload;
     }
@@ -123,4 +128,5 @@ export const {
   getCategoryList,
   getProductAdminList,
   clearProductAdminList,
+  setCarrouselLoading,
 } = ProductSlice.actions;

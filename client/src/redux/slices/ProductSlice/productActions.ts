@@ -12,6 +12,7 @@ import {
   getCategoryList,
   getProductAdminList,
   clearProductAdminList,
+  setCarrouselLoading
 } from "./index";
 
 export const URL_BACK_DEV: string = process.env.REACT_APP_BACKEND_URL as string;
@@ -20,19 +21,15 @@ export const URL_BACK_DEV: string = process.env.REACT_APP_BACKEND_URL as string;
 export const getAllProductsAdmin = (page?: number | null, filters?: Filters) => (dispatch: AppDispatch) => {
   dispatch(setLoading(true));
   dispatch(clearProductAdminList());
-  let url = `${URL_BACK_DEV}/products/admin${page ? `?page=${page}` : "?page="}${
-    filters?.name.length ? `&name=${filters.name}` : ""
-  }${
-    filters?.category.length ? `&category=${filters.category}` : ""
-  }${
-    filters?.property.length && !filters?.order.length
+  let url = `${URL_BACK_DEV}/products/admin${page ? `?page=${page}` : "?page="}${filters?.name.length ? `&name=${filters.name}` : ""
+    }${filters?.category.length ? `&category=${filters.category}` : ""
+    }${filters?.property.length && !filters?.order.length
       ? `&property=${filters.property}&order=desc`
       : ""
-  }${
-    filters?.property.length && filters?.order.length
+    }${filters?.property.length && filters?.order.length
       ? `&property=${filters.property}&order=${filters.order}`
       : ""
-  }`;
+    }`;
   // let url = `${URL_BACK_DEV}/products/admin${page ? `?page=${page}` : "?page="}&name=${filters?.name}&category=${filters?.category}&property=${filters?.property}&order=${filters?.order}`;
 
   axios
@@ -57,19 +54,15 @@ export const getAllProducts =
   (page?: number | null, filters?: Filters) => (dispatch: AppDispatch) => {
     dispatch(setLoading(true));
     dispatch(clearProductLsit());
-    let url = `${URL_BACK_DEV}/products${page ? `?page=${page}` : "?page="}${
-      filters?.name.length ? `&name=${filters.name}` : ""
-    }${
-      filters?.category.length ? `&category=${filters.category}` : ""
-    }${
-      filters?.property.length && !filters?.order.length
+    let url = `${URL_BACK_DEV}/products${page ? `?page=${page}` : "?page="}${filters?.name.length ? `&name=${filters.name}` : ""
+      }${filters?.category.length ? `&category=${filters.category}` : ""
+      }${filters?.property.length && !filters?.order.length
         ? `&property=${filters.property}&order=desc`
         : ""
-    }${
-      filters?.property.length && filters?.order.length
+      }${filters?.property.length && filters?.order.length
         ? `&property=${filters.property}&order=${filters.order}`
         : ""
-    }`;
+      }`;
 
     axios
       .get(url)
@@ -102,11 +95,14 @@ export const getProductsById =
   };
 
 export const getBestOffers = () => (dispatch: AppDispatch) => {
+  dispatch(setCarrouselLoading(true))
   axios
     .get(`${URL_BACK_DEV}/carrousel/bestOffers`)
     .then(({ data }) => dispatch(getBestOffersList(data)))
     .catch((error) => {
       console.error(error);
+    }).finally(() => {
+      dispatch(setCarrouselLoading(false))
     });
 };
 
