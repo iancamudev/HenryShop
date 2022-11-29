@@ -111,7 +111,7 @@ const ReviewCard = ({
 
         <button
           onClick={() => setEditReview(false)}
-          className="bg-gray-400 duration-300 hover:bg-gray-200 hover:duration-300 p-2 mt-4 font-bold rounded-3xl pl-4 pr-4 border-b-2 border-black"
+          className="bg-gray-400 duration-300 hover:bg-gray-200 hover:duration-300 p-2 mt-4 font-bold rounded-sm pl-4 pr-4 border-b-2 border-black"
         >
           Cancelar
         </button>
@@ -132,7 +132,7 @@ const ReviewCard = ({
       {editPermit && (
         <button
           onClick={() => setEditReview(true)}
-          className="bg-yellow duration-300 hover:bg-gray-200 hover:duration-300 p-2 mt-4 font-bold rounded-3xl pl-4 pr-4 border-b-2 border-black"
+          className="bg-yellow duration-300 hover:bg-gray-200 hover:duration-300 p-2 mt-4 font-bold rounded-sm pl-4 pr-4 border-b-2 border-black"
         >
           Editar reseña
         </button>

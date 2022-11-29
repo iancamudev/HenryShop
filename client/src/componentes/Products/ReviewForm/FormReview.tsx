@@ -96,7 +96,7 @@ const FormReview = ({ rating, text, putRute, reviewId }: IFormReviewProps) => {
         </p>
       )}
       <div>
-        <button className="bg-yellow duration-300 hover:bg-gray-200 hover:duration-300 p-2 mt-4 font-bold rounded-3xl pl-4 pr-4 border-b-2 border-black">
+        <button className="bg-yellow duration-300 hover:bg-gray-200 hover:duration-300 p-2 mt-4 font-bold rounded-sm pl-4 pr-4 border-b-2 border-black">
           Enviar Reseña
         </button>
       </div>

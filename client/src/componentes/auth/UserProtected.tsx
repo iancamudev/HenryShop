@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosGetCall from "../../funciones/axiosGetCall";
+import { Loading } from "../Loading";
 import UserLoader from "./UserLoader";
 
 interface IProtectedProps {
@@ -32,7 +33,7 @@ const UserProtected = ({ children }: IProtectedProps) => {
   }, [setDisplay, navigate, children]);
 
   // Replace with loader
-  return <>{display ? children : <UserLoader />}</>;
+  return <>{display ? children : <Loading />}</>;
 };
 
 export default UserProtected;
