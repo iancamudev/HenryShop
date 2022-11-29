@@ -1,32 +1,12 @@
-import { useEffect, useState } from "react";
 import { BiCopyright } from "react-icons/bi";
-import logoMobile from "../assets/hernyLogoSmall.png";
-import { GiHamburgerMenu } from "react-icons/gi";
 import { GrFacebookOption, GrInstagram, GrYoutube, GrTwitter } from "react-icons/gr";
-import { FaUserAlt } from "react-icons/fa";
-import Searchbar from "./Searchbar";
 import { Link } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../hooks";
-import { setFiltersAction } from "../redux/slices/FiltersSlice/filtersActions";
-import { useShoppingCart } from "./ShoppingCart/ContextShoppingCart";
-import { Button } from "react-bootstrap";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import getObjectSession from "../funciones/getObjectSession";
-import {
-  setUserData,
-  clearUserData,
-} from "../redux/slices/UserSlice/UserActions";
-import axios from "axios";
-import axiosGetCall from "../funciones/axiosGetCall";
 import NewsLetter from "./newsletter";
-import HeaderLink from './HeaderLink';
 import white from "../assets/SH-white2.png"
-
 
 const Footer = () => {
 
     return (
-
   <div className="py-5 w-full">
     <div className="h-32 bg-yellow flex justify-between items-center">
         <div className="pl-10 text-5xl text-left font-bold">CLUB<p>HENRY</p>
@@ -53,9 +33,11 @@ const Footer = () => {
         <div>
         Acerca de nosotros
         </div>
+        <Link to="/política-devoluciones" className="text-white hover:text-yellow">
         <div className="border-l pl-5 border-white">
         Politica de devoluciones
         </div>
+        </Link>
       </div>
       </div>
   </div>

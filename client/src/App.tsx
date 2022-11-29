@@ -42,6 +42,7 @@ import { FormCreated } from "./componentes/refunds/FormCreated";
 import DefaultPage from "./componentes/DefaultPage";
 import {getAllProducts} from './redux/slices/ProductSlice/productActions';
 import PaymentsDetail from "./componentes/Admin/PaymentsDetail";
+import ReturnPolicy from "./componentes/ReturnPolicy";
 
 function App() {
   const { username } = useAppSelector((state) => state.user);
@@ -159,6 +160,7 @@ function App() {
               </>
             }
           />
+          <Route path ="/política-devoluciones" element={<ReturnPolicy />} />
         </Routes>
       </div>
     </ShoppingCartProvider>
