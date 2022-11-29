@@ -6,17 +6,24 @@ import { getAllProducts } from "../../../redux/slices/ProductSlice/productAction
 import { URL_BACK_DEV } from "../../../redux/slices/ProductSlice/productActions";
 import { AiFillEye} from "react-icons/ai";
 import { getAllPayments } from "../../../redux/slices/AdminSlice/adminActions";
+import SearchBarPayment from "./SearchBarPayment";
+import Filters from "../../Filters";
+import { FiltersPayment } from "../../../redux/slices/AdminSlice";
 const PaymentsPanel = () => {
   let navigate = useNavigate();
+
   const Payments = useAppSelector((state) => state.admin.payments);
-  let id = 1;
+  console.log("pay", Payments)
+  const filters: FiltersPayment = useAppSelector((state) => state.admin.filtersPayment ) as  FiltersPayment;
   const paymentPages = useAppSelector((state) => state.admin.paymentsPages);
-  var array: Array<number> = [];
+  const [currentPage, setCurrentPage] = useState(1);
+  let id = 1;
+  
+  let array: Array<number> = [];
   for (let i = 1; i <= paymentPages; i++) {
     array.push(i);
   }
   const dispatch = useAppDispatch();
-  const [currentPage, setCurrentPage] = useState(1);
   useEffect(() => {
     dispatch(getAllPayments(currentPage));
   }, [currentPage]);
@@ -30,12 +37,14 @@ const PaymentsPanel = () => {
   return (
     <div className="flex justify-center items-center xl:w-10/12">
       <div className=" mt-8 mb-8 flex flex-col justify-center xl:w-10/12 shadow">
+        <SearchBarPayment/>
         <table className="shadow-2xl ">
           <tr className="w-12 border border-slate-300 bg-gray-200  rounded-xl ">
             <th className="p-2">
              <></>
             </th>
             <th></th>
+            
             <th>
               Page:
               <select
@@ -51,7 +60,7 @@ const PaymentsPanel = () => {
           </tr>
           <tr className="border border-black bg-slate-900	text-white rounded-xl ">
             <th className="border border-black font-normal p-2 pl-4 pr-4">
-              User ID
+              ID Compra
             </th>
             <th className="border border-black font-normal p-2">Pagos</th>
             <th className="border border-black font-normal p-2 pl-4 pr-4">
@@ -66,7 +75,7 @@ const PaymentsPanel = () => {
                 <td
                   className="pl-2 pr-2 bg-gray-300 border-black"
                 >
-                  {payment.userId.slice(0, 10)}
+                  {payment.id.slice(10)}
                 </td>
                 <td
                   className="pl-2 max-w-1/3 bg-gray-300  border-black"

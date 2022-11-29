@@ -8,9 +8,18 @@ import { Shopping } from "../../models/Shopping";
 
  }
  
-export const getAllShopAdmin = async (page: number) => {
-   const result = await Shopping.paginate( { page: page })
-   return result;
+export const getAllShopAdmin = async (page: number, id: String) => {
+ console.log("controller", page, id);
+   if(id !== "undefined"){
+      console.log("hola");
+      const result = await Shopping.paginate({_id: id}, {page: page});
+      return result;
+   }else{
+
+      const result = await Shopping.paginate({}, { page: page });
+      return result;
+   }
+
 }
 
 export const getShop = async (id: string) => {

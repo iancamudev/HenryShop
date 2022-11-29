@@ -35,10 +35,7 @@ const pageSize = 10;
 
 
 export const getAllUser = async (y: number, username?: string, order?: string, property?: string,) => {
-  console.log("controler", y, username, order, property)
-  console.log(username.length);
-  //   const resultUsers = await User.paginate( { page: y })
-  // return resultUsers;
+  
 
   if (
     username !== "undefined" &&
