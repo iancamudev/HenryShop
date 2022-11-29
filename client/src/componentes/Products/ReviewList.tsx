@@ -60,6 +60,7 @@ const ReviewList = ({ reviews }: ReviewProps) => {
       <hr />
       {reviews.map(({ review }, index) => {
         const editPermit = review.user.username === username;
+        console.log('la review ', review.id)
         return (
           <ReviewCard
             text={review.text}

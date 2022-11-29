@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Rating, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -40,12 +40,16 @@ const FormReview = ({ rating, text, putRute, reviewId }: IFormReviewProps) => {
     resolver: yupResolver(schema),
   });
 
-  text && setValue("text", text);
+  useEffect(()=>{
+    if(text) setValue("text", text);
+  }, [text, setValue])
+
 
   const handlerSubmit = handleSubmit((value) => {
     setResult("");
     if (putRute) {
       axiosPutCall(`/reviews/${reviewId}`, {
+        productId: productId,
         text: value.text,
         rating: ratingValue,
       })
