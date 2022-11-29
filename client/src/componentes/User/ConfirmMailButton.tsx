@@ -13,7 +13,7 @@ function ConfirmMailButton({ email }: IProps) {
   };
 
   return (
-    <div className="mt-8 p-2 border-2 border-solid border-red-600 rounded-3xl text-red-600 bg-red-300 font-bold">
+    <div className="m-auto mt-8 w-10/12 p-2 border-2 border-solid border-red-600 rounded-sm text-red-600 bg-red-300 font-bold max-w-md">
       <p>
         Su mail no ha sido confirmado. No podrá realizar compras ni comentarios
       </p>
@@ -22,7 +22,7 @@ function ConfirmMailButton({ email }: IProps) {
         su mail.
       </p>
       <button
-        className="p-4 my-4 rounded-lg text-white bg-red-600"
+        className="p-4 my-4 rounded-sm text-white bg-red-600"
         onClick={sendMailHandler}
       >
         Enviar Mail
