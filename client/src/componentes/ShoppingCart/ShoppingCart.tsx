@@ -102,7 +102,7 @@ export function ShoppingCart({ isOpen }: ShoppingCartProps) {
             style={{ width: "250px" }}
             className="justify-center items-center bg-gray-500 text-white font-bold py-2 px-4 rounded-full cursor-none"
           >
-            INICIA SESIÓN
+            LOGEATE/CONFIRMA CUENTA
           </button>
         )}
       </div>
