@@ -40,6 +40,7 @@ import { FormCreated } from "./componentes/refunds/FormCreated";
 
 
 import DefaultPage from "./componentes/DefaultPage";
+import {getAllProducts} from './redux/slices/ProductSlice/productActions';
 import PaymentsDetail from "./componentes/Admin/PaymentsDetail";
 
 function App() {
@@ -51,6 +52,7 @@ function App() {
     if (session) {
       dispatch(setUserData());
     }
+    dispatch(getAllProducts());
   }, []);
 
   return (
