@@ -56,7 +56,7 @@ const UserInfo = () => {
       
   }, [navigate]);
 
-  return <>{display ? <UserInfoShow user={info} /> : <>Loading</>}</>;
+  return <>{display ? <UserInfoShow user={info} /> : null}</>;
 
     
 };

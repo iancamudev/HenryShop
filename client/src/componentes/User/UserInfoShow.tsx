@@ -36,8 +36,8 @@ const UserInfoShow = ({ user }: IProps) => {
         }}
       >
         <button
-          disabled={confirmed}
-          className="p-2 bg-yellow rounded-lg font-bold"
+          disabled={!confirmed}
+          className={`${confirmed ? 'bg-yellow' : 'bg-slate-400 line-through'} p-2 rounded-lg font-bold`}
         >
           Editar Información
         </button>
