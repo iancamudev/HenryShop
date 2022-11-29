@@ -429,13 +429,11 @@ export const activateProduct = async (id: string) => {
 
 export const changeProperties = async (id: string, body: any) => {
   const product = await Product.findById(id);
-  const categoryFind = await Category.findOne( {name: body.category} );
-  const categoryId:any = categoryFind._id; 
 
   product.price.push(body.price);
   body.price = product.price;
 
-  const result = await Product.findOneAndUpdate({ _id: id }, {...body, category: categoryId});
+  const result = await Product.findOneAndUpdate({ _id: id }, {...body, category: product.category});
   if (!result) {
     throw new Error("No existe el producto");
   }
