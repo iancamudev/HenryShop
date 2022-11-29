@@ -18,7 +18,11 @@ export const addNewUser = async (user: user) => {
   ) {
     throw new Error("Flata enviar datos");
   }
+  const userEmail = await User.findOne({ email: user.email });
   const userFind = await User.findOne({ name: user.username });
+  if(userEmail){
+    throw new Error("Ya existe el usuario con ese email")
+  }
   if (!userFind) {
     let newUser = await User.create({ ...user });
     return newUser;

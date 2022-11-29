@@ -92,7 +92,7 @@ export const DetailProduct: React.FunctionComponent = () => {
                         handleChange(e);
                       }}
                       className="bg-yellow p-1 w-8 font-bold text-center"
-                      type="number"
+                      type="button"
                       name="cantidad"
                       value={quantity}
                     />

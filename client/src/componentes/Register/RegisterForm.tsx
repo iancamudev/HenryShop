@@ -64,8 +64,11 @@ const RegisterForm = () => {
         localStorage.setItem("userSession", JSON.stringify(data));
         navigate("/");
       })
-      .catch((e) => setResult(e.message));
+      .catch((e) => {setResult(e.response.data.error_message)
+      console.log(e)});
   });
+  
+  
 
   return (
     <form
@@ -124,12 +127,13 @@ const RegisterForm = () => {
       </div>
       {result.length ? <p className={errorStyle}>{result}</p> : null}
       <div className="flex flex-row justify-center items-center gap-2 sm:gap-3 xl:gap-3 mb-2">
-        <Link
-          to="/register"
+
+        
+        <button 
           className="bg-yellow w-auto py-2 px-4 rounded-sm font-bold my-1.5 hover:bg-black hover:text-yellow hover:duration-500 duration-300 shadow-lg"
         >
           Registrate
-        </Link>
+          </button>
       </div>
       <p className="mb-2">Ya tienes cuenta? <NavLink to="/Login" className="text-blue-600 underline">Inicia Sesion</NavLink></p>
     </form>
