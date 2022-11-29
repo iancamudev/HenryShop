@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import dayjs, { Dayjs } from "dayjs";
-import axios from "axios";
 import { MobileDatePicker } from "@mui/x-date-pickers";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -14,7 +13,7 @@ import axiosPutCall from "../../funciones/axiosPutCall";
 const errorStyle =
   "mt-1 text-red-600 font-bold bg-red-100 p-1 border-2 border-red-700 border-solid rounded-2xl";
 const inputStyle =
-  "border border-black border-solid w-full rounded-2xl pl-2 py-1";
+  "border border-black border-solid w-full rounded-sm pl-2 py-1";
 
 interface IFormData {
   name: string;
@@ -81,9 +80,9 @@ const UserEdit = () => {
   return (
     <form
       onSubmit={handlerSubmit}
-      className="flex justify-center flex-col items-center w-9/12 m-auto my-8"
+      className="flex justify-center flex-col items-center w-9/12 m-auto my-8 max-w-md"
     >
-      <h3 className="mb-4">Edición de datos</h3>
+      <h4 className="mb-4 font-bold md:text-3xl">Edición de datos</h4>
 
       <div className="mb-3.5 w-full">
         <input
@@ -128,12 +127,12 @@ const UserEdit = () => {
       </LocalizationProvider>
 
       {result.length ? <p className={errorStyle}>{result}</p> : null}
-      <button className="bg-[#d9d9d9] w-full py-2 rounded-2xl font-bold my-1.5">
+      <button className="bg-yellow duration-300 hover:bg-gray-200 hover:duration-300 w-full py-2 rounded-sm font-bold my-1.5 border-b-2 border-black">
         Guardar Cambios
       </button>
       <Link
         to="/User"
-        className="bg-[#d9d9d9] w-full py-2 rounded-2xl font-bold my-1.5 mb-8"
+        className="bg-yellow duration-300 hover:bg-gray-200 w-full py-2 rounded-sm font-bold my-1.5 mb-8 border-b-2 border-black"
       >
         Volver
       </Link>
