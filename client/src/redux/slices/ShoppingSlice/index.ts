@@ -3,20 +3,21 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 //INTERFACES
 
 export interface DateShop {
-    id: string;
-    createdAt: string;
+  id: string;
+  createdAt: string;
 }
 
 export interface ShoppingDetails {
-    color: string;
-    name: string;
-    quantity: number;
-    price: number;
-    total_Price: number;
-    image: string;
-    variante: string;
-    idShop: string;
-    description: string;
+  id: string;
+  color: string;
+  name: string;
+  quantity: number;
+  price: number;
+  total_Price: number;
+  image: string;
+  variante: string;
+  idShop: string;
+  description: string;
 }
 
 interface ShoppingState {
@@ -28,24 +29,25 @@ interface ShoppingState {
 
 //Definimos el estado
 const initialState: ShoppingState = {
-    shoppingList: [],
-    shoppingDetail: {
-          color: "",
-          name: "",
-          quantity: 0,
-          price: 0,
-          total_Price: 0,
-          image: "",
-          variante: "",
-          idShop: "",
-          description: "",
+  shoppingList: [],
+  shoppingDetail: {
+    id: '',
+    color: "",
+    name: "",
+    quantity: 0,
+    price: 0,
+    total_Price: 0,
+    image: "",
+    variante: "",
+    idShop: "",
+    description: "",
   },
-    shoppingDate: [],
-    dateShop: {
+  shoppingDate: [],
+  dateShop: {
     id: "",
     createdAt: ""
-    }
-
+  }
+  
 };
 
 //PORCION DE ESTADO GLOBAL
@@ -74,5 +76,5 @@ export const {
   getShoppingDetail,
   getShoppingDate,
   getDateShop
-  
+
 } = ShoppingSlice.actions;

@@ -18,7 +18,11 @@ export const addNewUser = async (user: user) => {
   ) {
     throw new Error("Flata enviar datos");
   }
+  const userEmail = await User.findOne({ email: user.email });
   const userFind = await User.findOne({ name: user.username });
+  if(userEmail){
+    throw new Error("Ya existe el usuario con ese email")
+  }
   if (!userFind) {
     let newUser = await User.create({ ...user });
     return newUser;
@@ -30,82 +34,82 @@ export const addNewUser = async (user: user) => {
 const pageSize = 10;
 
 
-export const getAllUser = async (y:number, username?: string, order?: string, property?: string, ) => {
- console.log("controler", y, username, order,property)
- console.log(username.length);
+export const getAllUser = async (y: number, username?: string, order?: string, property?: string,) => {
+  console.log("controler", y, username, order, property)
+  console.log(username.length);
   //   const resultUsers = await User.paginate( { page: y })
   // return resultUsers;
-  
-  if(
-    username !== "undefined"  &&
-    order !== "undefined") {
-      const resultName = await User.paginate(
-        {
-          name: new RegExp(`${username}`, "i")
-        }, 
-        {
-          limit: pageSize,
-          page: y,
-          sort: { [`${property}`]: order },
-        }
-        );
 
-    return resultName;
-  }
-
-  else if(
+  if (
     username !== "undefined" &&
-    order === "undefined") {
-      const resultName = await User.paginate(
-        {
-          name: new RegExp(`${username}`, "i")
-        }, 
-        {
-          limit: pageSize,
-          page: y,
-        }
-        );
-
-    return resultName;
-  }
-
-  else if(
-    username === "undefined"  &&
     order !== "undefined") {
-      const resultName = await User.paginate(
-        {
-        
-        }, 
-        {
-          limit: pageSize,
-          page: y,
-          sort: {[`${property}`]: order },
-        }
-        );
+    const resultName = await User.paginate(
+      {
+        name: new RegExp(`${username}`, "i")
+      },
+      {
+        limit: pageSize,
+        page: y,
+        sort: { [`${property}`]: order },
+      }
+    );
 
     return resultName;
   }
 
   else if (
-    username === "undefined"&& order === "undefined") {
-      const resultName = await User.paginate({}, 
-        {
-        limit: pageSize,
-        page: y,
-        sort: {[`${property}`]: order },
-    });
-    return resultName;
-  }
-  
-  else {
-    const resultAll = await User.paginate(
+    username !== "undefined" &&
+    order === "undefined") {
+    const resultName = await User.paginate(
       {
-        
+        name: new RegExp(`${username}`, "i")
       },
       {
         limit: pageSize,
         page: y,
-        sort: {[`${property}`]: order },
+      }
+    );
+
+    return resultName;
+  }
+
+  else if (
+    username === "undefined" &&
+    order !== "undefined") {
+    const resultName = await User.paginate(
+      {
+
+      },
+      {
+        limit: pageSize,
+        page: y,
+        sort: { [`${property}`]: order },
+      }
+    );
+
+    return resultName;
+  }
+
+  else if (
+    username === "undefined" && order === "undefined") {
+    const resultName = await User.paginate({},
+      {
+        limit: pageSize,
+        page: y,
+        sort: { [`${property}`]: order },
+      });
+    return resultName;
+  }
+
+  else {
+    const resultAll = await User.paginate(
+      {
+
+      },
+      {
+        limit: pageSize,
+        page: y,
+        sort: { [`${property}`]: order },
       }
     );
     return resultAll;
@@ -121,33 +125,33 @@ export const getUser = async (username: string) => {
 
 
 export const getUserShop = async (username: string) => {
-  const user = await User.findOne({username: username});
+  const user = await User.findOne({ username: username });
   const ids = user.shopping.map((id) => id.toString())
-  const shop = await Promise.all(ids.map(async el =>  {
-    
-      const result = await getShop(el)
-      
-      const newResult = result.products.map((e) => [{...e, idShop: result._id}] )
-      
-      return newResult
-     
+  const shop = await Promise.all(ids.map(async el => {
+
+    const result = await getShop(el)
+
+    const newResult = result.products.map((e) => [{ ...e, idShop: result._id }])
+
+    return newResult
+
   }))
-  
-   const shopF = shop.flat(2) 
-    
+
+  const shopF = shop.flat(2)
+
   return shopF
 
 }
 
 export const getDateShop = async (username: string) => {
-  const user = await User.findOne({username: username});
+  const user = await User.findOne({ username: username });
   const ids = user.shopping.map((id) => id.toString())
-  const shop = await Promise.all(ids.map(async el =>  {
-    
-      return await getShop(el)
-     
+  const shop = await Promise.all(ids.map(async el => {
+
+    return await getShop(el)
+
   }))
- 
+
   return shop
 }
 
@@ -208,15 +212,15 @@ export const updateUser = async (body: putBody, id: number) => {
   return tokenJson;
 };
 export const putSwitchUserDelete = async (id: string) => {
-  const result = await User.findOneAndUpdate({ _id: id}, { deleted: false })
+  const result = await User.findOneAndUpdate({ _id: id }, { deleted: false })
   return result
 }
 export const deleteUserByID = async (id: string) => {
-  const findIdUser = await User.findOneAndUpdate({ _id: id}, {deleted: true})
+  const findIdUser = await User.findOneAndUpdate({ _id: id }, { deleted: true })
   return findIdUser
 }
 
-export const userFilters = async ({order}:any) => {
+export const userFilters = async ({ order }: any) => {
 
   const result = await User.find({})
 }

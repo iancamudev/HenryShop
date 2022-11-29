@@ -35,9 +35,14 @@ import PaymentsPanel from "./componentes/Admin/PaymentsPanel/PaymentsPanel";
 import AdminPanelPayments from "./componentes/Admin/AdminPanelPayments";
 import { Failure } from "./componentes/Failure";
 import { AboutUs } from "./componentes/AboutUs";
+import { Refunds } from "./componentes/refunds/Refunds";
+import { FormCreated } from "./componentes/refunds/FormCreated";
+
+
 import DefaultPage from "./componentes/DefaultPage";
 import getAllProducts from './redux/slices/ProductSlice/productActions';
 import {useAppDispatch} from './hooks';
+import PaymentsDetail from "./componentes/Admin/PaymentsDetail";
 
 function App() {
   const { username } = useAppSelector((state) => state.user);
@@ -110,6 +115,14 @@ function App() {
             }
           />
           <Route
+            path="/admin/payments/:id"
+            element={
+              <Protected>
+                <PaymentsDetail />
+              </Protected>
+            }
+          />
+          <Route
             path="/admin/payments"
             element={
               <Protected>
@@ -133,6 +146,8 @@ function App() {
               </Protected>
             }
           />
+          <Route path="/formcreated" element={<FormCreated/>}/>
+          <Route path="/refunds/:id" element={<Refunds/>} />
           <Route path="/aboutus" element={<AboutUs />} />
           <Route path="/failure" element={<Failure />} />
           <Route path="/success" element={<Success />} />

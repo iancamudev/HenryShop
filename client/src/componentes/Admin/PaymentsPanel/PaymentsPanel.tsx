@@ -28,8 +28,8 @@ const PaymentsPanel = () => {
     setCurrentPage(y);
   };
   return (
-    <div className="flex justify-center items-center max-w-xs">
-      <div className=" mt-8 mb-8 flex flex-col justify-center shadow">
+    <div className="flex justify-center items-center xl:w-10/12">
+      <div className=" mt-8 mb-8 flex flex-col justify-center xl:w-10/12 shadow">
         <table className="shadow-2xl ">
           <tr className="w-12 border border-slate-300 bg-gray-200  rounded-xl ">
             <th className="p-2">
@@ -60,16 +60,18 @@ const PaymentsPanel = () => {
           </tr>
           {Payments &&
             Payments.map((payment) => (
+              payment.products.map((pago) => {
+                return (
               <tr className="border border-slate-300">
                 <td
                   className="pl-2 pr-2 bg-gray-300 border-black"
                 >
-                  {payment.userId}
+                  {payment.userId.slice(0, 10)}
                 </td>
                 <td
                   className="pl-2 max-w-1/3 bg-gray-300  border-black"
                 >
-                  {<p className="text-xs font-bold">{payment.products.map(x => x.name)}</p>}
+                  {<p className="text-xs font-bold">{pago.name}</p>}
                 </td>{" "}
                 <td
                   className="flex items-center justify-center bg-gray-300 p-2 border-black"
@@ -89,6 +91,8 @@ const PaymentsPanel = () => {
                   </button> */}
                 </td>
               </tr>
+                )
+              })
             ))}
         </table>
       </div>

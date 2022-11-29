@@ -1,6 +1,8 @@
-import React, { useState } from "react";
-import { useAppSelector } from "../../hooks";
+import React, { useEffect, useState } from "react";
+import axiosGetCall from "../../funciones/axiosGetCall";
+import { useAppDispatch, useAppSelector } from "../../hooks";
 import { IReview } from "../../redux/slices/ProductSlice";
+import { getAllShoppingByUser } from "../../redux/slices/ShoppingSlice/shoppingActions";
 import RatingStars from "./RatingStars";
 import CheckUserReview from "./ReviewForm/CheckUserReview";
 import FormReview from "./ReviewForm/FormReview";
@@ -11,8 +13,16 @@ interface ReviewProps {
 
 const ReviewList = ({ reviews }: ReviewProps) => {
   const { username } = useAppSelector((state) => state.user);
+  const { id } = useAppSelector((state) => state.products.productDetail);
+  const { shoppingList } = useAppSelector((state) => state.shopping);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getAllShoppingByUser(username));
+  }, [dispatch, username]);
 
   let reviewed = false;
+  let buyed = false;
   // ordena las reviews
   if (username) {
     const userReview = reviews.filter(({ review }) => {
@@ -31,11 +41,16 @@ const ReviewList = ({ reviews }: ReviewProps) => {
     }
   }
 
+  console.log(shoppingList);
+  shoppingList.forEach((pr) => {
+    if (pr.id === id) buyed = true;
+  });
+
   if (!reviews.length)
     return (
       <div className="mb-8 w-full lg:w-8/12">
         <h3 className="mb-8">Aún no hay reseñas</h3>
-        <CheckUserReview reviewed={reviewed} />
+        <CheckUserReview reviewed={reviewed} buyed={buyed} />
       </div>
     );
 
@@ -46,21 +61,18 @@ const ReviewList = ({ reviews }: ReviewProps) => {
       {reviews.map(({ review }, index) => {
         const editPermit = review.user.username === username;
         return (
-          <>
-            <ReviewCard
-              text={review.text}
-              rating={review.rating}
-              user={review.user.username}
-              flag={index % 2 === 0}
-              key={`review_${index}`}
-              editPermit={editPermit}
-              reviewId={review.id}
-            />
-            <hr />
-          </>
+          <ReviewCard
+            text={review.text}
+            rating={review.rating}
+            user={review.user.username}
+            flag={index % 2 === 0}
+            key={review.id}
+            editPermit={editPermit}
+            reviewId={review.id}
+          />
         );
       })}
-      <CheckUserReview reviewed={reviewed} />
+      <CheckUserReview reviewed={reviewed} buyed={buyed} />
     </div>
   );
 };
@@ -96,6 +108,7 @@ const ReviewCard = ({
           putRute={true}
           reviewId={reviewId}
         />
+
         <button
           onClick={() => setEditReview(false)}
           className="bg-gray-400 duration-300 hover:bg-gray-200 hover:duration-300 p-2 mt-4 font-bold rounded-3xl pl-4 pr-4 border-b-2 border-black"
@@ -106,7 +119,11 @@ const ReviewCard = ({
     );
 
   return (
-    <div className={`${flag ? bgColor : ""} w-full py-6`}>
+    <div
+      className={`${
+        flag ? bgColor : ""
+      } w-full py-6 border-t border-b border-slate-300 border-solid`}
+    >
       <div className="flex justify-around mb-4">
         <p className="font-bold">{editPermit ? "Tu reseña" : user}</p>
         <RatingStars value={rating} read_only={true} />

@@ -1,7 +1,19 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ProductDetails } from "../ProductSlice";
+
 
 //INTERFACES
+export interface PaymentProductDetails {
+  quantity: number;
+  id: string;
+  name: string;
+  rating: number;
+  description: string;
+  price: Array<number>;
+  total_Price: number;
+  image: string;
+  category: string;
+  variante: string;
+}
 export interface AdminUserDetail {
     confirmed: boolean;
     isAdmin: boolean;
@@ -16,7 +28,14 @@ export interface AdminUserDetail {
   }
 export interface Payments {
   userId: string;
-  products: Array<ProductDetails>;
+  products: Array<PaymentProductDetails>;
+  id: string;
+}
+interface PaymentDetail {
+  userId: string;
+  products: Array<PaymentProductDetails>;
+  createdAt: string;
+  updatedAt: string;
   id: string;
 }
   interface AdminUserState {
@@ -24,6 +43,7 @@ export interface Payments {
     userDetail: AdminUserDetail;
     userPages: Number;
     payments: Array<Payments>;
+    paymentdetail: PaymentDetail;
     paymentsPages: Number;
     filters: Object;
     error: string;
@@ -45,6 +65,7 @@ const initialState: AdminUserState = {
   },
   userPages: 0,
   payments: [],
+  paymentdetail: { userId: "", products: [], createdAt: "", updatedAt: "", id:""},
   paymentsPages: 0,
   filters: {
     username: "",
@@ -81,9 +102,12 @@ const AdminSlice = createSlice({
    setFiltersUsers(state, action: PayloadAction<Object>) {
     state.filters = action.payload;
   },
+   getPaymentDetail(state, action: PayloadAction<PaymentDetail>){
+    state.paymentdetail = action.payload;
+ },
   },
 });
 
 export default AdminSlice.reducer;
-export const { getUsersList, getUsersPages, getPayments,setFiltersUsers, getPaymentsPages, clearUsersList} =
+export const { getPaymentDetail, getUsersList, getUsersPages, getPayments,setFiltersUsers, getPaymentsPages, clearUsersList} =
   AdminSlice.actions;

@@ -38,7 +38,7 @@ const Filters = () => {
     <div className="flex flex-row items-center justify-center gap-4 w-full  mt-6  flex-wrap bg-gray-200 pt-2 pb-2">
       <div className=" h-auto bg-white  rounded-3xl h-12 flex flex-row gap-2 w-auto flex flex-row ">
         {filters &&
-          filtersClean().map((el) =>(
+          filtersClean().map((el) => (
             <button
               className="m-2 p-1 pl-2 pr-2 rounded-2xl border border-solid border-black text-sm  duration-300 hover:duration-300 hover:bg-gray-200 border-opacity-50 "
               name={el.name}
@@ -51,6 +51,7 @@ const Filters = () => {
               {el.value === "asc" && "Ascendente"}
               {el.value === "desc" && "Descendente"}
               {el.name === "category" && el.value}
+              {el.name === "name" && el.value}
             </button>
           ))}
       </div>

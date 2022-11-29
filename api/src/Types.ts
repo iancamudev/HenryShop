@@ -10,6 +10,15 @@ export interface review {
   product: object;
 }
 
+export interface refund {
+  buyer_name:String;
+  product_name: String;
+  reason: String;
+  customer_email: String;
+  quantity: Number;
+  purchase_id: String;
+}
+
 export interface product {
   name: String;
   rating: Number;

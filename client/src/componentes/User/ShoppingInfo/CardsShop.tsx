@@ -2,10 +2,8 @@ import React, { useEffect } from "react";
 import CardShop from "./CardShop"
 import { getAllShoppingByUser, getDateShopping } from "../../../redux/slices/ShoppingSlice/shoppingActions";
 import { getUserByUsername } from "../../../redux/slices/AdminSlice/adminActions";
-import { setUserData } from "../../../redux/slices/UserSlice/UserActions";
 import { useAppDispatch, useAppSelector } from "../../../hooks";
-import { useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
+import Header from "../../Header";
 
 const ShoppingCards = () => {
   const dispatch = useAppDispatch();
@@ -38,38 +36,37 @@ const ShoppingCards = () => {
    })
   console.log(total)
   return (
-    <div >
-      <div className="flex justify-end">
-      <Link to={"/"}><button className="flex justify-end  mt-5 bg-slate-400 hover:bg-slate-700 text-white font-bold py-2 px-4 rounded">HOME</button></Link>
-      </div>
+    <div className="w-full">
+      <Header/>
     <div className="flex w-full justify-center">
       <div>
       {
           total.length ? (
             total.map((producto, index) => 
-              <div key={index} className = "my-3 w-[55rem] border border--slate-500 rounded-xl shadow-lg">
+              <div key={index} className = "my-3 w-[55rem] border border-slate-200 rounded-xl shadow-lg">
                 <div className = "flex justify-between bg-slate-200 h-20 rounded-t-xl">
                 <div className = "flex w-2/3 bg-slate-400 rounded-tl-xl">
-                  <div className="px-20 pt-4"> FECHA DE PEDIDO: <p>{shoppingDate.map(e => e.id === producto[0].idShop 
+                  <div className="px-20 pt-4"> FECHA DE PEDIDO: <p>{shoppingDate.map(e => e.id === producto[0]?.idShop 
                   ? e.createdAt.substring(0,10)
                   : "" )}</p>
                 </div>
                 <div className="pl-10 pt-4 "> TOTAL DE COMPRA: <p>ARS {producto.reduce((acc, obj) => { return acc + obj.total_Price}, 0)}</p>
                 </div></div>
-                <div className="px-10 pt-4 bg-yellow rounded-tr-xl" > PEDIDO N° <p> {producto[0]?.idShop}</p></div>
+                <div className="px-10 pt-4 bg-slate-400 rounded-tr-xl" > PEDIDO N° <p> {producto[0]?.idShop}</p></div>
 
 
                 </div>
                 {
                 producto.map((el) => 
                 <div> <CardShop  products={el} />
+                
                 </div>)
               }</div>
             )
           
         ) : (
-            <div>
-              <p>No se encontraron productos</p>
+            <div className="text-xl pt-40">
+              <p>Aún no tienes compras registradas... <p className="text-3xl pt-10 font-medium">...Anímate, los productos están geniales!</p></p>
             </div>
           )}
       </div>

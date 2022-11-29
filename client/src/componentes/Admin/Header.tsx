@@ -23,8 +23,8 @@ const Header = () => {
           }}
           className={
             deploy
-              ? "-rotate-90 h-10 w-auto cursor-pointer duration-300"
-              : "h-10 w-auto cursor-pointer duration-300"
+              ? "-rotate-90 h-10 w-auto cursor-pointer duration-300 xl:h-0"
+              : "h-10 w-auto cursor-pointer duration-300 xl:h-0"
           }
         />
       </div>
