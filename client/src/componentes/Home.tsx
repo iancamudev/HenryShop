@@ -4,6 +4,7 @@ import Header from "./Header";
 import Filters from "./Filters";
 import ProductList from "./Products/ProductList";
 import Carrousel from "./carrousel/Carrousel";
+import Footer from "./Footer";
 
 const Home = () => {
   return (
@@ -13,6 +14,7 @@ const Home = () => {
       <Filters />
       <ProductList />
       <Pagination />
+      <Footer />
     </>
   );
 };
