@@ -254,6 +254,22 @@ router.get(
 //       }
 // });
 
+router.get("/shopping", async (req: Request, res: Response) => {
+  try {
+    const username = String(req.query.username);
+    const origin = String(req.query.origin);
+    const result = await getUserShop(username, origin);
+    result !== null
+      ? res.status(200).json(result)
+      : res.status(404).json({
+          error_message: "Ningún usuario encontrado con ese username",
+        });
+  } catch (error: any) {
+    console.log(error.message);
+    res.status(500).json({ error_message: error.message });
+  }
+});
+
 router.post(
   "/shopping",
   userValidation,
@@ -275,7 +291,7 @@ router.post(
       if (!user) {
         user = await GithubUser.findOne({ username: decodedToken.username });
       }
-
+      console.log(user);
       const productAndQuantity = async (ArrObj: any) => {
         let arr: any = [];
         let el: any;
@@ -300,13 +316,11 @@ router.post(
       };
 
       const productos = await productAndQuantity(productosForFind);
-      console.log(productos, user);
       if (user && productos) {
-        const us = await User.findById(user.id);
         const shopping = await addNewShop(user.id, productos);
         await shopping.save();
-        us.shopping = [...us.shopping, shopping._id];
-        await us.save();
+        user.shopping = [...user.shopping, shopping._id];
+        await user.save();
         res.status(200).send(shopping);
       }
     } catch (error) {
@@ -315,24 +329,11 @@ router.post(
   }
 );
 
-router.get("/shopping/:username", async (req: Request, res: Response) => {
+router.get("/shopdate", async (req: Request, res: Response) => {
   try {
-    const username = req.params.username;
-    const result = await getUserShop(username);
-    result !== null
-      ? res.status(200).json(result)
-      : res.status(404).json({
-          error_message: "Ningún usuario encontrado con ese username",
-        });
-  } catch (error: any) {
-    res.status(500).json({ error_message: error.message });
-  }
-});
-
-router.get("/shopdate/:username", async (req: Request, res: Response) => {
-  try {
-    const username = req.params.username;
-    const result = await getDateShop(username);
+    const username = String(req.query.username);
+    const origin = String(req.query.origin);
+    const result = await getDateShop(username, origin);
     result !== null
       ? res.status(200).json(result)
       : res.status(404).json({
@@ -350,12 +351,7 @@ router.get(
   async (req: Request, res: Response) => {
     try {
       const { username } = req.params;
-      // comparar el username mandado con el que está en el token
-      // const authorization = req.get("authorization");
-      // const token = authorization?.split(" ")[1] as string;
-      // compareUsernames(username, token);
       const user = await getUser(username);
-
       res.status(200).send({ user });
     } catch (error: any) {
       res.status(500).send({ message: error.message });

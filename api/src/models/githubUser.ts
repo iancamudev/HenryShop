@@ -20,7 +20,7 @@ githubUserSchema.set("toJSON", {
   },
 });
 
-interface GithubUserDocument extends Document, githubUser { }
+export interface GithubUserDocument extends Document, githubUser { }
 
 githubUserSchema.plugin(mongoosePaginate);
 

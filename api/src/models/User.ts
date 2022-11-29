@@ -39,7 +39,7 @@ userSchema.pre("save", async function (next) {
   }
 });
 
-interface UserDocument extends Document, user { }
+export interface UserDocument extends Document, user { }
 
 userSchema.plugin(mongoosePaginate);
 

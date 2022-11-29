@@ -12,18 +12,6 @@ import axiosGetCall from "../../funciones/axiosGetCall";
 import { userInfo } from "os";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-/*<Offcanvas show={isOpen} onHide = {closeCart}>
-            <Offcanvas.Header closeButton>
-                <Offcanvas.Title>Carrito</Offcanvas.Title>
-            </Offcanvas.Header>
-            <Offcanvas.Body>
-                <Stack gap = {3}>
-                    {cartItems.map(item => (
-                        <CartItem key = {item.id} {...item}/>
-                    ))}
-                </Stack>
-            </Offcanvas.Body>
-        </Offcanvas>*/
 
 type ShoppingCartProps = {
   isOpen: boolean;
@@ -53,11 +41,9 @@ export function ShoppingCart({ isOpen }: ShoppingCartProps) {
         }
       )
       .then(({ data }) => {
-        console.log(data.response.response.init_point);
-
         window.open(data.response.response.init_point, "_blank");
       });
-      console.log(cartItems)
+
   };
 
   return (
