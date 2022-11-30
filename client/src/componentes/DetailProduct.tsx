@@ -47,6 +47,7 @@ export const DetailProduct: React.FunctionComponent = () => {
     e.preventDefault();
     addToCart(id!, quantity, variante);
     setQuantity(1);
+    alert("Producto agragado al carrito");
   }
 
   return (

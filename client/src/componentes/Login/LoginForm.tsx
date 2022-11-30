@@ -49,7 +49,14 @@ const LoginForm = () => {
           localStorage.setItem("userSession", JSON.stringify(data));
           navigate("/");
         })
-        .catch((e) => setResult(e.response.data.message))
+        .catch((e) => {
+          if(e.response.data.error_message === "Cuenta deshabilitada"){
+            alert("No has podido iniciar sesion. Tu cuenta ha sido deshabilitada. Contáctate con el suporte.");
+            navigate("/");
+          }else{
+            setResult(e.response.data.message)
+          }
+        })
         .finally(() => {
           setSubmitting(false);
         });
