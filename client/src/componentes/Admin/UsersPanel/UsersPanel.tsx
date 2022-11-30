@@ -27,7 +27,7 @@ const UsersPanel = () => {
 
   const dispatch = useAppDispatch();
   const Users = useAppSelector((state) => state.admin.usersList);
-  const filters: Filters = useAppSelector((state) => state.admin.filters ) as Filters
+  const filters: Filters = useAppSelector((state) => state.admin.filters ) as Filters;
   const [currentPage, setCurrentPage] = useState(1);
   const [recharge, setRecharge] = useState("");
   useEffect(() => {

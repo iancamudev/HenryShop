@@ -24,7 +24,7 @@ const schema = yup
     description: yup
       .string()
       .min(0, "Se requiere por lo menos un caracter")
-      .max(80, "No se pueden una descripción mayor a 80 caracteres")
+      .max(200, "No se pueden una descripción mayor a 80 caracteres")
       .required(),
     price: yup
       .number()

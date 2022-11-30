@@ -34,7 +34,7 @@ const FiltersProductsAdmin = () => {
   };
 
   return (
-    <div className="flex flex-row items-center justify-center gap-4 w-full  mt-6  flex-wrap bg-gray-200 pt-2 pb-2">
+    <div className="flex flex-row border-b-2 border-opacity-40 border-gray-500 items-center justify-center gap-4 w-full  mt-6  flex-wrap bg-gray-200 pt-2 pb-2">
       <div className=" h-auto bg-white  rounded-3xl h-12 flex flex-row gap-2 w-auto flex flex-row ">
         {filters &&
           filtersClean().map((el) => (

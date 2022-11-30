@@ -44,16 +44,22 @@ router.post("/", async (req: Request, res: Response) => {
 
 router.get("/adminusers", async (req: Request, res: Response) => {
   try {
-    const { page } = req.query
+    const page: number = Number(req.query.page);
+    const id: string = String(req.query.id);
+    
     let result;
     let y: number;
-    page ? y = +page : y = 0; 
-    page ? result = await getAllShopAdmin(y) : result = await getAllShopAdmin(1);
-    res.send(result)
+    console.log("rout", page, id);
+    page ? (y = +page) : (y = 1);
+    result = await getAllShopAdmin(y, id);
+    console.log("result", result);
+     result !== null
+      ? res.status(200).json(result)
+      : res.status(404).json({ error_message: "Ninguna compra encontrada" });
   } catch (error) {
     res.status(400).send(error)
   }
-})
+});
 
 router.get("/:id", async (req: Request, res: Response) => {
   try {

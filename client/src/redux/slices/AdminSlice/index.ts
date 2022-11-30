@@ -14,6 +14,7 @@ export interface PaymentProductDetails {
   category: string;
   variante: string;
 }
+
 export interface AdminUserDetail {
     confirmed: boolean;
     isAdmin: boolean;
@@ -47,6 +48,7 @@ interface PaymentDetail {
     paymentsPages: Number;
     filters: Object;
     error: string;
+    filtersPayment: Object;
   }
 //Definimos el estado
 const initialState: AdminUserState = {
@@ -73,6 +75,9 @@ const initialState: AdminUserState = {
     order: "",
   },
   error: "",
+  filtersPayment: {
+    id_compra: "",
+  },
 };
 
 //PORCION DE ESTADO GLOBAL
@@ -102,12 +107,19 @@ const AdminSlice = createSlice({
    setFiltersUsers(state, action: PayloadAction<Object>) {
     state.filters = action.payload;
   },
+  setFiltersPayment(state, action: PayloadAction<Object>) {
+    state.filtersPayment = action.payload;
+  },
    getPaymentDetail(state, action: PayloadAction<PaymentDetail>){
     state.paymentdetail = action.payload;
  },
+ getClearPayments(state) {
+  state.error = "";
+  state.payments = [];
+}
   },
 });
 
 export default AdminSlice.reducer;
-export const { getPaymentDetail, getUsersList, getUsersPages, getPayments,setFiltersUsers, getPaymentsPages, clearUsersList} =
+export const { getPaymentDetail, getUsersList, getUsersPages, getPayments,setFiltersUsers,setFiltersPayment,getClearPayments, getPaymentsPages, clearUsersList} =
   AdminSlice.actions;
