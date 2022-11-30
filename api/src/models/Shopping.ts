@@ -3,16 +3,9 @@ import mongoosePaginate from "mongoose-paginate-v2"
 import { shopping } from "../Types";
 
 export const shoppingSchema = new Schema({
-    userId: {type: SchemaTypes.ObjectId, ref: "User"},
+    userId: {type: SchemaTypes.ObjectId},
     products: Array<{type: Schema.Types.ObjectId, ref: "Product"}>,
   }, { timestamps: true });
-  /*shoppingSchema.virtual('fecha')
-  .set(function(fecha) {
-    this.time = new Date(fecha);
-  })
-  .get(function(){
-    return this.time.toISOString().substring(0,10);
-  });*/
 
 shoppingSchema.set("toJSON", {
     transform: (_document, returnedObject) => {

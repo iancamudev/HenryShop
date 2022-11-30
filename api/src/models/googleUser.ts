@@ -21,7 +21,7 @@ googleUserSchema.set("toJSON", {
   },
 });
 
-interface GoogleUserDocument extends Document, googleUser {}
+export interface GoogleUserDocument extends Document, googleUser {}
 
 googleUserSchema.plugin(mongoosePaginate);
 
