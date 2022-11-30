@@ -132,6 +132,7 @@ routes.post("/payment", userValidation, async (req: Request, res: Response) => {
     };
 
     const productos = await productAndQuantity(productosForFind);
+    console.log(CLIENT_URL);
     if (productos && user) {
       let preference = {
         items: productos.map((el: any) => {
