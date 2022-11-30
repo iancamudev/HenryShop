@@ -254,21 +254,7 @@ router.get(
 //       }
 // });
 
-router.get("/shopping", async (req: Request, res: Response) => {
-  try {
-    const username = String(req.query.username);
-    const origin = String(req.query.origin);
-    const result = await getUserShop(username, origin);
-    result !== null
-      ? res.status(200).json(result)
-      : res.status(404).json({
-          error_message: "Ningún usuario encontrado con ese username",
-        });
-  } catch (error: any) {
-    console.log(error.message);
-    res.status(500).json({ error_message: error.message });
-  }
-});
+
 
 router.post(
   "/shopping",
@@ -329,11 +315,27 @@ router.post(
   }
 );
 
+router.get("/shopping", async (req: Request, res: Response) => {
+  try {
+    const query = String(req.query.query);
+    const origin = String(req.query.origin);
+    const result = await getUserShop(query, origin);
+    result !== null
+      ? res.status(200).json(result)
+      : res.status(404).json({
+          error_message: "Ningún usuario encontrado con ese username",
+        });
+  } catch (error: any) {
+    console.log(error.message);
+    res.status(500).json({ error_message: error.message });
+  }
+});
+
 router.get("/shopdate", async (req: Request, res: Response) => {
   try {
-    const username = String(req.query.username);
+    const query = String(req.query.query);
     const origin = String(req.query.origin);
-    const result = await getDateShop(username, origin);
+    const result = await getDateShop(query, origin);
     result !== null
       ? res.status(200).json(result)
       : res.status(404).json({

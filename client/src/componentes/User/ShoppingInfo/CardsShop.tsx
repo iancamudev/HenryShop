@@ -83,7 +83,16 @@ const ShoppingCards = () => {
   }, [user]);
 
   useEffect(() => {
-    dispatch(getDateShopping(session.username, session.origin));
+     if(session.origin === "default") {
+      dispatch(getDateShopping(session.username, session.origin));
+    }
+    if(session.origin === "google") {
+      dispatch(getDateShopping(session.email, session.origin));
+    }
+    if(session.origin === "github") {
+      console.log('github');
+      dispatch(getDateShopping(session.username, session.origin));
+    }
   }, [shopsByUser]);
 
 

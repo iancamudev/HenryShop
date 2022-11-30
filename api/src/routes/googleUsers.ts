@@ -87,13 +87,12 @@ routes.get('/login/failed', (req:Request, res:Response) => {
 
 routes.get('/google/callback', passport.authenticate('google',{
 		failureRedirect: '/login/failed',
-		successRedirect: '/googleusers/login/success'
 	}
-),(req:Request, res:Response) => {
+), async (req:Request, res:Response) => {
 		try{
 			let newUser: string= JSON.stringify(req.user);
 			let newUser2: any = (JSON.parse(newUser) as object);
-			console.log(newUser2.emails[0].value);
+			console.log("requser", newUser2);
 			const newUserObj:googleUser | null = typeof newUser2 === 'object'? {
 				name: newUser2.displayName,
 				googleId: newUser2.id,
@@ -103,8 +102,8 @@ routes.get('/google/callback', passport.authenticate('google',{
 				confirmed: true,
 				shopping: []
 			}: null;
-			const result:object | null = typeof newUserObj !== null? addNewGoogleUser((newUserObj as googleUser)): null;
-			res.redirect(`${CLIENT_URL}/googleusers/login/success`);
+			const result:object | null = typeof newUserObj !== null? await addNewGoogleUser((newUserObj as googleUser)): null;
+			res.redirect(`/googleusers/login/success`);
 		}catch(error:any){
 			console.log(error.message);
 		}

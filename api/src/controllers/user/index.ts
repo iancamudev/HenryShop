@@ -132,7 +132,6 @@ export const getUserShop = async (query: string, origin: string) => {
   if(origin === "google") user = await GoogleUser.findOne({ email: query });
   if(origin === "github") user = await GithubUser.findOne({ username: query });
   const ids = user?.shopping.map((id:any) => id.toString())
-  console.log("ids",ids);
   const shop = await Promise.all(ids.map(async (el:any) => {
     const result = await getShop(el)
     const newResult = result.products.map((e) => [{ ...e, idShop: result._id }])
@@ -150,6 +149,7 @@ export const getDateShop = async (query: string, origin: string) => {
   if(origin === "default") user = await User.findOne({ username: query });
   if(origin === "google") user = await GoogleUser.findOne({ email: query });
   if(origin === "github") user = await GithubUser.findOne({ username: query });
+  console.log("QUERYYY",query);
   const ids = user.shopping.map((id:any) => id.toString())
   const shop = await Promise.all(ids.map(async (el:any) => {
 
