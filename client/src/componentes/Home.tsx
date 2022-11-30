@@ -1,18 +1,20 @@
-import React, { useState, useEffect, lazy } from "react";
+import React from "react";
 import Pagination from "./Pagination";
-import ProductCards from "./ProductCards";
 import Header from "./Header";
-import axios from "axios";
 import Filters from "./Filters";
+import ProductList from "./Products/ProductList";
+import Carrousel from "./carrousel/Carrousel";
+import Footer from "./Footer";
 
 const Home = () => {
-
   return (
     <>
       <Header />
+      <Carrousel />
       <Filters />
-      <ProductCards />
-      <Pagination />
+      <ProductList />
+      {window.innerWidth > 800 && <Pagination />}
+      <Footer />
     </>
   );
 };

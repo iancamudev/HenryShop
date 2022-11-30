@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import dayjs, { Dayjs } from "dayjs";
-import axios from "axios";
 import { MobileDatePicker } from "@mui/x-date-pickers";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { TextField } from "@mui/material";
 import axiosPutCall from "../../funciones/axiosPutCall";
+import FormSubmittingLoader from "../FormSubmittingLoader";
 
 const errorStyle =
   "mt-1 text-red-600 font-bold bg-red-100 p-1 border-2 border-red-700 border-solid rounded-2xl";
 const inputStyle =
-  "border border-black border-solid w-full rounded-2xl pl-2 py-1";
+  "border border-black border-solid w-full rounded-sm pl-2 py-1";
 
 interface IFormData {
   name: string;
@@ -36,6 +36,7 @@ const schema = yup
 const UserEdit = () => {
   const navigate = useNavigate();
   const [result, setResult] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   const location = useLocation();
   const { username, name, email, birthday } = location.state;
@@ -61,6 +62,7 @@ const UserEdit = () => {
   };
 
   const handlerSubmit = handleSubmit(({ username, name, email }) => {
+    setSubmitting(true);
     setResult("");
     const birthday = newBirthday?.format("YYYY-MM-DD");
 
@@ -75,15 +77,18 @@ const UserEdit = () => {
         window.localStorage.setItem("userSession", newToken);
         navigate("/");
       })
-      .catch((e) => setResult(e.message));
+      .catch((e) => setResult(e.message))
+      .finally(() => {
+        setSubmitting(false);
+      });
   });
 
   return (
     <form
       onSubmit={handlerSubmit}
-      className="flex justify-center flex-col items-center w-9/12 m-auto my-8"
+      className="flex justify-center flex-col items-center w-9/12 m-auto my-8 max-w-md"
     >
-      <h3 className="mb-4">Edición de datos</h3>
+      <h4 className="mb-4 font-bold md:text-3xl">Edición de datos</h4>
 
       <div className="mb-3.5 w-full">
         <input
@@ -128,15 +133,21 @@ const UserEdit = () => {
       </LocalizationProvider>
 
       {result.length ? <p className={errorStyle}>{result}</p> : null}
-      <button className="bg-[#d9d9d9] w-full py-2 rounded-2xl font-bold my-1.5">
-        Guardar Cambios
-      </button>
-      <Link
-        to="/User"
-        className="bg-[#d9d9d9] w-full py-2 rounded-2xl font-bold my-1.5 mb-8"
-      >
-        Volver
-      </Link>
+      {submitting ? (
+        <FormSubmittingLoader />
+      ) : (
+        <>
+          <button className="bg-yellow duration-300 hover:bg-gray-200 hover:duration-300 w-full py-2 rounded-sm font-bold my-1.5 border-b-2 border-black">
+            Guardar Cambios
+          </button>
+          <Link
+            to="/User"
+            className="bg-yellow duration-300 hover:bg-gray-200 w-full py-2 rounded-sm font-bold my-1.5 mb-8 border-b-2 border-black"
+          >
+            Volver
+          </Link>
+        </>
+      )}
     </form>
   );
 };

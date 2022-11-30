@@ -3,9 +3,9 @@ import mongoosePaginate from "mongoose-paginate-v2"
 import { shopping } from "../Types";
 
 export const shoppingSchema = new Schema({
-    userId: {type: SchemaTypes.ObjectId, ref: "User"},
-    products: Array<{type: Schema.Types.ObjectId, ref: "Product"}>
-  });
+    userId: {type: SchemaTypes.ObjectId},
+    products: Array<{type: Schema.Types.ObjectId, ref: "Product"}>,
+  }, { timestamps: true });
 
 shoppingSchema.set("toJSON", {
     transform: (_document, returnedObject) => {

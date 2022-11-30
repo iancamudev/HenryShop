@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import logo from "../../assets/logoHenryBlack.png";
+import logo from "../../assets/hernyLogoSmall.png";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [deploy, setDeploy] = useState(false);
@@ -13,16 +13,18 @@ const Header = () => {
   };
   return (
     <nav className="flex flex-col sticky w-screen">
-      <div className=" h-20 p-2 pl-2 pr-4 bg-yellow flex justify-between items-center ">
-        <img src={logo} alt="Logo de Henry" className="h-full select-none" />
+      <div className=" h-20 p-2 pl-2 pr-4 bg-yellow min-[600px]:bg-sky-300 shadow-xl flex justify-between items-center ">
+        <Link to='/'>
+        <img src={logo} alt="Logo de Henry" className="ml-4 h-8 select-none" />
+        </Link>
         <GiHamburgerMenu
           onClick={() => {
             setDeploy(!deploy);
           }}
           className={
             deploy
-              ? "-rotate-90 h-10 w-auto cursor-pointer duration-300"
-              : "h-10 w-auto cursor-pointer duration-300"
+              ? "-rotate-90 h-10 w-auto cursor-pointer duration-300 xl:h-0"
+              : "h-10 w-auto cursor-pointer duration-300 xl:h-0"
           }
         />
       </div>
@@ -49,6 +51,12 @@ const Header = () => {
               className="font-bold mt-4  hover:delay-300 hover:cursor-pointer pl-2 hover:pl-4 duration-300"
             >
               Products
+            </h5>
+            <h5
+              onClick={() => navigate('/admin/payments')}
+              className="font-bold mt-4  hover:delay-300 hover:cursor-pointer pl-2 hover:pl-4 duration-300"
+            >
+              Payments
             </h5>
             {/* {categoryDeploy && (
               <div className="animate-open-menu origin-top">

@@ -5,25 +5,13 @@ import { Drawer } from "@mui/material";
 import { useAppSelector } from "../../hooks";
 import axios from "axios";
 import { redirect } from "react-router-dom";
-import sc from "../../assets/SC.gif";
-import { IoMdCloseCircle } from "react-icons/io";
+import sc from "../../assets/SC.gif"
+
 import { useEffect, useState } from "react";
 import axiosGetCall from "../../funciones/axiosGetCall";
 import { userInfo } from "os";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-/*<Offcanvas show={isOpen} onHide = {closeCart}>
-            <Offcanvas.Header closeButton>
-                <Offcanvas.Title>Carrito</Offcanvas.Title>
-            </Offcanvas.Header>
-            <Offcanvas.Body>
-                <Stack gap = {3}>
-                    {cartItems.map(item => (
-                        <CartItem key = {item.id} {...item}/>
-                    ))}
-                </Stack>
-            </Offcanvas.Body>
-        </Offcanvas>*/
 
 type ShoppingCartProps = {
   isOpen: boolean;
@@ -53,19 +41,17 @@ export function ShoppingCart({ isOpen }: ShoppingCartProps) {
         }
       )
       .then(({ data }) => {
-        console.log(data.response.response.init_point);
-
         window.open(data.response.response.init_point, "_blank");
       });
+
   };
+
   return (
     <Drawer anchor="right" open={isOpen} onClose={closeCart}>
-      <button className="mt-4 ml-2 ">
-        <IoMdCloseCircle onClick={closeCart} className=" w-12	h-12" />
-      </button>
-      <div className="text-center py-5 px-10  font-bold font-serif text-4xl ">
+      <div><div className="text-center py-5 px-10  font-bold font-serif text-4xl ">
         Carrito de Compras
       </div>
+      <button className="w-8 h-8 text-black rounded-lg border border-gray-300 m-4 bg-yellow" onClick={closeCart}>X</button></div>
       {cartItems.map((item) => (
         <CartItem key={item.id} {...item} />
       ))}
@@ -74,7 +60,10 @@ export function ShoppingCart({ isOpen }: ShoppingCartProps) {
           Total:{" $"}
           {cartItems.reduce((total, cartItem) => {
             const prod = Products.find((i) => i.id === cartItem.id);
-            return total + (prod?.price || 0) * cartItem.quantity;
+            return (
+              total +
+              (prod?.price[prod.price.length - 1] || 0) * cartItem.quantity
+            );
           }, 0)}
         </div>
       ) : (
@@ -99,7 +88,7 @@ export function ShoppingCart({ isOpen }: ShoppingCartProps) {
             style={{ width: "250px" }}
             className="justify-center items-center bg-gray-500 text-white font-bold py-2 px-4 rounded-full cursor-none"
           >
-            NO HABILITADO
+            LOGEATE/CONFIRMA CUENTA
           </button>
         )}
       </div>

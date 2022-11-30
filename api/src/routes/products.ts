@@ -7,6 +7,7 @@ import {
   changeProperties,
   getWithfilters,
   findByName,
+  activateProduct,
 } from "../controllers/product/index";
 import { Product } from "../models/Product";
 import User from "../models/User";
@@ -24,27 +25,23 @@ const routes = Router();
 
 routes.get("/admin", async (req: Request, res: Response) => {
   try {
-    const { name } = req.query;
-    if (name && typeof name === "string") {
-
-      const findName = await findByName(name);
-      
-      if(!findName.docs.length){
-        res.status(200).send("No se encontro el producto con ese nombre");
-      }
-      else {
-        res.status(200).send(findName);
-      }
-      
-    } else {
-      const result = await getAllProductsAdmin();
-      if(!result.docs){
-        res.status(200).send("No se encontraron productos");
-      }
-      res.status(200).send(result);
-    }
-  } catch (error) {
-    console.log(error);
+    const page: number = Number(req.query.page);
+    const name: string = String(req.query.name);
+    const category: string = String(req.query.category);
+    const order: string = String(req.query.order);
+    const property: string = String(req.query.property);
+    page === 0 ? page + 1 : page;
+    const result: any = await getAllProductsAdmin(
+      page,
+      category,
+      name,
+      property,
+      order
+    );
+    if (result) res.status(200).json(result);
+    else res.status(400).json({ error_message: "not found" });
+  } catch (error: any) {
+    res.status(500).json({ error_message: error.message });
   }
 });
 
@@ -73,14 +70,17 @@ routes.get("/:id", async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const result = await getProductById(id);
-    console.log(id);
     if (!result) {
       res
-        .status(200)
+        .status(404)
         .json({ error_message: "No se encontro el producto con ese id" });
+    } else {
+      await result.populate("reviews");
+      console.log("producto ", result);
+      res.status(200).send(result);
     }
-    res.status(200).send(result);
   } catch (error: any) {
+    console.log(error.message);
     res.status(500).json({ error_message: error.message });
   }
 });
@@ -89,7 +89,6 @@ routes.get("/:id", async (req: Request, res: Response) => {
 routes.post("/", async (req: Request, res: Response) => {
   try {
     const newProduct = req.body;
-    
     if (!newProduct) {
       res.status(400).send({ error: "Info Missing" });
     }
@@ -100,33 +99,8 @@ routes.post("/", async (req: Request, res: Response) => {
   }
 });
 
-//DELETE
-routes.delete("/:id", async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const del = await deleteProduct(id);
-    console.log(del);
-    res.status(200).json({ message: "Producto eliminado" });
-  } catch (error) {
-    console.log(error);
-  }
-});
-
-//PUT
-routes.put("/:id", async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const body = req.body;
-    await changeProperties(id, body);
-    res.status(200).json({ message: "Parámetros cambiados correctamente" });
-  } catch (error) {
-    console.log(error);
-  }
-});
-
 routes.post("/payment", userValidation, async (req: Request, res: Response) => {
   try {
-    console.log('paymenttttttt');
     const productosForFind = req.body.products;
     let token = req.get("authorization");
     if (token) {
@@ -137,10 +111,10 @@ routes.post("/payment", userValidation, async (req: Request, res: Response) => {
     if (decodedToken) {
       user = await User.findOne({ _id: decodedToken.id });
     }
-    if(!user){
+    if (!user) {
       user = await GoogleUser.findOne({ email: decodedToken.email });
     }
-    if(!user){
+    if (!user) {
       user = await GithubUser.findOne({ username: decodedToken.username });
     }
 
@@ -156,9 +130,7 @@ routes.post("/payment", userValidation, async (req: Request, res: Response) => {
     };
 
     const productos = await productAndQuantity(productosForFind);
-    console.log(productos,user);
     if (productos && user) {
-      console.log('asssssssss');
       let preference = {
         items: productos.map((el: any) => {
           return {
@@ -169,13 +141,13 @@ routes.post("/payment", userValidation, async (req: Request, res: Response) => {
             description: el.description,
             category_id: "art",
             quantity: el.quantity,
-            unit_price: el.price,
+            unit_price: el.price.at(-1),
           };
         }),
         back_urls: {
           success: "http://localhost:3000/success",
-          failure: "http://www.failure.com",
-          pending: "http://www.pending.com",
+          failure: "http://localhost:3000/failure",
+          pending: "http://localhost:3000/failure",
         },
         auto_return: "approved",
         binary_mode: true,
@@ -183,15 +155,47 @@ routes.post("/payment", userValidation, async (req: Request, res: Response) => {
       mercadopago.preferences
         .create(preference)
         .then((response: any) => {
-          console.log(response);
           res.json({ response });
         })
         .catch((error: any) => {
-          console.error(error);
         });
     }
   } catch (error) {
     res.status(401).send({ error });
   }
 });
+
+//DELETE
+routes.delete("/:id", async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const del = await deleteProduct(id);
+    console.log(del);
+    res.status(200).json({ message: "Producto eliminado" });
+  } catch (error) {
+    console.log(error);
+  }
+});
+routes.put("/activate/:id", async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const del = await activateProduct(id);
+    console.log(del);
+    res.status(200).json({ message: "Producto activado" });
+  } catch (error) {
+    console.log(error);
+  }
+});
+//PUT
+routes.put("/:id", async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const body = req.body;
+    const result = await changeProperties(id, body);
+    res.status(200).json({ message: "Parámetros cambiados correctamente" });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 export default routes;
