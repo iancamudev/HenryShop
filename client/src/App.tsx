@@ -46,7 +46,9 @@ import ReturnPolicy from "./componentes/ReturnPolicy";
 
 function App() {
   const { username } = useAppSelector((state) => state.user);
-
+  const token = JSON.parse(
+    window.localStorage.getItem("userSession") as string
+  );
   const dispatch = useAppDispatch();
   useEffect(() => {
     const session = getObjectSession();
@@ -83,17 +85,17 @@ function App() {
           <Route path="/shopping" element={<ShoppingCards />} />
           <Route path="/" element={<ProductCards />} />
           <Route path="/users/confirmation/:token" element={<Confirmation />} />
-          <Route
-            path="/User"
-            element={
-              <UserProtected>
-                <>
-                  <Header />
-                  <UserInfo />
-                </>
-              </UserProtected>
-            }
-          />
+          {token?.origin === "default"?(<Route
+              path="/User"
+              element={
+                <UserProtected>
+                  <>
+                    <Header />
+                    <UserInfo />
+                  </>
+                </UserProtected>
+              }
+            />):null}
           <Route
             path="/UserEdit"
             element={
