@@ -27,6 +27,7 @@ const PaymentsPanel = () => {
     var y: number = +x;
     setCurrentPage(y);
   };
+  console.log(array)
   return (
     <div className="flex justify-center items-center xl:w-10/12">
       <div className=" mt-8 mb-8 flex flex-col justify-center xl:w-10/12 shadow">

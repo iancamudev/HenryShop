@@ -8,7 +8,8 @@ import { TextField } from "@mui/material";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
-import { Link, useNavigate, NavLink } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
+import FormSubmittingLoader from "../FormSubmittingLoader";
 
 const errorStyle =
   "mt-1 text-red-600 font-bold bg-red-100 p-1 border-2 border-red-700 border-solid rounded-sm";
@@ -34,6 +35,7 @@ const schema = yup
 const RegisterForm = () => {
   const navigate = useNavigate();
   const [result, setResult] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   const [value, setValue] = React.useState<Dayjs | null>(dayjs(Date.now()));
   const {
@@ -50,6 +52,7 @@ const RegisterForm = () => {
 
   const handlerSubmit = handleSubmit(({ username, name, email, password }) => {
     setResult("");
+    setSubmitting(true);
     const back_url = process.env.REACT_APP_BACKEND_URL;
     const birthday = value?.format("YYYY-MM-DD");
     axios
@@ -64,11 +67,14 @@ const RegisterForm = () => {
         localStorage.setItem("userSession", JSON.stringify(data));
         navigate("/");
       })
-      .catch((e) => {setResult(e.response.data.error_message)
-      console.log(e)});
+      .catch((e) => {
+        setResult(e.response.data.error_message);
+        console.log(e);
+      })
+      .finally(() => {
+        setSubmitting(false);
+      });
   });
-  
-  
 
   return (
     <form
@@ -127,15 +133,22 @@ const RegisterForm = () => {
       </div>
       {result.length ? <p className={errorStyle}>{result}</p> : null}
       <div className="flex flex-row justify-center items-center gap-2 sm:gap-3 xl:gap-3 mb-2">
-
-        
-        <button 
-          className="bg-yellow w-auto py-2 px-4 rounded-sm font-bold my-1.5 hover:bg-black hover:text-yellow hover:duration-500 duration-300 shadow-lg"
-        >
-          Registrate
-          </button>
+        {submitting ? (
+          <FormSubmittingLoader />
+        ) : (
+          <>
+            <button className="bg-yellow w-auto py-2 px-4 rounded-sm font-bold my-1.5 hover:bg-black hover:text-yellow hover:duration-500 duration-300 shadow-lg">
+              Registrate
+            </button>
+          </>
+        )}
       </div>
-      <p className="mb-2">Ya tienes cuenta? <NavLink to="/Login" className="text-blue-600 underline">Inicia Sesion</NavLink></p>
+      <p className="mb-2">
+        Ya tienes cuenta?{" "}
+        <NavLink to="/Login" className="text-blue-600 underline">
+          Inicia Sesion
+        </NavLink>
+      </p>
     </form>
   );
 };

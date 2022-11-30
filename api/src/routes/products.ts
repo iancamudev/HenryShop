@@ -130,7 +130,6 @@ routes.post("/payment", userValidation, async (req: Request, res: Response) => {
     };
 
     const productos = await productAndQuantity(productosForFind);
-    console.log(productos, user);
     if (productos && user) {
       let preference = {
         items: productos.map((el: any) => {
@@ -156,11 +155,9 @@ routes.post("/payment", userValidation, async (req: Request, res: Response) => {
       mercadopago.preferences
         .create(preference)
         .then((response: any) => {
-          console.log(response);
           res.json({ response });
         })
         .catch((error: any) => {
-          console.error(error);
         });
     }
   } catch (error) {

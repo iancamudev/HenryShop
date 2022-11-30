@@ -41,10 +41,14 @@ import { FormCreated } from "./componentes/refunds/FormCreated";
 import DefaultPage from "./componentes/DefaultPage";
 import { getAllProducts } from "./redux/slices/ProductSlice/productActions";
 import PaymentsDetail from "./componentes/Admin/PaymentsDetail";
+import Footer from "./componentes/Footer";
+import ReturnPolicy from "./componentes/ReturnPolicy";
 
 function App() {
   const { username } = useAppSelector((state) => state.user);
-
+  const token = JSON.parse(
+    window.localStorage.getItem("userSession") as string
+  );
   const dispatch = useAppDispatch();
   useEffect(() => {
     const session = getObjectSession();
@@ -81,17 +85,17 @@ function App() {
           <Route path="/shopping" element={<ShoppingCards />} />
           <Route path="/" element={<ProductCards />} />
           <Route path="/users/confirmation/:token" element={<Confirmation />} />
-          <Route
-            path="/User"
-            element={
-              <UserProtected>
-                <>
-                  <Header />
-                  <UserInfo />
-                </>
-              </UserProtected>
-            }
-          />
+          {token?.origin === "default"?(<Route
+              path="/User"
+              element={
+                <UserProtected>
+                  <>
+                    <Header />
+                    <UserInfo />
+                  </>
+                </UserProtected>
+              }
+            />):null}
           <Route
             path="/UserEdit"
             element={
@@ -139,7 +143,10 @@ function App() {
             path="/admin/:id"
             element={
               <Protected>
-                <EditProduct />
+                <>
+                  <EditProduct />
+                  <Footer />
+                </>
               </Protected>
             }
           />
@@ -148,7 +155,12 @@ function App() {
           <Route path="/aboutus" element={<AboutUs />} />
           <Route path="/failure" element={<Failure />} />
           <Route path="/success" element={<Success />} />
-          <Route path="/unauthorized" element={<Unaothorized />} />
+          <Route
+            path="/unauthorized"
+            element={
+              <Navigate to='/login'/>
+            }
+          />
           <Route
             path="*"
             element={
@@ -158,6 +170,7 @@ function App() {
               </>
             }
           />
+          <Route path ="/política-devoluciones" element={<ReturnPolicy />} />
         </Routes>
       </div>
     </ShoppingCartProvider>

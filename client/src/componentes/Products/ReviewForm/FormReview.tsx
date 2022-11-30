@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Rating, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -6,6 +6,7 @@ import * as yup from "yup";
 import axiosPostCall from "../../../funciones/axiosPostCall";
 import { useAppSelector } from "../../../hooks";
 import axiosPutCall from "../../../funciones/axiosPutCall";
+import FormSubmittingLoader from "../../FormSubmittingLoader";
 
 interface IFormReviewProps {
   rating?: number;
@@ -29,6 +30,7 @@ const FormReview = ({ rating, text, putRute, reviewId }: IFormReviewProps) => {
     (state) => state.products.productDetail
   );
   const [result, setResult] = useState("");
+  const [submitting, setSubmitting] = useState(false);
   const [ratingValue, setRatingValue] = useState(rating || 1);
 
   const {
@@ -40,19 +42,26 @@ const FormReview = ({ rating, text, putRute, reviewId }: IFormReviewProps) => {
     resolver: yupResolver(schema),
   });
 
-  text && setValue("text", text);
+  useEffect(() => {
+    if (text) setValue("text", text);
+  }, [text, setValue]);
 
   const handlerSubmit = handleSubmit((value) => {
     setResult("");
+    setSubmitting(true);
     if (putRute) {
       axiosPutCall(`/reviews/${reviewId}`, {
+        productId: productId,
         text: value.text,
         rating: ratingValue,
       })
         .then(({ data }) => {
           window.location.reload();
         })
-        .catch((e) => setResult(e.response.data.message));
+        .catch((e) => {
+          setSubmitting(false);
+          setResult(e.response.data.message);
+        });
     } else {
       axiosPostCall(`/reviews`, {
         productId: productId,
@@ -62,7 +71,10 @@ const FormReview = ({ rating, text, putRute, reviewId }: IFormReviewProps) => {
         .then(({ data }) => {
           window.location.reload();
         })
-        .catch((e) => setResult(e.response.data.message));
+        .catch((e) => {
+          setSubmitting(false);
+          setResult(e.response.data.message);
+        });
     }
   });
 
@@ -96,9 +108,13 @@ const FormReview = ({ rating, text, putRute, reviewId }: IFormReviewProps) => {
         </p>
       )}
       <div>
-        <button className="bg-yellow duration-300 hover:bg-gray-200 hover:duration-300 p-2 mt-4 font-bold rounded-sm pl-4 pr-4 border-b-2 border-black">
-          Enviar Reseña
-        </button>
+        {submitting ? (
+          <FormSubmittingLoader />
+        ) : (
+          <button className="bg-yellow duration-300 hover:bg-gray-200 hover:duration-300 p-2 mt-4 font-bold rounded-sm pl-4 pr-4 border-b-2 border-black">
+            Enviar Reseña
+          </button>
+        )}
       </div>
     </form>
   );

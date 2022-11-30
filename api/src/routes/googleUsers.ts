@@ -90,6 +90,7 @@ routes.get("/login/failed", (req: Request, res: Response) => {
   res.status(401).json({ error: true, message: "login failed" });
 });
 
+
 routes.get(
   "/google/callback",
   passport.authenticate("google", {
@@ -124,6 +125,7 @@ routes.get(
     }
   }
 );
+
 
 routes.get(
   "/google",
