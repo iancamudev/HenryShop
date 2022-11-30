@@ -1,10 +1,12 @@
 import { user } from "../../Types";
 import { User } from "../../models/User";
-import { GoogleUser } from "../../models/googleUser";
 import { Shopping } from "../../models/Shopping";
 import { getShop } from "../ShopCart";
 import e from "express";
 import { Query } from "mongoose";
+import GithubUser from "../../models/githubUser";
+import GoogleUser from "../../models/googleUser";
+
 
 const jwt = require("jsonwebtoken");
 
@@ -124,17 +126,16 @@ export const getUser = async (username: string) => {
 };
 
 
-export const getUserShop = async (username: string) => {
-  const user = await User.findOne({ username: username });
-  const ids = user.shopping.map((id) => id.toString())
-  const shop = await Promise.all(ids.map(async el => {
-
+export const getUserShop = async (query: string, origin: string) => {
+  let user:any;
+  if(origin === "default") user = await User.findOne({ username: query });
+  if(origin === "google") user = await GoogleUser.findOne({ email: query });
+  if(origin === "github") user = await GithubUser.findOne({ username: query });
+  const ids = user?.shopping.map((id:any) => id.toString())
+  const shop = await Promise.all(ids.map(async (el:any) => {
     const result = await getShop(el)
-
     const newResult = result.products.map((e) => [{ ...e, idShop: result._id }])
-
     return newResult
-
   }))
 
   const shopF = shop.flat(2)
@@ -143,10 +144,14 @@ export const getUserShop = async (username: string) => {
 
 }
 
-export const getDateShop = async (username: string) => {
-  const user = await User.findOne({ username: username });
-  const ids = user.shopping.map((id) => id.toString())
-  const shop = await Promise.all(ids.map(async el => {
+export const getDateShop = async (query: string, origin: string) => {
+  let user:any;
+  if(origin === "default") user = await User.findOne({ username: query });
+  if(origin === "google") user = await GoogleUser.findOne({ email: query });
+  if(origin === "github") user = await GithubUser.findOne({ username: query });
+  console.log("QUERYYY",query);
+  const ids = user.shopping.map((id:any) => id.toString())
+  const shop = await Promise.all(ids.map(async (el:any) => {
 
     return await getShop(el)
 
