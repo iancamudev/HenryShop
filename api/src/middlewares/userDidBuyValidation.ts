@@ -5,6 +5,7 @@ import { GithubUser } from "../models/githubUser";
 const { request } = require("http");
 const jwt = require("jsonwebtoken");
 import { getUserById, getDateShop } from '../controllers/user'
+import { Shopping } from "../models/Shopping";
 
 import {GoogleUserDocument} from '../models/googleUser';
 import {GithubUserDocument} from '../models/githubUser'
@@ -44,11 +45,13 @@ module.exports = async (req: any, res: any, next: any) => {
     let buyed = false;
     shop.forEach((sh:any) => {
       sh.products.forEach((pr: any) => {
+        console.log('product buyed: ', pr.id)
         if (pr.id === productId) {
           buyed = true;
         }
       })
     })
+    console.log('buyed ', buyed)
     if (!buyed)
       return res.status(500).send({ message: 'Debe comprar este producto antes de poder dejar una reseña' })
     next();

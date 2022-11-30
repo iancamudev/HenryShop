@@ -56,7 +56,7 @@ const UserInfoShow = ({ user }: IProps) => {
           </Link>
         </div>
       </div>
-      {false ? null : <ConfirmMailButton email={email} />}
+      {confirmed ? null : <ConfirmMailButton email={email} />}
     </div>
   );
 };
