@@ -219,11 +219,11 @@ const Header = () => {
                   Mis compras
               </h5>
               </Link>
-              <Link to="/User">
+              {token?.origin === 'default'?(<Link to="/User">
                 <h5 className="pl-2 pt-3 hover:pl-4 hover:delay-300 duration-300 font-bold hover:cursor-pointer">
                   Ir al Perfil
                 </h5>
-              </Link>
+              </Link>):null}
               </div>
             ) : null}
             <Link to="/">
