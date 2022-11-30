@@ -295,7 +295,14 @@ router.post(
         const shopping = await addNewShop(user.id, productos);
         await shopping.save();
         const newShopping = [...user.shopping, shopping._id];
-        const results = await User.findOneAndUpdate({_id: user.id}, {shopping: newShopping});
+        let results = null;  
+        if(newShopping){
+          results = await User.findOneAndUpdate({_id: user.id}, {shopping: newShopping});
+        }if(!results){
+          results = await GoogleUser.findOneAndUpdate({_id: user.id}, {shopping: newShopping});
+        }if(!results){
+          results = await GithubUser.findOneAndUpdate({_id: user.id}, {shopping: newShopping});
+        }
         res.status(200).send(results);
       }
     } catch (error) {
@@ -343,7 +350,7 @@ router.get(
     try {
       const { username } = req.params;
       const user = await getUser(username);
-      res.status(200).send({ user });
+      res.status(200).send(user);
     } catch (error: any) {
       res.status(500).send({ message: error.message });
     }
