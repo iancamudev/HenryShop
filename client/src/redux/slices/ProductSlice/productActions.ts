@@ -17,7 +17,6 @@ import {
 
 export const URL_BACK_DEV: string = process.env.REACT_APP_BACKEND_URL as string;
 
-
 export const getAllProductsAdmin = (page?: number | null, filters?: Filters) => (dispatch: AppDispatch) => {
   dispatch(setLoading(true));
   dispatch(clearProductAdminList());
