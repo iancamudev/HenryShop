@@ -71,12 +71,12 @@ const Header = () => {
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
   // let userData;
-  const getUser = async () => {
-    const result = await axios.get(
-      `${REACT_APP_BACKEND_URL}/users/getuser/${token?.username}`
-    );
-    setUserProps(result.data);
-  };
+  // const getUser = async () => {
+  //   const result = await axios.get(
+  //     `${REACT_APP_BACKEND_URL}/users/getuser/${token?.username}`
+  //   );
+  //   setUserProps(result.data);
+  // };
 
   const getCategories = async () => {
     const result = await axios.get( 
@@ -87,7 +87,7 @@ const Header = () => {
 
   useEffect(() => {
     const session = getObjectSession();
-    getUser();
+    // getUser();
     if (session) {
       dispatch(setUserData());
     }
@@ -219,11 +219,11 @@ const Header = () => {
                   Mis compras
               </h5>
               </Link>
-              <Link to="/User">
+              {token?.origin === 'default'?(<Link to="/User">
                 <h5 className="pl-2 pt-3 hover:pl-4 hover:delay-300 duration-300 font-bold hover:cursor-pointer">
                   Ir al Perfil
                 </h5>
-              </Link>
+              </Link>):null}
               </div>
             ) : null}
             <Link to="/">

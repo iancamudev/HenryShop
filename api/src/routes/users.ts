@@ -128,7 +128,6 @@ router.post("/login", async (req: Request, res: Response) => {
 });
 
 router.get("/isAdmin", adminValidation, async (req: Request, res: Response) => {
-  console.log("yep admin");
   try {
     res.status(200).send("ok");
   } catch (error: any) {
@@ -185,7 +184,6 @@ router.get("/admin/:username", async (req: Request, res: Response) => {
 });
 
 router.get("/isUser", userValidation, async (req: Request, res: Response) => {
-  console.log("yep user");
   try {
     res.status(200).send("ok");
   } catch (error: any) {
@@ -223,7 +221,6 @@ router.get(
   userValidation,
   async (req: Request, res: Response) => {
     try {
-      console.log("entro a la ruta getUserByToken");
       const authorization = req.get("authorization");
 
       let token: string | undefined = authorization?.split(" ")[1];
@@ -262,7 +259,6 @@ router.post(
       if (!user) {
         user = await GithubUser.findOne({ username: decodedToken.username });
       }
-
       const productAndQuantity = async (ArrObj: any) => {
         let arr: any = [];
         let el: any;
@@ -287,13 +283,11 @@ router.post(
       };
 
       const productos = await productAndQuantity(productosForFind);
-      
       if (user && productos) {
-        const us = await User.findById(user.id);
         const shopping = await addNewShop(user.id, productos);
         await shopping.save();
-        us.shopping = [...us.shopping, shopping._id];
-        await us.save();
+        user.shopping = [...user.shopping, shopping._id];
+        await user.save();
         res.status(200).send(shopping);
       }
     } catch (error) {
@@ -302,24 +296,27 @@ router.post(
   }
 );
 
-router.get("/shopping/:username", async (req: Request, res: Response) => {
+router.get("/shopping", async (req: Request, res: Response) => {
   try {
-    const username = req.params.username;
-    const result = await getUserShop(username);
+    const query = String(req.query.query);
+    const origin = String(req.query.origin);
+    const result = await getUserShop(query, origin);
     result !== null
       ? res.status(200).json(result)
       : res.status(404).json({
           error_message: "Ningún usuario encontrado con ese username",
         });
   } catch (error: any) {
+    console.log(error.message);
     res.status(500).json({ error_message: error.message });
   }
 });
 
-router.get("/shopdate/:username", async (req: Request, res: Response) => {
+router.get("/shopdate", async (req: Request, res: Response) => {
   try {
-    const username = req.params.username;
-    const result = await getDateShop(username);
+    const query = String(req.query.query);
+    const origin = String(req.query.origin);
+    const result = await getDateShop(query, origin);
     result !== null
       ? res.status(200).json(result)
       : res.status(404).json({
@@ -337,12 +334,7 @@ router.get(
   async (req: Request, res: Response) => {
     try {
       const { username } = req.params;
-      // comparar el username mandado con el que está en el token
-      // const authorization = req.get("authorization");
-      // const token = authorization?.split(" ")[1] as string;
-      // compareUsernames(username, token);
       const user = await getUser(username);
-
       res.status(200).send({ user });
     } catch (error: any) {
       res.status(500).send({ message: error.message });

@@ -6,6 +6,7 @@ export interface IUserState {
   confirmed: boolean;
 }
 
+
 const initialState: IUserState = {
   token: "",
   username: "",

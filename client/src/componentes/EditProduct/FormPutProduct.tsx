@@ -182,7 +182,7 @@ const FormPutProduct = () => {
         id="name"
         type="text"
         placeholder="Name..."
-        className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
+        className="border border-black border-solid w-full rounded-sm pl-2 py-1"
         defaultValue={`${Product.name}`}
       />
       *
@@ -199,7 +199,7 @@ const FormPutProduct = () => {
         id="description"
         type="text"
         placeholder="Description..."
-        className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
+        className="border border-black border-solid w-full rounded-sm pl-2 py-1"
         defaultValue={`${Product.description}`}
       />
       *
@@ -216,7 +216,7 @@ const FormPutProduct = () => {
         id="price"
         type="text"
         placeholder="Price..."
-        className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
+        className="border border-black border-solid w-full rounded-sm pl-2 py-1"
         defaultValue={`${Product.price[Product.price.length - 1]}`}
       />
       *
@@ -234,7 +234,7 @@ const FormPutProduct = () => {
         type="file"
         onChange={(e) => imagePreview(e)}
         placeholder="Image..."
-        className="border border-black border-solid w-full rounded-2xl pl-2 py-1"
+        className="border border-black border-solid w-full rounded-sm pl-2 py-1"
       />
       *
     </div>
@@ -266,36 +266,19 @@ const FormPutProduct = () => {
       <p className="text-red-600 font-bold">{errors.image.message}</p>
     )}
   </div>
-{/* 
-  <div className="mb-3.5 w-full">
-    <div className="flex justify-center">
-      
-      <select {...register('category')} onChange = {handleCategories}>
-        <option selected value = {defaultCategory?.name}>
-          {defaultCategory.name}
-        </option >
-        {categories && categories.map(category => {
-          return(<option key = {category} value = {category}>{category}</option>)
-        })}
-      </select>*
-    </div>
-    {errors?.category && (
-      <p className="text-red-600 font-bold">{errors.category.message}</p>
-    )}
-  </div> */}
 
-  <div className="my-5 border border-black border-solid w-full rounded-2xl pl-2 py-1">
+  <div className="my-5 border border-black border-solid w-full rounded-sm pl-2 py-1">
     Variantes del producto
-    <div className="my-2 flex justify-center">
-      <input name = "variant" value = {variantName} placeholder="Coloca el nombre del conjunto de variantes" onChange = {(event)=> setVariantName(event.target.value)}/>
+    <div className="my-2 flex flex-col items-center justify-center">
+      <input className = "w-8/12 mt-4 border border-black border-solid" name = "variant" value = {variantName} placeholder="Coloca el nombre del conjunto de variantes" onChange = {(event)=> setVariantName(event.target.value)}/>
+      <input className = "w-8/12 mt-4 border border-black border-solid"  name="variantes" onChange = {(event) => setNewVariant(event.target.value)} placeholder = "agrega nueva variante..." value = {newVariant}/>
+      <button className="border-b-2 border-black mt-4 duration-300 hover:bg-gray-200 hover:duration-300 w-1/3 py-2 rounded-sm bg-yellow font-bold my-1.5 mb-8" onClick = {handleNewVariant}>Agregar</button>
       <ListDisplayer elements = {variantsInput} setState = {handleVariants} name = "Variantes agregadas"/>
-      <input name="variantes" onChange = {(event) => setNewVariant(event.target.value)} value = {newVariant}/>
-      <button className="bg-[#d9d9d9] w-full py-2 rounded-2xl font-bold my-1.5 mb-8" onClick = {handleNewVariant}>Agregar</button>
     </div>
     {variantsError.length?(<p className="text-red-600 font-bold">{variantsError}</p>):null}
   </div>
   <span>* Campos obligatorios</span>
-  <button className="my-5 bg-[#d9d9d9] w-full py-2 rounded-2xl font-bold my-1.5">
+  <button className="w-fit px-2 py-2 rounded-sm font-bold my-1.5 duration-300 hover:bg-gray-200 hover:duration-300 py-2 rounded-sm bg-yellow font-bold my-1.5 mb-8">
     Editar producto
   </button>
 </form>

@@ -17,7 +17,6 @@ export const setUserData = () => (dispatch: AppDispatch) => {
       );
     }else if(session.origin === 'github'){
       axiosGetCall("/githubusers/getGithubUserByToken").then((response) =>{
-        console.log(response.data);
         dispatch(setData({username: response.data.username, confirmed:response.data.confirmed, token: '' }));
       }
       );
