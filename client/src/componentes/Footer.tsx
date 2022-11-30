@@ -15,7 +15,7 @@ import NewsLetter from "./newsletter";
 import HeaderLink from "./HeaderLink";
 import white from "../assets/SH-white2.png";
 
-import white from "../assets/SH-white2.png"
+
 
 
 const widht = window.innerWidth;
@@ -40,7 +40,7 @@ const Footer = () => {
             <GrYoutube/>
             <GrTwitter/></div>
             <div className="mr-10 w-2/5 h-5 border-b border-white"></div></div>
-            <img src={white} className="aboslute h-20 w-48 "/>
+            <img src={white} className="aboslute h-20 w-48 " alt="img"/>
             <p className="absolute pt-24 flex text-xs text-white">Copyright < BiCopyright className="mx-1 mt-0.5" />Henry Shop 2022</p>
           <div className="flex mt-5 text-sm text-white space-x-5 items-center">
             <div>
