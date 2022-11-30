@@ -5,7 +5,7 @@ import { FaLeaf } from "react-icons/fa";
 interface category {
   id: string;
   name: string;
-};
+}
 
 export interface variant {
   quantity: number;
@@ -19,8 +19,8 @@ export interface IReview {
     text: string;
     user: {
       username: string;
-    }
-  }
+    };
+  };
 }
 
 export interface ProductDetails {
@@ -33,7 +33,7 @@ export interface ProductDetails {
   image: string;
   stock: number;
   category: string;
-  variants:Array<variant>;
+  variants: Array<variant>;
   variantName: string;
   reviews: Array<IReview>;
 }
@@ -47,7 +47,7 @@ interface ProductState {
   loading: boolean;
   error: string;
   categoryList: Array<category>;
-  productListAdmin: Array<ProductDetails>
+  productListAdmin: Array<ProductDetails>;
 }
 
 //Definimos el estado
@@ -55,8 +55,8 @@ const initialState: ProductState = {
   productList: [],
   carrouselList: [],
   carrouselLoading: false,
-  categoryList: [{id: "", name: ""}],
-  productListAdmin:[],
+  categoryList: [{ id: "", name: "" }],
+  productListAdmin: [],
   productDetail: {
     id: "",
     name: "",
@@ -66,8 +66,8 @@ const initialState: ProductState = {
     image: "",
     stock: 0,
     category: "",
-    variants:[],
-    variantName:"",
+    variants: [],
+    variantName: "",
     reviews: [],
     deleted: false,
   },
@@ -102,7 +102,8 @@ const ProductSlice = createSlice({
     clearProductLsit(state) {
       state.error = "";
       state.productList = [];
-    },clearProductDetail(state) {
+    },
+    clearProductDetail(state) {
       state.error = "";
       state.productDetail = {
         deleted: false,
@@ -114,8 +115,8 @@ const ProductSlice = createSlice({
         image: "",
         stock: 0,
         category: "",
-        variants:[],
-        variantName:"",
+        variants: [],
+        variantName: "",
         reviews: [],
       };
     },
@@ -129,9 +130,9 @@ const ProductSlice = createSlice({
     setCarrouselLoading(state, action: PayloadAction<boolean>) {
       state.carrouselLoading = action.payload;
     },
-    getCategoryList(state, action: PayloadAction<Array<category>>){
+    getCategoryList(state, action: PayloadAction<Array<category>>) {
       state.categoryList = action.payload;
-    }
+    },
   },
 });
 
@@ -148,5 +149,5 @@ export const {
   getProductAdminList,
   clearProductAdminList,
   setCarrouselLoading,
-  clearProductDetail
+  clearProductDetail,
 } = ProductSlice.actions;

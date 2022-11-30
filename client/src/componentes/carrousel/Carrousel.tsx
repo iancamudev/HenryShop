@@ -50,7 +50,7 @@ function Carrousel(args: any) {
   if (carrouselLoading) {
     return <Loading />;
   }
-  if (!carrouselLoading && productLength === 0) return null;
+  if (!carrouselLoading && productLength <= 1) return null;
   // return <h4 className="w-10/12 mt-4 font-bold max-w-[550px]">No hay ofertas o no se han podido cargar</h4>
 
   return (

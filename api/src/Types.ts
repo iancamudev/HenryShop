@@ -11,7 +11,7 @@ export interface review {
 }
 
 export interface refund {
-  buyer_name:String;
+  buyer_name: String;
   product_name: String;
   reason: String;
   customer_email: String;
@@ -42,6 +42,7 @@ export interface user {
   isAdmin: Boolean;
   reviews: Array<object>;
   shopping: Array<object>;
+  deleted: Boolean;
 }
 
 export interface shopping {
@@ -57,6 +58,7 @@ export interface googleUser {
   isAdmin: Boolean;
   confirmed: Boolean;
   shopping: Array<object>;
+  deleted: Boolean;
 }
 
 export interface githubUser {
@@ -66,10 +68,9 @@ export interface githubUser {
   isAdmin: Boolean;
   confirmed: Boolean;
   shopping: Array<object>;
+  deleted: Boolean;
 }
 
 export interface category {
   name: String;
 }
-
-

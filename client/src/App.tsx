@@ -38,9 +38,8 @@ import { AboutUs } from "./componentes/AboutUs";
 import { Refunds } from "./componentes/refunds/Refunds";
 import { FormCreated } from "./componentes/refunds/FormCreated";
 
-
 import DefaultPage from "./componentes/DefaultPage";
-import {getAllProducts} from './redux/slices/ProductSlice/productActions';
+import { getAllProducts } from "./redux/slices/ProductSlice/productActions";
 import PaymentsDetail from "./componentes/Admin/PaymentsDetail";
 
 function App() {
@@ -144,8 +143,8 @@ function App() {
               </Protected>
             }
           />
-          <Route path="/formcreated" element={<FormCreated/>}/>
-          <Route path="/refunds/:id" element={<Refunds/>} />
+          <Route path="/formcreated" element={<FormCreated />} />
+          <Route path="/refunds/:id" element={<Refunds />} />
           <Route path="/aboutus" element={<AboutUs />} />
           <Route path="/failure" element={<Failure />} />
           <Route path="/success" element={<Success />} />

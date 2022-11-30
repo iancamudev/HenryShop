@@ -23,7 +23,6 @@ const routes = Router();
 
 //TODOS LOS GET
 
-
 routes.get("/admin", async (req: Request, res: Response) => {
   try {
     const page: number = Number(req.query.page);
@@ -75,13 +74,13 @@ routes.get("/:id", async (req: Request, res: Response) => {
       res
         .status(404)
         .json({ error_message: "No se encontro el producto con ese id" });
-    }else{
+    } else {
       await result.populate("reviews");
-      console.log('producto ',result)
+      console.log("producto ", result);
       res.status(200).send(result);
     }
   } catch (error: any) {
-    console.log(error.message)
+    console.log(error.message);
     res.status(500).json({ error_message: error.message });
   }
 });
@@ -143,7 +142,7 @@ routes.post("/payment", userValidation, async (req: Request, res: Response) => {
             description: el.description,
             category_id: "art",
             quantity: el.quantity,
-            unit_price: el.price.at(- 1),
+            unit_price: el.price.at(-1),
           };
         }),
         back_urls: {
@@ -201,6 +200,5 @@ routes.put("/:id", async (req: Request, res: Response) => {
     console.log(error);
   }
 });
-
 
 export default routes;

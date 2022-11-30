@@ -13,7 +13,7 @@ const Home = () => {
       <Carrousel />
       <Filters />
       <ProductList />
-      <Pagination />
+      {window.innerWidth > 800 && <Pagination />}
       <Footer />
     </>
   );
