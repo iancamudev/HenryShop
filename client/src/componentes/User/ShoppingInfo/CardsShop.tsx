@@ -90,7 +90,6 @@ const ShoppingCards = () => {
       dispatch(getDateShopping(session.email, session.origin));
     }
     if(session.origin === "github") {
-      console.log('github');
       dispatch(getDateShopping(session.username, session.origin));
     }
   }, [shopsByUser]);
