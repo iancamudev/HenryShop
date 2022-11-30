@@ -112,6 +112,12 @@ router.post("/login", async (req: Request, res: Response) => {
   const username = req.body.username;
   const password = req.body.password;
   let user = await getUser(username);
+  const newHash = password;
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(newHash, salt);
+  console.log(hashedPassword);
+  const unHash = await bcrypt.compare(newHash, hashedPassword);
+  console.log(user);
   const passwordCorrect =
     user === null ? false : await bcrypt.compare(password, user.password); // Si no hay usuario passwordCorrect = false, si no Comparamos el password de la base de datos hasheado, con el que nos viene por body
   if (!passwordCorrect || !user) {
@@ -288,9 +294,9 @@ router.post(
       if (user && productos) {
         const shopping = await addNewShop(user.id, productos);
         await shopping.save();
-        user.shopping = [...user.shopping, shopping._id];
-        await user.save();
-        res.status(200).send(shopping);
+        const newShopping = [...user.shopping, shopping._id];
+        const results = await User.findOneAndUpdate({_id: user.id}, {shopping: newShopping});
+        res.status(200).send(results);
       }
     } catch (error) {
       res.status(401).send({ error });
