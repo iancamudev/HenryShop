@@ -31,11 +31,10 @@ router.post("/", async (req: Request, res: Response) => {
     user = await GithubUser.findOne({ username: decodedToken.username });
   }
 
-  const prodId = await Product.find({ _id: products })
+  const product = await Product.find({ _id: products })
   try {
-    if (user && prodId) {
-      const newRela = await addNewShop(user.id, prodId);
-      console.log(newRela);
+    if (user && product) {
+      const newRela = await addNewShop(user.id, product);
       res.status(200).send(newRela);
     }
   } catch (error: any) {

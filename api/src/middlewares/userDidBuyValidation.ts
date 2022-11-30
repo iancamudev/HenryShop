@@ -6,6 +6,10 @@ const { request } = require("http");
 const jwt = require("jsonwebtoken");
 import { getUserById, getDateShop } from '../controllers/user'
 
+import {GoogleUserDocument} from '../models/googleUser';
+import {GithubUserDocument} from '../models/githubUser'
+import {UserDocument} from '../models/User'
+
 module.exports = async (req: any, res: any, next: any) => {
   const { productId } = req.body;
   const authorization = req.get("authorization");
@@ -17,13 +21,28 @@ module.exports = async (req: any, res: any, next: any) => {
     return res.status(401).json({ error: "token missing or invalid admin" });
   } else {
     const decodedToken = jwt.verify(token, process.env.SECRETKEY);
-    let user = await User.findOne({ _id: decodedToken.id });
+    let origin = '';
+    if (decodedToken) {
+      var userDefault = await User.findOne({ _id: decodedToken.id });
+      origin = 'default';
+    }
+    if(!userDefault){
+      var googleUser = await GoogleUser.findOne({ email: decodedToken.email });
+      origin = "google";
+    }
+    if(!googleUser){
+      var githubUser = await GithubUser.findOne({ username: decodedToken.username });
+      origin = "github";
+    }
     if (!decodedToken.id) {
       return res.status(401).json({ error: "token missing or invalid admin" });
     }
-    const shop = await getDateShop(user.username as string)
+    let shop: any;
+    if (origin === "default") shop = await getDateShop(userDefault.username as string, origin);
+    if (origin === "google") shop = await getDateShop(googleUser.email as string, origin);
+    if (origin== "github") shop = await getDateShop(githubUser.username as string, origin)
     let buyed = false;
-    shop.forEach(sh => {
+    shop.forEach((sh:any) => {
       sh.products.forEach((pr: any) => {
         if (pr.id === productId) {
           buyed = true;

@@ -71,12 +71,12 @@ const Header = () => {
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
   // let userData;
-  const getUser = async () => {
-    const result = await axios.get(
-      `${REACT_APP_BACKEND_URL}/users/getuser/${token?.username}`
-    );
-    setUserProps(result.data);
-  };
+  // const getUser = async () => {
+  //   const result = await axios.get(
+  //     `${REACT_APP_BACKEND_URL}/users/getuser/${token?.username}`
+  //   );
+  //   setUserProps(result.data);
+  // };
 
   const getCategories = async () => {
     const result = await axios.get( 
@@ -87,7 +87,7 @@ const Header = () => {
 
   useEffect(() => {
     const session = getObjectSession();
-    getUser();
+    // getUser();
     if (session) {
       dispatch(setUserData());
     }
