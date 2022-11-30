@@ -31,7 +31,7 @@ module.exports = async (req: any, res: any, next: any) => {
     if (!decodedToken.id) {
       return res.status(401).json({ error: "token missing or invalid admin" });
     }
-    if (user.deleted) {
+    if (user?.deleted) {
       return res.status(401).json({ error: "Tu cuenta ha sido deshabilitada" });
     }
     console.log("Middleware userValidation: " + user);
