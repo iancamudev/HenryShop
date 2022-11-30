@@ -25,18 +25,18 @@ const SearchBarProducts = () => {
   return (
     <form
       onSubmit={submitHandler}
-      className="flex flex-row mb-0 shadow-lg  bg-white border-0 border-b-2 border-black border-solid"
+      className="flex flex-row mb-0 w-full shadow-lg  bg-white border-0 border-b-2 border-black border-solid"
     >
       <input
         type="text"
         onChange={changeHandler}
         value={search}
-        placeholder="Nombre de usuario.."
-        className="text-base text-gray-900 m-2 ml-4 mr-0 w-40"
+        placeholder="Nombre producto"
+        className="text-base text-gray-900 m-2 ml-4 mr-0 w-2/3"
       />
       <button
         type="submit"
-        className=" w-full ml-36 text-base text-gray-900 pl-3 pr-2 hover:bg-gray-200 rounded-br-md rounded-tr-md"
+        className=" w-1/3 ml-36 bg-gray-200 text-base text-gray-900 pl-3 pr-2 hover:bg-gray-300 hover:duration-400 duration-300 rounded-br-md rounded-tr-md"
       >
         <BiSearchAlt className="h-6 w-6  text-gray-600 " />
       </button>

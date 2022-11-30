@@ -23,7 +23,7 @@ const FiltersUsers = () => {
   
 
   return (
-    <div className="flex flex-row items-center justify-center gap-4 w-full  mt-0  flex-wrap bg-gray-200 pt-2 pb-2">
+    <div className="flex flex-row border-b-2 border-opacity-40 border-gray-500 items-center justify-center gap-4 w-full  mt-0  flex-wrap bg-gray-200 pt-2 pb-2">
       
       <div className="flex flex-row gap-4">
 

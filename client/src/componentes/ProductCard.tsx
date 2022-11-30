@@ -15,7 +15,8 @@ const ProductCard: React.FC<CardProps> = ({ product }: CardProps) => {
   const { addToCart, openCart } = useShoppingCart();
   const [variante, setVariante] = useState(
     Products.find((i) => i.id === product.id)?.variants
-      ? (Products.find((i) => i.id === product.id)?.variants[0]?.value as string)
+      ? (Products.find((i) => i.id === product.id)?.variants[0]
+          ?.value as string)
       : ""
   );
   const [quantity, setQuantity] = useState(1);
@@ -49,12 +50,12 @@ const ProductCard: React.FC<CardProps> = ({ product }: CardProps) => {
   }
 
   return (
-    <div className="flex flex-col border border-yellow bg-white shadow-lg    mt-6 mb-6 delay-75 hover:bg-yellow hover:scale-105 hover:duration-300  duration-300 rounded-md hover:cursor-pointer">
+    <div className="flex flex-col border border-gray-200 bg-white shadow-lg  delay-75 hover:bg-yellow hover:scale-105 hover:duration-300  duration-300 rounded-md hover:cursor-pointer">
       {product && (
         <>
           <Link to={`/products/${product.id}`}>
             <img
-              className="rounded-tl-md rounded-tr-md w-64 border-b-2 border-solid border-yellow hover:scale-105 hover:duration-300  duration-300 "
+              className="rounded-tl-md rounded-tr-md w-64 border-b-2 border-solid border-gray-200 hover:scale-105 hover:duration-300  duration-300 hover:border-none "
               src={product.image}
               alt={`${product.name}_image`}
               loading="lazy"

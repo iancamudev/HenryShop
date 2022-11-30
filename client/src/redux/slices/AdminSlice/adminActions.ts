@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { AppDispatch } from "../../store";
 import { Filters } from "../FiltersSlice";
 import { setError, setLoading } from "../ProductSlice";
-import { getUsersList, getUsersPages, getPayments, getPaymentsPages, setFiltersUsers, clearUsersList, getPaymentDetail } from "./index";
+import { getUsersList, getUsersPages, getPayments, getPaymentsPages, setFiltersUsers, clearUsersList, getPaymentDetail, setFiltersPayment, getClearPayments } from "./index";
 
 export const URL_BACK_DEV: string = process.env.REACT_APP_BACKEND_URL as string;
 
@@ -41,15 +41,29 @@ export const setFiltersActionUsers = ( page:Number, obj: any) => (dispatch: AppD
     
   };
 
-export const getAllPayments = (page: number | null) => (dispatch: AppDispatch) => {
-    let url;
-    page ? url = `${URL_BACK_DEV}/shop/adminusers?page=${page}` : url = `${URL_BACK_DEV}/shop/adminusers`
+export const getAllPayments = (page: Number, filters: any) => (dispatch: AppDispatch) => {
+  dispatch(setLoading(true));
+  dispatch(getClearPayments());
+  console.log("filters", filters)
+  let url: string = filters.id_compra ? `${URL_BACK_DEV}/shop/adminusers?page=${page}&id=${filters.id_compra}` : `${URL_BACK_DEV}/shop/adminusers?page=${page}`;
+  
+  console.log("urlact", url)
     axios.get(url).then(({ data }) => {
-        dispatch(getPayments(data.docs))
-        dispatch(getPaymentsPages(data.totalPages))
+        dispatch(getPayments(data.docs));
+        dispatch(getPaymentsPages(data.totalPages));
+        console.log("adios", data.docs);
     })
 
-}  
+};
+
+export const setFiltersActionPayment = ( obj: any) => (dispatch: AppDispatch) => {
+  console.log("filters2", obj)
+  dispatch(getPaymentsPages(1));
+  dispatch(setFiltersPayment(obj));
+  dispatch(getAllPayments(1, obj));
+  
+};
+
 export const getUserByUsername = (username: string | undefined) =>  (dispatch: AppDispatch) => {
     let url;
     url = `${URL_BACK_DEV}/users/admin/${username}`
@@ -65,12 +79,4 @@ export const getPaymentById = (id: string | undefined) => (dispatch: AppDispatch
       console.log( data )
   })
 }
-// export const getProductsById =
-//   (id: string | undefined) => (dispatch: AppDispatch) => {
-//     axios
-//       .get(`${URL_BACK_DEV}/products/${id}`)
-//       .then(({ data }) => dispatch(getProductDetail(data)))
-//       .catch((error) => {
-//         console.error(error);
-//       });
-//   };
+

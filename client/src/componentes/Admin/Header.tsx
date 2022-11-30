@@ -13,7 +13,7 @@ const Header = () => {
   };
   return (
     <nav className="flex flex-col sticky w-screen">
-      <div className=" h-20 p-2 pl-2 pr-4 bg-yellow flex justify-between items-center ">
+      <div className=" h-20 p-2 pl-2 pr-4 bg-yellow min-[600px]:bg-sky-300 shadow-xl flex justify-between items-center ">
         <Link to='/'>
         <img src={logo} alt="Logo de Henry" className="ml-4 h-8 select-none" />
         </Link>
