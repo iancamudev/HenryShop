@@ -7,7 +7,8 @@ import white from "../assets/SH-white2.png"
 const Footer = () => {
 
     return (
-  <div className="py-5 w-full">
+
+  <div className=" w-full">
     <div className="h-32 bg-yellow flex justify-between items-center">
         <div className="pl-10 text-5xl text-left font-bold">CLUB<p>HENRY</p>
         </div>
