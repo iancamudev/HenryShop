@@ -69,7 +69,6 @@ router.get("/getuser/:username", async (req: Request, res: Response) => {
     const user = await getUser(username);
     if (!user) throw new Error("");
     await user.populate("reviews");
-    console.log(user);
     res.status(200).send(user);
   } catch (error) {
     console.log(error);
@@ -129,7 +128,6 @@ router.post("/login", async (req: Request, res: Response) => {
 });
 
 router.get("/isAdmin", adminValidation, async (req: Request, res: Response) => {
-  console.log("yep admin");
   try {
     res.status(200).send("ok");
   } catch (error: any) {
@@ -142,7 +140,6 @@ router.get("/admin/allusers", async (req: Request, res: Response) => {
   const username: string = String(req.query.username);
   const order: string = String(req.query.order);
   const property: string = String(req.query.property);
-  console.log("queryalluser", req.query);
   try {
     let result: any;
     let number: number = 1;
@@ -187,7 +184,6 @@ router.get("/admin/:username", async (req: Request, res: Response) => {
 });
 
 router.get("/isUser", userValidation, async (req: Request, res: Response) => {
-  console.log("yep user");
   try {
     res.status(200).send("ok");
   } catch (error: any) {
@@ -225,7 +221,6 @@ router.get(
   userValidation,
   async (req: Request, res: Response) => {
     try {
-      console.log("entro a la ruta getUserByToken");
       const authorization = req.get("authorization");
 
       let token: string | undefined = authorization?.split(" ")[1];
@@ -233,7 +228,6 @@ router.get(
       const decodedToken = jwt.verify(token, process.env.SECRETKEY);
       const id = decodedToken.id;
       const user = await User.findById(id);
-      console.log(user);
       user
         ? res.status(200).send(user)
         : res.status(400).send("el usuario no esta confirmado");
@@ -242,18 +236,6 @@ router.get(
     }
   }
 );
-
-// router.get("/", async (req: Request, res: Response) => {
-//       try {
-//         const {order} = req.query;
-//         console.log(typeof order);
-//         console.log(order);
-//         const result = await userFilters(order);
-//       } catch (error: any) {
-//         res.status(500).send({ message: error.message})
-//       }
-// });
-
 
 
 router.post(
@@ -277,7 +259,6 @@ router.post(
       if (!user) {
         user = await GithubUser.findOne({ username: decodedToken.username });
       }
-      console.log(user);
       const productAndQuantity = async (ArrObj: any) => {
         let arr: any = [];
         let el: any;
