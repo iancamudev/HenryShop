@@ -1,13 +1,26 @@
 import { BiCopyright } from "react-icons/bi";
-import { GrFacebookOption, GrInstagram, GrYoutube, GrTwitter } from "react-icons/gr";
+import logoMobile from "../assets/hernyLogoSmall.png";
+import { GiHamburgerMenu } from "react-icons/gi";
+import {
+  GrFacebookOption,
+  GrInstagram,
+  GrYoutube,
+  GrTwitter,
+} from "react-icons/gr";
+import { FaUserAlt } from "react-icons/fa";
+import Searchbar from "./Searchbar";
 import { Link } from "react-router-dom";
 import NewsLetter from "./newsletter";
+
+import HeaderLink from "./HeaderLink";
+import white from "../assets/SH-white2.png";
+
 import white from "../assets/SH-white2.png"
 
 
-const Footer = () => {
-  console.log(window.screen.width)
+const widht = window.innerWidth;
 
+const Footer = () => {
   if(window.screen.width > 390){
     return (
         <div className="py-5 w-full">
@@ -101,5 +114,6 @@ const Footer = () => {
         </footer>
   )
 } 
+
 };
 export default Footer;

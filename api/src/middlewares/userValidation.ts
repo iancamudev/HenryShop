@@ -22,15 +22,20 @@ module.exports = async (req: any, res: any, next: any) => {
     if (decodedToken) {
       user = await User.findOne({ _id: decodedToken.id });
     }
-    if(!user){
+    if (!user) {
       user = await GoogleUser.findOne({ email: decodedToken.email });
     }
-    if(!user){
+    if (!user) {
       user = await GithubUser.findOne({ username: decodedToken.username });
     }
     if (!decodedToken.id) {
       return res.status(401).json({ error: "token missing or invalid admin" });
     }
+    if (user.deleted) {
+      return res.status(401).json({ error: "Tu cuenta ha sido deshabilitada" });
+    }
+    console.log("Middleware userValidation: " + user);
+
     const { id } = decodedToken;
     req.id = id;
     next();
