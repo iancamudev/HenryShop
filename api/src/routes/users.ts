@@ -118,6 +118,8 @@ router.post("/login", async (req: Request, res: Response) => {
     return res
       .status(401)
       .json({ message: "Usuario o contraseña incorrecto." });
+  }else if(user?.deleted){
+    return res.status(400).json({error_message: "Cuenta deshabilitada"});
   } else {
     const userForToken = { id: user.id, username: user.username };
     const token = jwt.sign(userForToken, process.env.SECRETKEY);

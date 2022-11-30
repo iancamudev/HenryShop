@@ -18,9 +18,11 @@ const ReviewList = ({ reviews }: ReviewProps) => {
   const dispatch = useAppDispatch();
   const session =JSON.parse(window.localStorage.getItem("userSession") as string);
   useEffect(() => {
-    if(session.origin === "default") dispatch(getAllShoppingByUser(session.username, session.origin));
-    if(session.origin === "google") dispatch(getAllShoppingByUser(session.email, session.origin));
-    if(session.origin === "github") dispatch(getAllShoppingByUser(session.username, session.origin));;
+    if(session !== null){
+      if(session.origin === "default") dispatch(getAllShoppingByUser(session.username, session.origin));
+      if(session.origin === "google") dispatch(getAllShoppingByUser(session.email, session.origin));
+      if(session.origin === "github") dispatch(getAllShoppingByUser(session.username, session.origin));
+    }
   }, [dispatch, username]);
 
   let reviewed = false;
