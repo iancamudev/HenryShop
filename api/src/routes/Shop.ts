@@ -46,6 +46,7 @@ router.get("/adminusers", async (req: Request, res: Response) => {
   try {
     const page: number = Number(req.query.page);
     const id: string = String(req.query.id);
+    
     let result;
     let y: number;
     console.log("rout", page, id);

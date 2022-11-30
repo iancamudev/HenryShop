@@ -12,11 +12,13 @@ export const getAllShopAdmin = async (page: number, id: String) => {
  console.log("controller", page, id);
    if(id !== "undefined"){
       console.log("hola");
-      const result = await Shopping.paginate({_id: id}, {page: page});
+      const result = await Shopping.paginate({_id: id}, {page: page, limit: 6});
+      console.log("controller1", result);
       return result;
    }else{
 
-      const result = await Shopping.paginate({}, { page: page });
+      const result = await Shopping.paginate({}, { page: page, limit: 6 });
+      console.log("controller2", result);
       return result;
    }
 

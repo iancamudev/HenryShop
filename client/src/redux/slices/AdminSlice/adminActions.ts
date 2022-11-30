@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "../../../hooks";
 import { AppDispatch } from "../../store";
 import { Filters } from "../FiltersSlice";
 import { setError, setLoading } from "../ProductSlice";
-import { getUsersList, getUsersPages, getPayments, getPaymentsPages, setFiltersUsers, clearUsersList, getPaymentDetail, setFiltersPayment, FiltersPayment, getClearPayments } from "./index";
+import { getUsersList, getUsersPages, getPayments, getPaymentsPages, setFiltersUsers, clearUsersList, getPaymentDetail, setFiltersPayment, getClearPayments } from "./index";
 
 export const URL_BACK_DEV: string = process.env.REACT_APP_BACKEND_URL as string;
 
@@ -41,11 +41,13 @@ export const setFiltersActionUsers = ( page:Number, obj: any) => (dispatch: AppD
     
   };
 
-export const getAllPayments = (page: Number, filters?: FiltersPayment | null) => (dispatch: AppDispatch) => {
+export const getAllPayments = (page: Number, filters: any) => (dispatch: AppDispatch) => {
   dispatch(setLoading(true));
   dispatch(getClearPayments());
-  let url: string = `${URL_BACK_DEV}/shop/adminusers?page=${page}&id=${filters?.id_compra}`;
+  console.log("filters", filters)
+  let url: string = filters.id_compra ? `${URL_BACK_DEV}/shop/adminusers?page=${page}&id=${filters.id_compra}` : `${URL_BACK_DEV}/shop/adminusers?page=${page}`;
   
+  console.log("urlact", url)
     axios.get(url).then(({ data }) => {
         dispatch(getPayments(data.docs));
         dispatch(getPaymentsPages(data.totalPages));
@@ -54,11 +56,11 @@ export const getAllPayments = (page: Number, filters?: FiltersPayment | null) =>
 
 };
 
-export const setFiltersActionPayment = ( page: number, obj: any) => (dispatch: AppDispatch) => {
+export const setFiltersActionPayment = ( obj: any) => (dispatch: AppDispatch) => {
+  console.log("filters2", obj)
+  dispatch(getPaymentsPages(1));
   dispatch(setFiltersPayment(obj));
-  dispatch(getAllPayments(page, obj?.id_compra));
-  dispatch(getPaymentsPages(page));
-  
+  dispatch(getAllPayments(1, obj));
   
 };
 

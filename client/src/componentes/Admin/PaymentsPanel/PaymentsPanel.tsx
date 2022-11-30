@@ -8,13 +8,12 @@ import { AiFillEye} from "react-icons/ai";
 import { getAllPayments } from "../../../redux/slices/AdminSlice/adminActions";
 import SearchBarPayment from "./SearchBarPayment";
 import Filters from "../../Filters";
-import { FiltersPayment } from "../../../redux/slices/AdminSlice";
 const PaymentsPanel = () => {
   let navigate = useNavigate();
 
   const Payments = useAppSelector((state) => state.admin.payments);
   console.log("pay", Payments)
-  const filters: FiltersPayment = useAppSelector((state) => state.admin.filtersPayment ) as  FiltersPayment;
+  const filters: Object = useAppSelector((state) => state.admin.filtersPayment );
   const paymentPages = useAppSelector((state) => state.admin.paymentsPages);
   const [currentPage, setCurrentPage] = useState(1);
   let id = 1;
@@ -25,7 +24,7 @@ const PaymentsPanel = () => {
   }
   const dispatch = useAppDispatch();
   useEffect(() => {
-    dispatch(getAllPayments(currentPage));
+    dispatch(getAllPayments(currentPage, filters));
   }, [currentPage]);
   const handleOnChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     event.preventDefault();
@@ -62,25 +61,23 @@ const PaymentsPanel = () => {
             <th className="border border-black font-normal p-2 pl-4 pr-4">
               ID Compra
             </th>
-            <th className="border border-black font-normal p-2">Pagos</th>
+            <th className="border border-black font-normal p-2">N° Compras</th>
             <th className="border border-black font-normal p-2 pl-4 pr-4">
               Actions
             </th>
           </tr>
           {Payments &&
             Payments.map((payment) => (
-              payment.products.map((pago) => {
-                return (
               <tr className="border border-slate-300">
                 <td
-                  className="pl-2 pr-2 bg-gray-300 border-black"
+                  className="pl-2 pr-2 bg-gray-300 text-xs xl:text-base border-black"
                 >
-                  {payment.id.slice(10)}
+                  {payment.id}
                 </td>
                 <td
                   className="pl-2 max-w-1/3 bg-gray-300  border-black"
                 >
-                  {<p className="text-xs font-bold">{pago.name}</p>}
+                  {<p className="text-xs font-bold">{(payment.products.map((e) => e.name)).length}</p>}
                 </td>{" "}
                 <td
                   className="flex items-center justify-center bg-gray-300 p-2 border-black"
@@ -100,8 +97,8 @@ const PaymentsPanel = () => {
                   </button> */}
                 </td>
               </tr>
-                )
-              })
+                
+              
             ))}
         </table>
       </div>

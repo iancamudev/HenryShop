@@ -14,9 +14,7 @@ export interface PaymentProductDetails {
   category: string;
   variante: string;
 }
-export interface FiltersPayment {
-  id_compra: String,
-}
+
 export interface AdminUserDetail {
     confirmed: boolean;
     isAdmin: boolean;
@@ -50,7 +48,7 @@ interface PaymentDetail {
     paymentsPages: Number;
     filters: Object;
     error: string;
-    filtersPayment: FiltersPayment;
+    filtersPayment: Object;
   }
 //Definimos el estado
 const initialState: AdminUserState = {
@@ -109,7 +107,7 @@ const AdminSlice = createSlice({
    setFiltersUsers(state, action: PayloadAction<Object>) {
     state.filters = action.payload;
   },
-  setFiltersPayment(state, action: PayloadAction<FiltersPayment>) {
+  setFiltersPayment(state, action: PayloadAction<Object>) {
     state.filtersPayment = action.payload;
   },
    getPaymentDetail(state, action: PayloadAction<PaymentDetail>){

@@ -50,6 +50,7 @@ export const AboutUs = () => {
              <div>
                 <p>Developers</p>
              </div>
+             <div>
             { nojotro.map((e) => {
                 return (
                     <div className="flex flex-col border border-black bg-yellow shadow-lg mr-10 ml-10 mt-16 mb-6 delay-75 hover:bg-yellow hover:scale-105 hover:duration-300  duration-300 rounded-md hover:cursor-pointer">
@@ -71,6 +72,7 @@ export const AboutUs = () => {
                     </div>
                 )
             })}
+            </div>
         </div>
     )
 }
