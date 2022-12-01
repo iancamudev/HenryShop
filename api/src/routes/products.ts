@@ -32,6 +32,7 @@ routes.get("/admin", async (req: Request, res: Response) => {
     const category: string = String(req.query.category);
     const order: string = String(req.query.order);
     const property: string = String(req.query.property);
+    page === 0 ? page + 1 : page;
     const result: any = await getAllProductsAdmin(
       page,
       category,
