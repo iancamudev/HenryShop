@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState}from "react";
 import { object } from "yup";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { setFiltersAction } from "../redux/slices/FiltersSlice/filtersActions";
@@ -15,7 +15,7 @@ const Filters = () => {
     }
     return arr;
   };
-
+  const [filter, setFilter] = useState(""); 
   const clickHandler = (e: any) => {
     const name = e.currentTarget.id;
     const value = e.currentTarget.name;
@@ -26,6 +26,7 @@ const Filters = () => {
     const name = e.currentTarget.id;
     const value = e.currentTarget.selectedOptions[0].value;
     console.log(name, value);
+    setFilter(value);
     dispatch(setFiltersAction({ ...filters, [name]: value }));
   };
 
@@ -33,6 +34,8 @@ const Filters = () => {
     const name = e.currentTarget.name;
     dispatch(setFiltersAction({ ...filters, [name]: "" }));
   };
+
+
 
   return (
     <div className="flex flex-row items-center justify-center gap-4 w-full  mt-6  flex-wrap bg-gray-200 pt-2 pb-2">
@@ -46,7 +49,7 @@ const Filters = () => {
               onClick={clickHandlerDelete}
               id="renderFiltros"
             >
-              {el.value === "price" && "Precio"}
+              {el.value === "currentPrice" && "Precio"}
               {el.value === "rating" && "Rating"}
               {el.value === "asc" && "Ascendente"}
               {el.value === "desc" && "Descendente"}
@@ -58,27 +61,24 @@ const Filters = () => {
       <div className="flex flex-row gap-4">
         <select
           className="p-2 text-base border-2 "
+          value={filter}
           id="property"
           onChange={(e) => {
-            console.log(e);
             changeHandler(e);
           }}
         >
           <option className="text-sm" id="" value="">
             Propiedad
           </option>
-          <option className="text-sm" id="property" value="rating">
-            Rating
-          </option>
-          <option className="text-sm" id="property" value="price">
+          <option className="text-sm" id="property" value="currentPrice">
             Precio
           </option>
         </select>
         <select
           className="p-2 text-base "
           id="order"
+          value={filter}
           onChange={(e) => {
-            console.log(e);
             changeHandler(e);
           }}
         >

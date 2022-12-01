@@ -115,9 +115,7 @@ router.post("/login", async (req: Request, res: Response) => {
   const newHash = password;
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(newHash, salt);
-  console.log(hashedPassword);
   const unHash = await bcrypt.compare(newHash, hashedPassword);
-  console.log(user);
   const passwordCorrect =
     user === null ? false : await bcrypt.compare(password, user.password); // Si no hay usuario passwordCorrect = false, si no Comparamos el password de la base de datos hasheado, con el que nos viene por body
   if (!passwordCorrect || !user) {
@@ -127,7 +125,7 @@ router.post("/login", async (req: Request, res: Response) => {
   }else if(user?.deleted){
     return res.status(400).json({error_message: "Cuenta deshabilitada"});
   } else {
-    const userForToken = { id: user.id, username: user.username };
+    const userForToken = { id: user.id, username: user.username, origin: "default" };
     const token = jwt.sign(userForToken, process.env.SECRETKEY);
     return res
       .status(200)
@@ -322,7 +320,6 @@ router.get("/shopping", async (req: Request, res: Response) => {
           error_message: "Ningún usuario encontrado con ese username",
         });
   } catch (error: any) {
-    console.log(error.message);
     res.status(500).json({ error_message: error.message });
   }
 });

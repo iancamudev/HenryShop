@@ -22,26 +22,31 @@ module.exports = async (req: any, res: any, next: any) => {
     return res.status(401).json({ error: "token missing or invalid admin" });
   } else {
     const decodedToken = jwt.verify(token, process.env.SECRETKEY);
+    console.log('tokenn', decodedToken);
     let origin = '';
-    if (decodedToken) {
+    if (decodedToken.origin === "default") {
       var userDefault = await User.findById(decodedToken.id );
       origin = 'default';
     }
-    else if(!userDefault){
+    else if(decodedToken.origin === "google"){
       var googleUser = await GoogleUser.findOne({ email: decodedToken.email });
       origin = "google";
     }
-    else if(!googleUser){
+    else if(decodedToken.origin === "github"){
+
       var githubUser = await GithubUser.findOne({ username: decodedToken.username });
       origin = "github";
     }
     if (!decodedToken.id) {
       return res.status(401).json({ error: "token missing or invalid admin" });
     }
+    console.log("origin", origin);
+    console.log("userDefault",userDefault)
+    console.log("googleUser", googleUser);
     let shop: any;
     if (origin === "default") shop = await getDateShop(userDefault.username as string, origin);
     if (origin === "google") shop = await getDateShop(googleUser?.email as string, origin);
-    if (origin== "github") shop = await getDateShop(githubUser?.username as string, origin)
+    if (origin === "github") shop = await getDateShop(githubUser?.username as string, origin)
     let buyed = false;
     shop.forEach((sh:any) => {
       sh.products.forEach((pr: any) => {
