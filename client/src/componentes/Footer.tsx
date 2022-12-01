@@ -14,11 +14,12 @@ import NewsLetter from "./newsletter";
 
 import HeaderLink from "./HeaderLink";
 import white from "../assets/SH-white2.png";
-
-const widht = window.innerWidth;
+import useWindowSize from "./customHooks/useWindowSize";
 
 const Footer = () => {
-  if (window.screen.width > 390) {
+  const { width } = useWindowSize();
+
+  if (window.screen.width > 800) {
     return (
       <div className="pt-5 w-full mb-0">
         <div className="h-32 bg-yellow flex justify-between items-center">
@@ -66,7 +67,7 @@ const Footer = () => {
     );
   } else {
     return (
-      <footer className="text-center bg-slate-900 text-white xl:w-screen">
+      <footer className="text-center bg-slate-900 text-white w-screen">
         <div className="flex flex-col items-center">
           <div className="container px-6 pt-6">
             <div className="flex w-full">

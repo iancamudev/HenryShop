@@ -394,7 +394,7 @@ export const addNewProduct = async (prod: product) => {
         variants: prod.variants,
         variantName: prod.variantName,
         deleted: false,
-        currentPrice: prod.price
+        currentPrice: prod.price,
       });
     } catch (error: any) {
       throw error.message;
@@ -425,7 +425,7 @@ export const activateProduct = async (id: string) => {
 export const changeProperties = async (id: string, body: any) => {
   const product = await Product.findById(id);
 
-  product.price.push(body.price);
+  product.price.at(-1) !== body.price && product.price.push(body.price);
   body.price = product.price;
 
   const result = await Product.findOneAndUpdate(

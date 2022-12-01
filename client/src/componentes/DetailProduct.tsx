@@ -57,7 +57,7 @@ export const DetailProduct: React.FunctionComponent = () => {
       <Header />
       <div className="mt-4 lg:flex">
         <img
-          className="mt-4 mx-auto w-9/12 max-w-[85vh]"
+          className="mt-4 mx-auto w-9/12 max-w-[85vh] mr-10"
           src={producto.image && producto.image}
           alt="Detalle_Producto"
         />
@@ -78,7 +78,7 @@ export const DetailProduct: React.FunctionComponent = () => {
             </h3>
             <hr />
             <div className="flex items-center justify-center gap-4">
-              <div className="border-r-2 p-4 border-black ">
+              <div className="border-r-2 p-4 border-black pr-10">
                 <p className="text-xl font-bold mb-3 mt-4">Quantity</p>
                 <div className="flex items-center justify-center gap-2">
                   <div onClick={handleClickPlus}>
@@ -128,7 +128,11 @@ export const DetailProduct: React.FunctionComponent = () => {
               >
                 Agregar a carrito
               </button>
-              {added?<p className = "bg-green-300 text-green-700 rounded-sm border border-green-700 border-solid mt-4 py-4 font-bold">Se agregó al carrito.</p>:null}
+              {added ? (
+                <p className="bg-green-300 text-green-700 rounded-sm border border-green-700 border-solid mt-4 py-4 font-bold">
+                  Se agregó al carrito.
+                </p>
+              ) : null}
             </div>
             <hr />
             <p className="text-left ml-4 mt-6 font-bold">Descripción:</p>
