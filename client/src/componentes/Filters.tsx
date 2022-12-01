@@ -45,7 +45,7 @@ const Filters = () => {
               onClick={clickHandlerDelete}
               id="renderFiltros"
             >
-              {el.value === "price" && "Precio"}
+              {el.value === "currentPrice" && "Precio"}
               {el.value === "rating" && "Rating"}
               {el.value === "asc" && "Ascendente"}
               {el.value === "desc" && "Descendente"}
@@ -68,7 +68,7 @@ const Filters = () => {
           <option className="text-sm" id="property" value="rating">
             Rating
           </option>
-          <option className="text-sm" id="property" value="price">
+          <option className="text-sm" id="property" value="currentPrice">
             Precio
           </option>
         </select>

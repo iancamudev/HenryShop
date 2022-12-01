@@ -24,7 +24,6 @@ const ProductCards = () => {
   if (error) return <h3 className="lg:w-6/12">{error}</h3>;
 
   const width: any = window.innerWidth;
-
   return width > 800 ? (
     <div className="grid grid-cols-3 gap-16 bg-gray-200 p-10 rounded-2xl mb-4">
       {productList.length ? (

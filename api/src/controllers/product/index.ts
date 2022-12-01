@@ -11,6 +11,7 @@ export const getAllProductsAdmin = async (
   property?: string,
   order?: string
 ) => {
+  console.log(category, name);
   const catObj = await Category.findOne({ name: category });
   const catId = catObj ? catObj._id : "undefined";
   if (
@@ -194,6 +195,7 @@ export const getWithfilters = async (
 ) => {
   const catObj = await Category.findOne({ name: category });
   const catId = catObj ? catObj._id : "undefined";
+  console.log(catId);
   if (
     catId === "undefined" &&
     name !== "undefined" &&
@@ -392,6 +394,7 @@ export const addNewProduct = async (prod: product) => {
         variants: prod.variants,
         variantName: prod.variantName,
         deleted: false,
+        currentPrice: prod.price
       });
     } catch (error: any) {
       throw error.message;
@@ -427,7 +430,7 @@ export const changeProperties = async (id: string, body: any) => {
 
   const result = await Product.findOneAndUpdate(
     { _id: id },
-    { ...body, category: product.category }
+    { ...body, category: product.category, currentPrice: product.price.at(-1) }
   );
   if (!result) {
     throw new Error("No existe el producto");
