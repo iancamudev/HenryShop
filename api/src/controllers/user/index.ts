@@ -205,6 +205,7 @@ export const updateUser = async (body: putBody, id: number) => {
     username: username,
     token: token,
     origin: "default",
+
   };
   // nombre manzana // usuario es pera
 
