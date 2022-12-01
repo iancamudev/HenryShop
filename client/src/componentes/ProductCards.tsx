@@ -22,7 +22,6 @@ const ProductCards = () => {
   }
 
   if (error) return <h3 className="lg:w-6/12">{error}</h3>;
-  console.log(productList);
 
   const width: any = window.innerWidth;
 
