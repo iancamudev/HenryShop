@@ -196,17 +196,16 @@ export const updateUser = async (body: putBody, id: number) => {
   await User.findOneAndUpdate({ _id: id }, body);
 
   const findIdUser = await User.findById({ _id: id });
-  console.log('user ', findIdUser)
+
   const username = findIdUser?.username;
   const userId = findIdUser?.id.toString();
-  const userForToken = { id: userId, username };
-
+  const userForToken = { id:userId, username };
   const token = jwt.sign(userForToken, process.env.SECRETKEY);
-  
   const tokenJson = {
-    token,
-    username,
-    origin: 'default'
+    username: username,
+    token: token,
+    origin: "default",
+
   };
   // nombre manzana // usuario es pera
 
