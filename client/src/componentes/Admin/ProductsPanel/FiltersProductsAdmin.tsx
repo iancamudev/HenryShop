@@ -45,7 +45,6 @@ const FiltersProductsAdmin = () => {
               id="renderFiltros"
             >
               {el.value === "price" && "Precio"}
-              {el.value === "rating" && "Rating"}
               {el.value === "asc" && "Ascendente"}
               {el.value === "desc" && "Descendente"}
               {el.value === "Mate" && "Mates"}
@@ -64,9 +63,6 @@ const FiltersProductsAdmin = () => {
         >
           <option className="text-sm" id="" value="">
             Propiedad
-          </option>
-          <option className="text-sm" id="property" value="rating">
-            Rating
           </option>
           <option className="text-sm" id="property" value="price">
             Precio

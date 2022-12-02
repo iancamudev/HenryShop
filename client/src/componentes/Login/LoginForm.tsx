@@ -5,6 +5,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
 import FormSubmittingLoader from "../FormSubmittingLoader";
+import Swal from "sweetalert2";
 
 const errorStyle =
   "mt-1 text-red-600 font-bold bg-red-100 p-1 border-2 border-red-700 border-solid rounded-2xl";
@@ -50,11 +51,26 @@ const LoginForm = () => {
           navigate("/");
         })
         .catch((e) => {
-          if(e.response.data.error_message === "Cuenta deshabilitada"){
-            alert("No has podido iniciar sesion. Tu cuenta ha sido deshabilitada. Contáctate con el suporte.");
-            navigate("/");
-          }else{
-            setResult(e.response.data.message)
+          if (e.response.data.error_message === "Cuenta deshabilitada") {
+            Swal.fire({
+              icon: "error",
+              title:
+                "Tu cuenta ha sido deshabilitada. Contactate con el soporte!",
+              showDenyButton: true,
+              confirmButtonText:
+                "<span style='color: #000; font-weight: 700'>Ir al home</span>",
+              confirmButtonColor: "#FFFF0A",
+              denyButtonText: `<span style='color: #FFFF0A; font-weight: 700'>Volver a intentar</span>`,
+              denyButtonColor: "#000",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                navigate("/");
+              } else if (result.isDenied) {
+                navigate("/login");
+              }
+            });
+          } else {
+            setResult(e.response.data.message);
           }
         })
         .finally(() => {

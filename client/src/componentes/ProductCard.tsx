@@ -63,7 +63,7 @@ const ProductCard: React.FC<CardProps> = ({ product }: CardProps) => {
               ${product.price.at(-1)}
             </h6>
 
-            <h5 className="pl-2 mb-4 flex items-start w-64 font-light	 ">
+            <h5 className="pl-2 mb-4 flex items-start w-64 font-light	text-left ">
               {product.name}
             </h5>
 
