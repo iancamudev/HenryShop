@@ -5,6 +5,9 @@ import { Button, Stack } from "react-bootstrap";
 import { useAppSelector } from "../../hooks";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import axiosGetCall from '../../funciones/axiosGetCall';
+import axios from 'axios';
+
+const BACKEND_URL:string = (process.env.REACT_APP_BACKEND_URL as string);
 
 type CartItemProps = {
   id: string;
@@ -17,7 +20,7 @@ export function CartItem({id, quantity, variante}: CartItemProps) {
     const { increaseCartQuantity, decreaseCartQuantity, removeFromCart } = useShoppingCart()
     const [prod, setProd] = useState({image:'', name:'', price:[-1], id:'', _id: ''});
     const getProds = async() => {
-      const {data} = await axiosGetCall(`/products/${id}`);
+      const {data} = await axios.get(`${BACKEND_URL}/products/${id}`);
       setProd({...data, id: data.id});
     }
     // const prod = Products.find(i => i.id ===id)
