@@ -15,7 +15,7 @@ function ConfirmMailButton({ email }: IProps) {
   return (
     <div className="m-auto mt-8 w-10/12 p-2 border-2 border-solid border-red-600 rounded-sm text-red-600 bg-red-300 font-bold max-w-md">
       <p>
-        Su mail no ha sido confirmado. No podrá realizar compras ni comentarios
+        Su mail no ha sido confirmado. No podrá realizar compras ni comentarios.
       </p>
       <p>
         Si hace click en "Enviar Mail", se enviará el correo de confirmación a
